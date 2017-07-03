@@ -1,7 +1,7 @@
 ##################
 # input parameters for binning and plotting AAVSO data
 llightcurve_name <- "data/aavso_latest_data.csv"
-maxairmass <- 1.8 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxairmass <- 1.5 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.029  # maximum AAVSO uncertainty estimate
 maxBinUncertainty <- 0.1 # worst standard deviation to accept for a binned set of observations
 wildsd <- 10.0 # worst number of standard deviations from mean allowed
@@ -9,10 +9,10 @@ wildsd <- 10.0 # worst number of standard deviations from mean allowed
 earliestJD = 2457294 # only data on or after this JD will be used
 #earliestJD <- 2457700
 startPlot <- earliestJD
-startPlot <- 2457880
+#startPlot <- 2457880
 plotRelTimes <- TRUE
 ##########
-includeExclude <- TRUE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
+includeExclude <- FALSE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
 ExclCodes <- "None"
 #ExclCodes <- c("DUBF","SGEA","ELYA","OAR","AAM","ATE","HJW","BALB","BMAK","BPAD","BSM","LPB","GKA","HBB")
 #ExclCodes <- c("LDJ","SGEA","ELYA","OAR","AAM","ATE","HJW","BALB","BMAK","BPAD","BSM","LPB","GKA","HBB")
@@ -23,20 +23,20 @@ ExclCodes <- "None"
 #ExclCodes <- c("ATE","OJJ") # observers to be used/not used in the fit. set to an invalid code (.e.g "None") if not interested
 #ExclCodes <- c("ATE") # observers to be used/not used in the fit. set to an invalid code (.e.g "None") if not interested
 #ExclCodes <- c("JM","LDJ","ELYA","DKS","OJJ","OAR","ATE","BPAD","HJW")
-#ExclCodes <- c("LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT") # V & B
-ExclCodes <- c("JM","LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT") # V & B
+ExclCodes <- c("LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT") # V & B
+#ExclCodes <- c("JM","LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT") # V & B
 #ExclCodes <- c("DUBF","OAR","LDJ","LPB","ELYA","LBG","OJJ","JM","SGEA")
 #ExclCodes <- c("DUBF","DKS","ELYA","OAR","ATE","HJW","BPAD","OJJ","LBG","LDJ","UJHA","OYE","GFRB","OAS","MJB","EEY") # V ensemble
 #ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP") # I ensemble
 #ExclCodes <- c("ELYA","DUBF","OAR","HJW","DKS","LBG","UJHA","JM")
 #ExclCodes <- "DUBF"
-#ExclCodes <- c("BJFB","COO")
+ExclCodes <- c("BJFB","COO","LBG","BMAK") # I band exclusion
 #ExclCodes <- c("LDJ","DUBF","UJHA","DKS","HBB")
 #ExclCodes <- "JM"
 ########
 plotMee <- NA # do not highlight any particular observer code
-plotMee <- "JM" # observer code to plot with special character
+#plotMee <- "JM" # observer code to plot with special character
 #plotMee <- "PXR"
 #plotMee <- "HJW"
 #plotMee <- "ELYA"
@@ -54,6 +54,7 @@ allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAs
 #allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R","B"),plotColor=c("darkviolet","red","blue"), stringsAsFactors=FALSE)
 
 ########################
@@ -62,7 +63,7 @@ deltaJD <- 1.0 # bin width in days
 plotExcluded <- FALSE # set to TRUE to plot the points in the lightcurve not used in the fit.
 plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit
 generateTS <- TRUE # set to TRUE to creat a time series from the data
-tsBinWidth <- 10.0 # time series bin width in days. Important if generateTS is TRUE
+tsBinWidth <- 14.0 # time series bin width in days. Important if generateTS is TRUE
 smoothTS <- TRUE # set to TRUE to smooth the times series
 tsSmoothOrder <- 10 # the order for the moving average to smooth the time series
 tryLQS <- FALSE # set to TRUE is you want to try resistant regression.
@@ -74,8 +75,8 @@ lqsColor <- "darkgreen"
 weightedBins <- FALSE # set to TRUE to weight lower uncertainty bins more.
 
 ####### MARS
-marsOrder <- 30
-marsPenalty <- 2 # set to 0 to avoid penalizing knots in pruning pass
+marsOrder <- 35
+marsPenalty <- 4 # set to 0 to avoid penalizing knots in pruning pass
 marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "backward" # set to "none" to avoid pruning
 splineRaw <-  FALSE # do the spline on the raw lightcurve, not binned.
