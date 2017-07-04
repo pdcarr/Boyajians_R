@@ -9,10 +9,10 @@ wildsd <- 10.0 # worst number of standard deviations from mean allowed
 earliestJD = 2457294 # only data on or after this JD will be used
 #earliestJD <- 2457700
 startPlot <- earliestJD
-startPlot <- 2457880
+#startPlot <- 2457880
 plotRelTimes <- TRUE
 ##########
-includeExclude <- TRUE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
+includeExclude <- FALSE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
 ExclCodes <- "None"
 #ExclCodes <- c("DUBF","SGEA","ELYA","OAR","AAM","ATE","HJW","BALB","BMAK","BPAD","BSM","LPB","GKA","HBB")
 #ExclCodes <- c("LDJ","SGEA","ELYA","OAR","AAM","ATE","HJW","BALB","BMAK","BPAD","BSM","LPB","GKA","HBB")
@@ -24,7 +24,7 @@ ExclCodes <- "None"
 #ExclCodes <- c("ATE") # observers to be used/not used in the fit. set to an invalid code (.e.g "None") if not interested
 #ExclCodes <- c("JM","LDJ","ELYA","DKS","OJJ","OAR","ATE","BPAD","HJW")
 #ExclCodes <- c("LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT") # V & B
-ExclCodes <- c("JM","LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT") # V & B
+#ExclCodes <- c("JM","LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT") # V & B
 #ExclCodes <- c("DUBF","OAR","LDJ","LPB","ELYA","LBG","OJJ","JM","SGEA")
 #ExclCodes <- c("DUBF","DKS","ELYA","OAR","ATE","HJW","BPAD","OJJ","LBG","LDJ","UJHA","OYE","GFRB","OAS","MJB","EEY") # V ensemble
 #ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA") # R ensemble
@@ -36,7 +36,7 @@ ExclCodes <- c("JM","LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS
 #ExclCodes <- "JM"
 ########
 plotMee <- NA # do not highlight any particular observer code
-plotMee <- "JM" # observer code to plot with special character
+#plotMee <- "JM" # observer code to plot with special character
 #plotMee <- "PXR"
 #plotMee <- "HJW"
 #plotMee <- "ELYA"
@@ -54,10 +54,10 @@ allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAs
 #allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
-#allBands <- data.frame(bandinQ=c("I","R","B"),plotColor=c("darkviolet","red","blue"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
 
 ########################
-deltaJD <- 1.0 # bin width in days
+deltaJD <- 7.0 # bin width in days
 ########################
 plotExcluded <- FALSE # set to TRUE to plot the points in the lightcurve not used in the fit.
 plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit
@@ -74,8 +74,8 @@ lqsColor <- "darkgreen"
 weightedBins <- FALSE # set to TRUE to weight lower uncertainty bins more.
 
 ####### MARS
-marsOrder <- 30
-marsPenalty <- 2 # set to 0 to avoid penalizing knots in pruning pass
+marsOrder <- 8
+marsPenalty <- 4 # set to 0 to avoid penalizing knots in pruning pass
 marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "backward" # set to "none" to avoid pruning
 splineRaw <-  FALSE # do the spline on the raw lightcurve, not binned.
