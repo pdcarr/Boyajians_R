@@ -31,7 +31,7 @@ ExclCodes <- "None"
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP") # I ensemble
 #ExclCodes <- c("ELYA","DUBF","OAR","HJW","DKS","LBG","UJHA","JM")
 #ExclCodes <- "DUBF"
-#ExclCodes <- c("BJFB","COO")
+ExclCodes <- c("BJFB","COO","LBG","BMAK") # I band exclusion
 #ExclCodes <- c("LDJ","DUBF","UJHA","DKS","HBB")
 #ExclCodes <- "JM"
 ########
@@ -55,6 +55,7 @@ allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAs
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
+#allBands <- data.frame(bandinQ=c("I","R","B"),plotColor=c("darkviolet","red","blue"), stringsAsFactors=FALSE)
 
 ########################
 deltaJD <- 7.0 # bin width in days
@@ -74,7 +75,7 @@ lqsColor <- "darkgreen"
 weightedBins <- FALSE # set to TRUE to weight lower uncertainty bins more.
 
 ####### MARS
-marsOrder <- 8
+marsOrder <- 35
 marsPenalty <- 4 # set to 0 to avoid penalizing knots in pruning pass
 marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "backward" # set to "none" to avoid pruning
