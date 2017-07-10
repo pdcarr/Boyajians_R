@@ -579,7 +579,7 @@ ObserverJDEdit <- function(editFrame,lightcurve) {
 	
 	for (index in 1:length(editFrame$obsCode)) {
 #		print(index)
-		print(editFrame$obsCode[index])
+#		print(editFrame$obsCode[index])
 		killThis <- lightcurve$Observer_Code == editFrame$obsCode[index]
 		killThis <- killThis & (lightcurve$JD >= editFrame$startJD[index] & lightcurve$JD <= editFrame$endJD[index])
 #		print(editFrame$startJD[index])
