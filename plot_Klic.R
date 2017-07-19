@@ -1,6 +1,7 @@
-
+############# Inputs #############
 #klic.file <- "data/kplr008462852-2009350155506_llc_t1.txt"
 klic.file <- "data/kplr008462852-2013131215648_llc_t1.txt"
+plot.title <- "Dip 10 in Kepler PDCSAP data"
 earliest.day <- 1560
 last.day <- 1580
 NA.string <- "NULL"
@@ -26,7 +27,7 @@ if(plot_both) {
 
 myylims <- c(mylowery - pad,myuppery + pad)
 
-plot(klightcurve$Time[in.bounds],klightcurve$PDCSAP_flux[in.bounds],type="l",col="darkblue",xlab="JD - 2454833",ylab="flux",ylim=myylims)
+plot(klightcurve$Time[in.bounds],klightcurve$PDCSAP_flux[in.bounds],type="l",col="darkblue",xlab="JD - 2454833",ylab="flux",ylim=myylims,main=plot.title)
 if (plot_both) {
 	lines(klightcurve$Time[in.bounds], klightcurve$SAP_flux[in.bounds],col="red")
 }
