@@ -12,8 +12,8 @@ mag.cull.limit = 0.05
 mag.margin <- 0.025
 ####### MARS
 marsOrder <- 21 # maximum number of knots
-marsPenalty <- 4 # set to 0 to avoid penalizing knots in pruning pass
-marsPMethod <- "none" # set to "none" to avoid pruning
+marsPenalty <- 3 # set to 0 to avoid penalizing knots in pruning pass
+#marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "backward" # set to "none" to avoid pruning
 #####################################################################
 # load the files
