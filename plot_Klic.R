@@ -1,9 +1,10 @@
 ############# Inputs #############
 #klic.file <- "data/kplr008462852-2009350155506_llc_t1.txt"
-klic.file <- "data/kplr008462852-2013131215648_llc_t1.txt"
-plot.title <- "Dip 10 in Kepler PDCSAP data"
-earliest.day <- 1560
-last.day <- 1580
+#klic.file <- "data/kplr008462852-2013131215648_llc_t1.txt"
+klic.file <- "data/kplr008462852-2012179063303_llc_t1.txt"
+plot.title <- "Dip D1200 in Kepler PDCSAP data"
+earliest.day <- 1180
+last.day <- 1280
 NA.string <- "NULL"
 plot_both = FALSE
 pad = 100
@@ -16,6 +17,8 @@ colnames(klightcurve) <-  c("Time","TIMECORR","CADENCENO","SAP_flux","SAP_flux_e
 # apply time bounds
 
 in.bounds <- klightcurve$Time <= last.day & klightcurve$Time >= earliest.day
+
+in.bounds <- in.bounds & klightcurve$SAP_quality != 2176	 & klightcurve$SAP_quality != 8192	# cosmic ray or other fault
 	
 #
 myuppery <- max(klightcurve$PDCSAP_flux[in.bounds],na.rm=TRUE)
