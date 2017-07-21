@@ -15,7 +15,7 @@ if(use.frequency) {
 	plot(mylsp$scanned,mylsp$power,xlab="Frequency (cycles/day)",ylab="normalized power",col="darkgreen",type="l",main= title.string)
 } else {
 	mylsp <- lsp(x= klightcurve$PDCSAP_flux[in.bounds],times=mytimes,type="period",ofac=4,alpha=0.01)
-	plot(mylsp$scanned,mylsp$power,xlab="Period",ylab="normalized power",col="darkblue",type="l",main=title.string)
+	plot(mylsp$scanned,mylsp$power,xlab="Period (Days)",ylab="normalized power",col="darkblue",type="l",main=title.string)
 
 }
 grid(col="black")

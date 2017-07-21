@@ -4,9 +4,9 @@
 # options
 options(digits=12) # hard to read JDs without this setting
 # load the required packages
-library("MASS") # for rlm() and lqs()
+#library("MASS") # for rlm() and lqs()
 library("earth") # for MARS
-library("crayon") # to add color to text
+#library("crayon") # to add color to text
 
 
 ##################
@@ -26,10 +26,10 @@ marsPMethod <- "none" # set to "none" to avoid pruning#marsPMethod <- "backward"
 marsPMethod <- "backward" # set to "none" to avoid pruning#marsPMethod <- "backward" # set to "none" to avoid pruning
 ##############################
 ### option to draw a vertical date line
-drawDateLine <-  FALSE
-jdLine <- 2457892.0
+drawDateLine <-  TRUE
+jdLine <- c(1206,1520)
 jdLineColor <- "red"
-jdLineText <- "18May17"
+jdLineText <- c("D1200","D1520")
 ##########################################################################
 
 
@@ -52,15 +52,23 @@ myxlims = c(startPlot,max(fit.times,na.rm=TRUE))
 
 # calculate pretty y limits
 
-myYlims = c(ceiling(min(MandSFFI$Normalized.Flux,na.rm=TRUE)*100)/100,floor(100*max(MandSFFI$Normalized.Flux,na.rm=TRUE))/100) # set up Y limits for reversed Y axis
+myYlims = c(floor(min(MandSFFI$Normalized.Flux,na.rm=TRUE)*100)/100,ceiling(100*max(MandSFFI$Normalized.Flux,na.rm=TRUE))/100) # set up Y limits for reversed Y axis
 
 # set up plot title text
-titleString <- c(paste("AAVSO",myBands,"Data with",deltaJD,"Day Bins",sep=" "), ocodesInTitle)
 myPlotTitle <- "Kepler FFI data for KIC 8462852 per Montet and Simon"
 
 
 plot(fit.times, MandSFFI$Normalized.Flux,col="darkgreen",xlab=paste("Days from",mands.JD.base),ylab="Normalized Flux",xlim= myxlims,ylim = myYlims,main=myPlotTitle,pch=3,cex.main=0.7)
 lines(fit.times,MandS.Fit$fitted.values,lwd=2,col="black")
 grid(col="black")	
+
+if(drawDateLine) {
+	# draw a vertical line for a date of interest
+	for(jd.index in 1:length(jdLine)) {
+		lines(x=c(jdLine[jd.index],jdLine[jd.index]),y=myYlims,col=jdLineColor,lwd=1,lty="dashed")
+		text(x= jdLine[jd.index],y=myYlims[2],labels=jdLineText[jd.index],pos=3,cex=0.5)
+	}
+}
+
 
 
