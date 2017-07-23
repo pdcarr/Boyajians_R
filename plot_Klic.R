@@ -1,10 +1,11 @@
 ############# Inputs #############
 #klic.file <- "data/kplr008462852-2009350155506_llc_t1.txt"
 #klic.file <- "data/kplr008462852-2013131215648_llc_t1.txt"
-klic.file <- "data/kplr008462852-2012179063303_llc_t1.txt"
-plot.title <- "Dip D1200 in Kepler PDCSAP data"
-earliest.day <- 1180
-last.day <- 1280
+#klic.file <- "data/kplr008462852-2012179063303_llc_t1.txt"
+klic.file <- "data/kplr008462852-2009131105131_llc_t1.txt"
+plot.title <- "Q0 in Kepler PDCSAP data"
+earliest.day <- 0
+last.day <- 1600
 NA.string <- "NULL"
 plot_both = FALSE
 pad = 100
