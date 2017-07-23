@@ -4,7 +4,19 @@ library(lomb)
 
 savdig <- options("digits")$digits
 options(digits = 7)
-use.frequency <- FALSE # set this to FALSE to plot vs. period
+use.frequency <- FALSE # set this to FALSEto plot vs. period
+
+notthese <- is.na(klightcurve$Time)
+
+# filter out data from any identitified dips
+
+for (index in 1:length(dips$dstart)) {
+    notthese <-  notthese & (klightcurve$Time >= dips$dstart & klightcurve$Time <= dips$dstop)
+}
+in.bounds <- in.bounds & !notthese
+
+# do the LS periodogram
+
 mytimes <- klightcurve$Time[in.bounds]
 t <- c(min(klightcurve$Time[in.bounds],na.rm=TRUE),max(klightcurve$Time[in.bounds],na.rm=TRUE))
 

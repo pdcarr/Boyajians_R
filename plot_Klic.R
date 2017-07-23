@@ -1,14 +1,19 @@
 ############# Inputs #############
 #klic.file <- "data/kplr008462852-2009350155506_llc_t1.txt"
 #klic.file <- "data/kplr008462852-2013131215648_llc_t1.txt"
-#klic.file <- "data/kplr008462852-2012179063303_llc_t1.txt"
-klic.file <- "data/kplr008462852-2009131105131_llc_t1.txt"
-plot.title <- "Q0 in Kepler PDCSAP data"
+klic.file <- "data/kplr008462852-2012179063303_llc_t1.txt"
+#klic.file <- "data/kplr008462852-2009131105131_llc_t1.txt" # QUARTER 0
+plot.title <- "Kepler PDCSAP data"
 earliest.day <- 0
+earliest.dat <- 1200
 last.day <- 1600
+last.day <- 1220
 NA.string <- "NULL"
 plot_both = FALSE
 pad = 100
+
+dips <- data.frame(dstart=1204,dstop =1209,stringsAsFactors=FALSE)
+
 ###################
 klightcurve <- read.csv(file=klic.file,header=FALSE,check.names=TRUE,na.strings=NA.string)
 
