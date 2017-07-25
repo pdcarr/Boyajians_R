@@ -4,6 +4,7 @@
 #compile the function libraries
 source("data_funcs.R") # a file of supporting functions
 source("astro_funcs.R")
+source("plot_funcs.R")
 # remove old garbage if it's there
 rm(allFits)
 rm(cleanBand)
@@ -25,6 +26,7 @@ allFits <- list()
 source("input_files/aavso_bin_input_parameters.R")
 source("input_files/observer_edits.R")
 source("input_files/missing_airmass.R")
+source("input_files/VlineParams.R")
 
 if (includeExclude) {
 	inclWord <- "used"
@@ -248,13 +250,8 @@ if (!is.na(plotMee)) {
 grid(col="black")
 
 ##### draw vertical lines at various dates
-if(drawDateLine) {
-	# draw a vertical line for a date of interest
-	for(jd.index in 1:length(jdLine)) {
-		lines(x=c(jdLine[jd.index],jdLine[jd.index]),y=myYlims,col=jdLineColor,lwd=1,lty="dashed")
-		text(x= jdLine[jd.index],y=myYlims[2],labels=jdLineText[jd.index],pos=3,cex=0.5)
-	}
-}
+if(drawDateLine) { verticalDateLines(jdLine, jdLineText, myYlims, jdLineColor)}
+
 
 
 # generate a time series and plot if called for

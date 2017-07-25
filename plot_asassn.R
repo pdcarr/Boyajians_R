@@ -4,6 +4,8 @@ options(digits=12)
 library("earth") # for MARS
 library("crayon") # to add color to text
 
+source("plot_funcs.R")
+
 # the name of the file
 asassn.csv.file <- "data/light_curve_ab426ded-039a-4c44-8976-ef7fa220899f.csv"
 # cull limits to reject really wild points
@@ -15,6 +17,11 @@ marsOrder <- 21 # maximum number of knots
 marsPenalty <- 3 # set to 0 to avoid penalizing knots in pruning pass
 #marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "backward" # set to "none" to avoid pruning
+
+source("input_files/VlineParams.R")
+
+
+
 #####################################################################
 # load the files
 asassn_data <- read.csv(asassn.csv.file,header=TRUE)
@@ -33,4 +40,6 @@ my.xlab <- paste("Julian Date - ",tmin)
 plot(desmat,asassn_data$mag[good_data],col="darkgreen",pch=20,main="ASASSN V Data",xlab=my.xlab,ylab="V magnitude",ylim=my.y.lims)
 grid(col="black")
 lines(x=desmat,y=mars$fitted.values,col= "black",lwd=2)
-
+# plot vertical lines
+jdLine <- jdLine - tmin
+verticalDateLines(jdLine, jdLineText, my.y.lims, jdLineColor)
