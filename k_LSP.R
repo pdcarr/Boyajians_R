@@ -1,4 +1,5 @@
 library(lomb)
+
 # Kepler lightcurve (klightcurve) has been read in and cleaned up by the plottng script with names assigned
 # cleanBand is output fron the plotting scrpts cleaning process: airmass, comparison stars, etc.
 
@@ -10,10 +11,13 @@ notthese <- is.na(klightcurve$Time)
 
 # filter out data from any identitified dips
 
-for (index in 1:length(dips$dstart)) {
-    notthese <-  notthese & (klightcurve$Time >= dips$dstart & klightcurve$Time <= dips$dstop)
+if (!is.null(dips)) {
+    for (index in 1:length(dips$dstart)) {
+        notthese <-  notthese & (klightcurve$Time >= dips$dstart[index] & klightcurve$Time <= dips$dstop[index])
+    }
+
+    in.bounds <- in.bounds & !notthese
 }
-in.bounds <- in.bounds & !notthese
 
 # do the LS periodogram
 
