@@ -224,6 +224,7 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 # lightcurve is a data frame with AAVSO data	
 	# filter out any missing data
 	runningClean <- !is.na(lightcurve$JD) & !is.na(lightcurve$Magnitude) &!is.na(lightcurve$Observer_Code)
+	
 #	print(unique(runningClean))
 	
 	# include exclude the observers in question
@@ -253,6 +254,7 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 	Iband <- (lightcurve$Band == band)
 	runningClean <- runningClean & Iband 
 #	print(unique(runningClean))
+
 	
 	# which observations have airmass data and acceptable airmass?
 	if (maxair < 100) {
@@ -447,7 +449,7 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 	
 	for (startNow in seq(startJD,stopJD,by=deltaJD)) {
 			stopNow <- startNow+deltaJD
-#			print(startNow)
+#			print(stopNow)
 	# loop over the Observer codes
 		for (thisObs in weare) {
 		#loop over the passbands to create the superobservation in the time frame for the Observer code
@@ -455,7 +457,6 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 				testTime <- (lightcurve$JD >= startNow) & (lightcurve$JD < stopNow) 
 				testObs <- lightcurve$Observer_Code == thisObs
 				allTests <- testTime & cleanObs[,bandIndex] & testObs
-#				print(length(lightcurve[allTests,"JD"]))
 				# compile the super observation
 				if(length(lightcurve[allTests,"JD"]) > 0) {
 					superObs[1,"JD"] <- mean(lightcurve[allTests,"JD"],na.rm=TRUE)
@@ -466,15 +467,22 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 						} else {
 							superObs[1,"Uncertainty"] <- mean(lightcurve[allTests,"Uncertainty"],na.rm=TRUE)
 						}
-#					print(superObs[1,"Uncertainty"])
-					if(is.na(superObs[1,"Uncertainty"])) {next}
-					if(superObs[1,"Uncertainty"] <= 0) {next} #invalid uncertainty
+					if(is.na(superObs[1,"Uncertainty"])) {
+						print("invalid uncertainty - not a number")
+						next
+					}
+					if(superObs[1,"Uncertainty"] < 0) {
+						print("invalid uncertainty")
+						print(superObs)
+						
+						next
+					} #invalid uncertainty
 						
 					superObs[1,"Observer_Code"] <- thisObs
-#					print(superObs)
+										
 #					append the superobservation to the main data frame using rbind
 					allSuperObs <- rbind(allSuperObs,superObs)
-				}
+				} 
 			}
 		}
 	}
