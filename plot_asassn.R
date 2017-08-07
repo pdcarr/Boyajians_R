@@ -13,7 +13,7 @@ mag.cull.limit = 0.05
 # mag margin for expanding plot limits (positive number)
 mag.margin <- 0.025
 ####### MARS
-marsOrder <- 11 # maximum number of knots
+marsOrder <- 4 # maximum number of knots
 marsPenalty <- 4 # set to 0 to avoid penalizing knots in pruning pass
 #marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "backward" # set to "none" to avoid pruning
