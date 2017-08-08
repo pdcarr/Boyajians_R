@@ -7,6 +7,7 @@ Haan <- c(51.192,7.007) # approx. location of WROC
 LosAngeles <- c(34.05,-118.25) # approx. location of FJQ
 Potomac <- c(38.02,-77.21) # approx location of PALE
 Coventry <- c(52.4,-1.52) # approximate location of KTHC
+Ponferrada <- c(42.55,-6.598) # approximate location of PJVA
 tabbysLoc <- c("+44d 27m 24.61s","20h 06m 15.457s") # right ascension and declination of the star.
-missingAirmass <- c("JM","PXR","JSJA","MATA","WROC","FJQ","PALE","KTHC")	# observer code
-missingAMLocs = rbind(lasCruces,Leominster,Warrington,Erd,Haan,LosAngeles,Potomac,Coventry)
+missingAirmass <- c("JM","PXR","JSJA","MATA","WROC","FJQ","PALE","KTHC","PJVA")	# observer code
+missingAMLocs = rbind(lasCruces,Leominster,Warrington,Erd,Haan,LosAngeles,Potomac,Coventry,Ponferrada)
