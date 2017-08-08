@@ -42,9 +42,10 @@ my.xlab <- paste("Julian Date - ",tmin)
 my.x.lims <- c(0,max(desmat) + tmargin)
 # plot
 plot(desmat,asassn_data$mag[good_data],col="darkgreen",pch=20,main="ASASSN V Data",xlab=my.xlab,ylab="V magnitude",ylim=my.y.lims,xlim= my.x.lims)
-
+# add grid
 grid(col="black")
-#plot MARS fir as a line
+
+# plot MARS fir as a line
 lines(x=desmat,y=mars$fitted.values,col= "black",lwd=2)
 # plot vertical lines if any
 jdLine <- jdLine - tmin
