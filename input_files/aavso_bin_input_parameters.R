@@ -1,15 +1,15 @@
 ##################
 # input parameters for binning and plotting AAVSO data
 llightcurve_name <- "data/aavso_latest_data.csv"
-maxairmass <-1.25 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxairmass <- 2.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.1  # maximum AAVSO uncertainty estimate
 maxBinUncertainty <- 0.1 # worst standard deviation to accept for a binned set of observations
-wildsd <- 10.0 # worst number of standard deviations from mean allowed
+wildsd <- 6.0 # worst number of standard deviations from mean allowed
 
 earliestJD = 2457294 # only data on or after this JD will be used
 #earliestJD <- 2457700
 startPlot <- earliestJD
-#startPlot <- 2457880
+startPlot <- 2457880
 #startPlot <- 2457580
 plotRelTimes <- TRUE
 ##########
@@ -17,14 +17,12 @@ includeExclude <- TRUE # TRUE if your list of observer codes is to to be include
 ExclCodes <- "None"
 #ExclCodes <- c("JM","LDJ","ELYA","DKS","OJJ","OAR","ATE","BPAD","HJW")
 #ExclCodes <- c("JM","LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT","PALE") # V & B
-#ExclCodes <- c("LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","WROC","MAND","HDHA","ELYA","VBPA","NOT","PALE") # V & B
-ExclCodes <- c("LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","WROC","MAND","HDHA","ELYA","VBPA","NOT","PALE","KTHC") # V
-#ExclCodes <- c("JM","LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT") # V & B
+ExclCodes <- c("LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","WROC","MAND","HDHA","ELYA","VBPA","NOT","PALE") # V & B
 #ExclCodes <- c("DUBF","DKS","ELYA","OAR","ATE","HJW","BPAD","OJJ","LBG","LDJ","UJHA","OYE","GFRB","OAS","MJB","EEY") # V ensemble
 #ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP") # I ensemble
 #ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","DUBF","JSJA","VBPA","DKS") # candidate B ensemble
-#ExclCodes <- c("LDJ","DUBF","HBB")
+#ExclCodes <- c("LDJ")
 #ExclCodes <- c("SWIA","CPP")	# B band exclusions
 #ExclCodes <- c("BJFB","COO","LBG","BMAK") # I band exclusion
 #ExclCodes <- c("LDJ","DUBF","UJHA","DKS","HBB")
@@ -34,10 +32,10 @@ plotMee <- NA # do not highlight any particular observer code
 #plotMee <- "ELYA"
 meeColor <- "darkviolet"
 ########
-allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
-#allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
+#allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAsFactors=FALSE)
-allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
+#allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
@@ -63,7 +61,7 @@ weightedBins <- FALSE # set to TRUE to weight lower uncertainty bins more.
 ####### MARS
 marsOrder <- 11 # maximum number of knots
 marsPenalty <- 4 # set to 0 to avoid penalizing knots in pruning pass
-marsPMethod <- "none" # set to "none" to avoid pruning
+#marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "backward" # set to "none" to avoid pruning
 splineRaw <-  FALSE # do the spline on the raw lightcurve, not binned.
 ############################## Comparison Stars

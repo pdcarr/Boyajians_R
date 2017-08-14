@@ -3,7 +3,7 @@ library("smooth") # for smoothing
 library("earth") # for MARS
 library("crayon") # to add color to text
 # read in data file from Montet and Simon paper (cleaned up a bit and converted to .csv)
-MandSFFI <- read.csv(file="Montet_SIMON_FFI_table.csv",header=TRUE)
+MandSFFI <- read.csv(file="data/Montet_SIMON_FFI_table.csv",header=TRUE)
 # perform a linear spline fit increase nk and decrease penalty to see more features, or set set pmethod = "none"
 thisFit <- earth(x= MandSFFI$Time,y= MandSFFI$Normalized.Flux,nk= 7,pmethod= "backward",penalty = 3)
 # plot this stuff
