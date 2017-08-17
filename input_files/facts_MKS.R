@@ -1,4 +1,6 @@
 ####### load constant values for Tabby's Star in MKS units into workspace
+R.Earth <- 6378e3 # radius of the Earth in meters
+R.Jupiter <- 69.911e6 # radius of Jupiter
 R.star <- 1.1e9	# radius if the star in meters
 M.star <- 2.84e30 # mass of the star in kilograms
 L.star <- 1.8e28 # luminosity of the star in Watts
