@@ -25,7 +25,15 @@ ok.airmass <- bg.data$air.mass <= maxAirmass
 
 # find earliest and latest times and highest and lowest magnitudes
 
-tmin = min(bg.data$MJD[ok.airmass],na.rm=TRUE)
+# get the bin boundaries to be somewhere sensible
+
+tmin <-  min(bg.data$MJD[ok.airmass],na.rm=TRUE)
+if (floor(tmin*2) %% 2 == 0) {
+    tmin <- floor(tmin*2 -1)/2
+} else {
+    tmin <- floor(tmin*2)/2
+}
+
 tmax = max(bg.data$MJD[ok.airmass],na.rm=TRUE)
 x.limits <- c(0,(tmax-tmin) + t.epsilon)
 y.limits <- c(max(bg.data$V.mag[ok.airmass],na.rm=TRUE) + mag.epsilon,
@@ -76,4 +84,4 @@ if(drawDateLine) { verticalDateLines(jdLine, jdLineText, y.limits, jdLineColor)}
 # add a grid
 grid(col="black")
 
-
+summary(theFit)
