@@ -14,3 +14,20 @@ node.rate <- function(J2,sma,Rstar,incl_rad,ecc,mu) {
 	mean.motion = sqrt(mu/sma^3)
 	return(-1.5*J2/semip^2*cos(incl_rad)*mean.motion)
 }
+
+###################################
+# Confined Gaussian window
+cg.window <- function(t,N) {
+	sigma.t <- tail(t,n=1) - head(t,n=1)
+	w <- vector()
+	for (n in seq(1,N)){
+		w[n] < -G.x(n,sigma.t,N) - G.x(-0.5,sigma.t,N)*(G.x(n+N,sigma.t.N) + G.x(n-N,sigma.t,N))/(G.x(-0.5+N,sigma.t,N) + G.x(-0.5-N,sigma.t,N))
+	}
+	return(w)
+} 
+##############################
+# Gaussian function for Gaussian window
+G.x <- function(x,sigma.t,N) {
+	arg <- ((x - (N-1)/2)/(2*sigma.t))^2
+	return (exp(-arg))
+}
