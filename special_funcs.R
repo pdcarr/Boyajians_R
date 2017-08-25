@@ -21,11 +21,19 @@ node.rate <- function(J2,sma,Rstar,incl_rad,ecc,mu) {
 cg.window <- function(t) {
 	t.ok <- !is.na(t)
 	sigma.t <- sd(t,na.rm=TRUE)
+#	print(sigma.t)
 	N <- length(t[t.ok])
+#	print(N)
 	w <- vector(mode="numeric")
 	for (n in seq(1,N)){
 #		print(n)
-		w[n] <- G.x(n,sigma.t,N) - G.x(-0.5,sigma.t,N)*(G.x(n+N,sigma.t,N) + G.x(n-N,sigma.t,N))/(G.x(-0.5+N,sigma.t,N) + G.x(-0.5-N,sigma.t,N))
+		numerator <- G.x(-0.5,sigma.t,N)*(G.x(n+N,sigma.t,N) + G.x(n-N,sigma.t,N))
+		denominator <- (G.x(-0.5+N,sigma.t,N) + G.x(-0.5-N,sigma.t,N))
+		if (numerator ==0) {
+			w[n] <- G.x(n,sigma.t,N)
+		} else {
+			w[n] <- G.x(n,sigma.t,N) - numerator/denominator
+		}
 #		print(w[n])
 	}
 	return(w)
