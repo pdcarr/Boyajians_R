@@ -17,12 +17,16 @@ node.rate <- function(J2,sma,Rstar,incl_rad,ecc,mu) {
 
 ###################################
 # Confined Gaussian window
-# t are the vector of sampling times, and N is the number of Samples
-cg.window <- function(t,N) {
-	sigma.t <- tail(t,n=1) - head(t,n=1)
-	w <- vector()
+# t are the vector of sampling times (best to pass only times with valid samples)
+cg.window <- function(t) {
+	t.ok <- !is.na(t)
+	sigma.t <- sd(t,na.rm=TRUE)
+	N <- length(t[t.ok])
+	w <- vector(mode="numeric")
 	for (n in seq(1,N)){
-		w[n] < -G.x(n,sigma.t,N) - G.x(-0.5,sigma.t,N)*(G.x(n+N,sigma.t,N) + G.x(n-N,sigma.t,N))/(G.x(-0.5+N,sigma.t,N) + G.x(-0.5-N,sigma.t,N))
+#		print(n)
+		w[n] <- G.x(n,sigma.t,N) - G.x(-0.5,sigma.t,N)*(G.x(n+N,sigma.t,N) + G.x(n-N,sigma.t,N))/(G.x(-0.5+N,sigma.t,N) + G.x(-0.5-N,sigma.t,N))
+#		print(w[n])
 	}
 	return(w)
 } 
@@ -30,5 +34,6 @@ cg.window <- function(t,N) {
 # Gaussian function for Gaussian window
 G.x <- function(x,sigma.t,N) {
 	arg <- ((x - (N-1)/2)/(2*sigma.t))^2
+#	print(arg)		# debug
 	return (exp(-arg))
 }
