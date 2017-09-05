@@ -24,3 +24,8 @@ AirMass <- function(JD,locObs,starLoc) {
 	return(1/abs(sin(myEls*pi/180)))
 }
 
+########################################################
+ReverseMagnitude <- function(relMag) {
+	# relMag is a difference in astronomical magnitudes
+	return(10^(-relMag/2.5))
+}

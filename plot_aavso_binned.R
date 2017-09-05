@@ -71,8 +71,6 @@ editCurve <- ObserverJDEdit(editUser,lightcurve)
 
 for (thisBand in allBands$bandinQ) {
 	cat("cleaning ",thisBand,"\n")
-#	print(thisBand)	
-#	print(index)
 	# clean the data for this passband
 	cleanBand[,index] <- cleanAAVSO3(lightcurve,thisBand,ExclCodes,includeExclude,maxairmass,maxuncertainty,wildsd,earliestJD,okComparison) & editCurve
 	index = index + 1
@@ -289,20 +287,27 @@ if (generateTS) {
 
 # plot the residuals if desired:
 if (plotResiduals & !splineRaw) {
-	quartz("Residuals")
+	quartz("Flux Relative to Fit")
 	irow <- 1
-	
 	for (thisBand in allBands$bandinQ) {
 		btest <- (binCurve$Band == thisBand) & uncertaintyTest
+		relFlux <- sapply(allFits[irow,]$residual,ReverseMagnitude)
+		fluxYLims <-c(min(sapply(allFits[irow,]$residual,ReverseMagnitude))-0.01,
+						max(sapply(allFits[irow,]$residual,ReverseMagnitude))+0.01)
 		if(irow == 1) {
-			plot(myTimes[btest],allFits[irow,]$residuals,col= allBands$plotColor[irow],xlab="Julian Date",ylab="Magnitude",xlim= myxlims,main="Residuals",pch=20,cex.main=1.0)
+			plot(myTimes[btest],relFlux,col= allBands$plotColor[irow],xlab=myXLabel,ylab="Relative Flux",xlim= myxlims,
+				ylim= fluxYLims,main="Residuals",pch=20,cex.main=1.0)
 		} else {
-			points(myTimes[btest],allFits[irow,]$residuals,col=allBands$plotColor[irow],pch=20)
+			points(myTimes[btest],relFLux,col=allBands$plotColor[irow],pch=20)
 		}
 		irow <- irow + 1
 	}
 	grid(col="black")
 }
+
+if(drawDateLine) { verticalDateLines(jdLine, jdLineText, fluxYLims, jdLineColor)}
+
+
 
 # who the observers were for cleaned data:
 buncha <- AAVSOObsStats(lightcurve,cleanBand,allBands)
