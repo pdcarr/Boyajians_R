@@ -617,3 +617,17 @@ goldenSectionTest <-  function(low,high) {
 	return(c(high - (high-low)/phi,low + (high-low)/phi))
 }
 
+###########################################################
+filter.dips.JD <- function(lightcurve.JDs,dip.mask) {
+	# lightcurve.times are the Julian dates for lightcurve observations
+	# dip.mask is a data frame containing the dip names and start and stop times
+	
+	dip.index <- 1
+	good.times <- !is.na(lightcurve.JDs)
+	for (myname in dip.mask$dipname) {
+		good.times <- good.times & (lightcurve.JDs < dip.mask$JD.begins[dip.index] | lightcurve.JDs > dip.mask$JD.ends[dip.index])
+		dip.index <- dip.index + 1
+	}
+	return(good.times)
+}
+
