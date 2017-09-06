@@ -61,6 +61,8 @@ allQFits <- list()
 allResistFit <- list()
 tmin <- head(lightcurve$JD,n=1)
 cat("earliest time in file: ",tmin,"\n")
+#set tmin to some rounder number:
+tmin <- 10*floor(tmin/10)
 index = 1
 
 # edit specific observers over time range(s) and specific passband
@@ -186,6 +188,7 @@ if(plotRelTimes) {
 	myXLabel <- "Julian Date"
 	}
 
+quartz("AAVSO Magnitude Data")
 for (thisBand in allBands$bandinQ) {
 #	if (icol > 1){par(new=TRUE)}
 	ourCleanData <- cleanBand[,icol]
@@ -274,6 +277,7 @@ if (generateTS) {
 	} else {
 		bts <- myts[,1:numBands] # not smoothed
 	}
+	
 	if(numBands > 1 ) {
 		colnames(bts) <- sapply(allBands$bandinQ,FUN=paste,"Mag",sep=" ")
 		plot.ts(bts,plot.type="multiple",xlim= myxlims,ylim = myYlims,main=tsMain,cex.axis=0.9,lwd=2)
@@ -296,7 +300,7 @@ if (plotResiduals & !splineRaw) {
 						max(sapply(allFits[irow,]$residual,ReverseMagnitude))+0.01)
 		if(irow == 1) {
 			plot(myTimes[btest],relFlux,col= allBands$plotColor[irow],xlab=myXLabel,ylab="Relative Flux",xlim= myxlims,
-				ylim= fluxYLims,main="Residuals",pch=20,cex.main=1.0)
+				ylim= fluxYLims,main="Residuals",pch=20,cex.main=1.0,type= res.plot.type)
 		} else {
 			points(myTimes[btest],relFLux,col=allBands$plotColor[irow],pch=20)
 		}
