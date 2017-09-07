@@ -631,3 +631,41 @@ filter.dips.JD <- function(lightcurve.JDs,dip.mask) {
 	return(good.times)
 }
 
+#############################################################
+hinge.eval <- function(x,mars.fit) {
+	# mars.fit is an earth() object
+	y <- 0
+	slope <- 0
+	# put the cuts in order
+	hinges <- sort(mars.fit$cuts[mars.fit$selected.terms],index.return=TRUE)
+	dirs <- mars.fit$dirs[mars.fit$selected.terms]
+	if(x >= hinges$x[1]) {
+		# work forward throught the hinge functions
+		for (index in seq(1,length(hinges$x))) {
+#			print(index)
+			j <- hinges$ix[index]
+			if (x >= hinges$x[index]) {
+				if (index > 1) {y <- y + slope*(hinges$x[index] - hinges$x[index-1])}
+				if (dirs[j] == 0) {
+					y <- y + mars.fit$coefficients[j]
+				} else {
+					slope <- slope +  dirs[j]*mars.fit$coefficients[j]
+#					print(slope)
+				}
+			} else {
+				y <- y + slope*(x - hinges$x[index-1] )
+				break
+			}
+		}
+		if(x >= hinges$x[length(hinges$x)]) { y <- y + slope*(x -hinges$x[length(hinges$x)])}
+
+	} else {
+		# work backwards (take the first slope)
+		if (length(mars.fit$selected.terms) > 1) {
+			j <- hinges$ix[2]
+			slope = slope +  dirs[j]*mars.fit$coefficients[j]
+			y <- (x - hinges$x[1])*slope + hinges$x[1]
+		}
+	}
+	return(y)
+}
