@@ -10,7 +10,7 @@ source("data_funcs.R")
 # the name of the file
 asassn.csv.file <- "data/ASASSN_latest.csv"
 # cull limits to reject really wild points
-mag.cull.limit = 0.05
+mag.cull.limit = 0.07
 # mag margin for expanding plot limits (positive number)
 mag.margin <- 0.025
 tmargin <- 1 # positive number, days extra on xscale. 
@@ -34,13 +34,15 @@ mag.median <- median(asassn_data$mag)
 good_data <- (asassn_data$mag < (mag.median + abs(mag.cull.limit))) & (asassn_data$mag > (mag.median- abs(mag.cull.limit)))
 
 #fit a spline after filtering out the dips
-not.dips <- filter.dips.JD(asassn_data$HJD,dip.mask)
+# which points are NOT in the known dips?
+not.dips <- filter.dips.JD(asassn_data$HJD[good_data],dip.mask)
 # set a nice round tmin
 tmin <- max(min(asassn_data$HJD[good_data]),earliestJD)
 tmin <- 20*floor(tmin/20)
 
-desmat <- asassn_data$HJD[good_data & not.dips] - tmin
-mars <- earth(x=desmat,y= asassn_data$mag[good_data & not.dips],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty)
+desmat <- asassn_data$HJD[good_data] - tmin
+
+mars <- earth(x=desmat,y= asassn_data$mag[good_data],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty,subset=not.dips)
 
 # plot limits
 my.y.lims <- c(max(asassn_data$mag[good_data]) + mag.margin,min(asassn_data$mag[good_data]) - mag.margin)
@@ -54,7 +56,7 @@ plot(plot.times,asassn_data$mag[good_data],col="darkgreen",pch=20,main="ASASSN V
 grid(col="black")
 
 # plot MARS fir as a line
-lines(x=desmat,y=mars$fitted.values,col= "black",lwd=2)
+lines(x=desmat[not.dips],y=mars$fitted.values,col= "black",lwd=2)
 # plot vertical lines if any
 jdLine <- jdLine - tmin
 verticalDateLines(jdLine, jdLineText, my.y.lims, jdLineColor)
