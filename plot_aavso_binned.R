@@ -87,12 +87,13 @@ uncertaintyTest <- binCurve$Uncertainty <= maxBinUncertainty
 index = 1
 
 # loop over the passbands and do regression for each one
-dipless <- filter.dips.JD(binCurve$JD,dip.mask)
 
 cat("fitting the data \n")
 for (thisBand in allBands$bandinQ) {
 	# fold in test for passband
 	btest <- (binCurve$Band == thisBand) & uncertaintyTest
+    # mask out data taken during dips (0 weight)
+    dipless <- filter.dips.JD(binCurve$JD[btest],dip.mask)
 	desmat <- binCurve$JD[btest] - tmin # subtract off the earliest time to avoid numerical problems
 	if(length(desmat) < 2) {
 			cat("\n\nWarning: fewer than 2 points in the band:",thisBand,"\n")
@@ -120,9 +121,9 @@ for (thisBand in allBands$bandinQ) {
 		if(splineRaw) {
 			# do the spline fit on the unbinned data
 			desmat <- lightcurve$JD[cleanBand[,index]] - tmin
-			thisFit <- earth(x=desmat,y=lightcurve$Magnitude[cleanBand[,index]],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty,subset=dipless)
+			thisFit <- earth(x=desmat,y=lightcurve$Magnitude[cleanBand[,index]],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty)
 		} else {
-			thisFit <- earth(x=desmat,y=binCurve$Magnitude[btest],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty)
+			thisFit <- earth(x=desmat,y=binCurve$Magnitude[btest],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty,weights=dipless)
 	#		print(class(thisFit))
 		}
 	} 
