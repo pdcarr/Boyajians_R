@@ -27,6 +27,7 @@ source("input_files/aavso_bin_input_parameters.R")
 source("input_files/observer_edits.R")
 source("input_files/missing_airmass.R")
 source("input_files/VlineParams.R")
+source("input_files/dip_mask.R")
 
 if (includeExclude) {
 	inclWord <- "used"
@@ -34,8 +35,6 @@ if (includeExclude) {
 	inclWord <- "not used"
 }
 
-# load light curve
-#col.classes = c("numeric","numeric","NULL","character","character","NULL","character","character","character","character","numeric","numeric","character","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL")
 
 lightcurve <- read.csv(file=llightcurve_name,header=TRUE,check.names=TRUE,na.strings="NA")
 
@@ -88,10 +87,13 @@ uncertaintyTest <- binCurve$Uncertainty <= maxBinUncertainty
 index = 1
 
 # loop over the passbands and do regression for each one
+
 cat("fitting the data \n")
 for (thisBand in allBands$bandinQ) {
 	# fold in test for passband
 	btest <- (binCurve$Band == thisBand) & uncertaintyTest
+    # mask out data taken during dips (0 weight)
+    dipless <- filter.dips.JD(binCurve$JD[btest],dip.mask)
 	desmat <- binCurve$JD[btest] - tmin # subtract off the earliest time to avoid numerical problems
 	if(length(desmat) < 2) {
 			cat("\n\nWarning: fewer than 2 points in the band:",thisBand,"\n")
@@ -121,7 +123,7 @@ for (thisBand in allBands$bandinQ) {
 			desmat <- lightcurve$JD[cleanBand[,index]] - tmin
 			thisFit <- earth(x=desmat,y=lightcurve$Magnitude[cleanBand[,index]],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty)
 		} else {
-			thisFit <- earth(x=desmat,y=binCurve$Magnitude[btest],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty)
+			thisFit <- earth(x=desmat,y=binCurve$Magnitude[btest],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty,weights=dipless)
 	#		print(class(thisFit))
 		}
 	} 
@@ -215,6 +217,7 @@ for (thisBand in allBands$bandinQ) {
 		if (splineRaw) {
 			lines(x=lcTimes[cleanBand[,icol]],y=mars$fitted.values,col= "black",lwd=2)
 		} else {
+            btest <- btest
 			lines(x=myTimes[btest],y=mars$fitted.values,col= "black",lwd=2)
 		}
 	}
