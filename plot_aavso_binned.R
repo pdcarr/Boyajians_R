@@ -16,6 +16,7 @@ library("MASS") # for rlm() and lqs()
 library("smooth") # for smoothing
 library("earth") # for MARS
 library("crayon") # to add color to text
+library("Hmisc") # for error bars
 
 allFits <- list()
 
@@ -104,14 +105,14 @@ for (thisBand in allBands$bandinQ) {
 	if (userlm & !plotMARS) {
 		# use robust algorithm
 		thisFit <- rlm(binCurve$Magnitude[btest] ~ desmat,na.action="na.omit",psi=psi.bisquare)
-	} else if(!plotMARS){
+	} else {
 		if (weightedBins) {
-			binWeights <- 1/binCurve[btest,"Uncertainty"]
+			binWeights <- (1/binCurve[btest,"Uncertainty"])*as.numeric(dipless)
 		} else {
 			binWeights <- NULL
 		}
 		# do the linear regression in the binned data for this band, starting at the earliest time in the file
-		thisFit <- lm(binCurve[btest,"Magnitude"] ~ desmat, weights= binWeights)
+#		thisFit <- lm(binCurve[btest,"Magnitude"] ~ desmat, weights= binWeights)
 	}	
 	
 	# if MARS is selected (plotMARS == TRUE), use it to do the regression
@@ -177,6 +178,7 @@ titleString <- c(paste("AAVSO",myBands,"Data with",deltaJD,"Day Bins",sep=" "), 
 myPlotTitle <- paste(titleString,collapse="\n")
 
 
+
 # plot the cleaned and binned data, the fit lines and the excluded points
 icol=1
 if(plotRelTimes) {
@@ -188,18 +190,22 @@ if(plotRelTimes) {
 } else {
 	myTimes <- binCurve$JD
 	myXLabel <- "Julian Date"
-	}
+}
 
 quartz("AAVSO Magnitude Data")
 for (thisBand in allBands$bandinQ) {
 #	if (icol > 1){par(new=TRUE)}
 	ourCleanData <- cleanBand[,icol]
 	btest <- (binCurve$Band == thisBand) & uncertaintyTest
+	my.y.plus <- binCurve$Magnitude[btest] + binCurve$Uncertainty[btest]
+	my.y.minus<-  binCurve$Magnitude[btest] - binCurve$Uncertainty[btest]
 		
 	if(icol==1) {
-		plot(myTimes[btest],binCurve[btest,"Magnitude"],col=allBands$plotColor[icol],xlab= myXLabel,ylab="Magnitude",xlim= myxlims,ylim = myYlims,main=myPlotTitle,pch=3,cex.main=0.7)
+		errbar(myTimes[btest],binCurve[btest,"Magnitude"],yplus=my.y.plus,yminus=my.y.minus,col=allBands$plotColor[icol],xlab= myXLabel,ylab="Magnitude",xlim= myxlims,ylim = myYlims,main=myPlotTitle,pch=3,cex.main=0.7,add=FALSE,errbar.col=allBands$plotColor[icol])
+#		errbar(myTimes[btest],binCurve$Magnitude[btest],yplus=my.y.plus,yminus=my.y.minus,
+#			add=TRUE,errbar.col=col=allBands$plotColor[icol],col=col=allBands$plotColor[icol])
 	} else {
-		points(myTimes[btest],binCurve[btest,"Magnitude"],col=allBands$plotColor[icol],pch=3)
+		errbar(myTimes[btest],binCurve$Magnitude[btest],yplus=my.y.plus,yminus=my.y.minus,col=allBands$plotColor[icol],errbar.col=allBands$plotColor[icol],pch=3,add=TRUE)
 	}
 	
 	# plot line fit
@@ -305,7 +311,7 @@ if (plotResiduals & !splineRaw) {
 			plot(myTimes[btest],relFlux,col= allBands$plotColor[irow],xlab=myXLabel,ylab="Relative Flux",xlim= myxlims,
 				ylim= fluxYLims,main="Residuals",pch=20,cex.main=1.0,type= res.plot.type)
 		} else {
-			points(myTimes[btest],relFLux,col=allBands$plotColor[irow],pch=20)
+			points(x=myTimes[btest],y= relFlux,col=allBands$plotColor[irow],pch=20)
 		}
 		irow <- irow + 1
 	}
