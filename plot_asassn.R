@@ -10,12 +10,12 @@ source("data_funcs.R")
 # the name of the file
 asassn.csv.file <- "data/ASASSN_latest.csv"
 # cull limits to reject really wild points
-mag.cull.limit = 0.07
+mag.cull.limit = 0.05
 # mag margin for expanding plot limits (positive number)
 mag.margin <- 0.025
 tmargin <- 1 # positive number, days extra on xscale. 
 ####### MARS
-marsOrder <- 11 # maximum number of knots
+marsOrder <- 7 # maximum number of knots
 marsPenalty <- 5 # set to 0 to avoid penalizing knots in pruning pass
 #marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "backward" # set to "none" to avoid pruning
@@ -41,8 +41,10 @@ tmin <- max(min(asassn_data$HJD[good_data]),earliestJD)
 tmin <- 20*floor(tmin/20)
 
 desmat <- asassn_data$HJD[good_data] - tmin
-
-mars <- earth(x=desmat,y= asassn_data$mag[good_data],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty,subset=not.dips)
+#calculate weights for data outside the dips
+my.weights <- (1/asassn_data$mag_err[good_data])*(as.numeric(not.dips))
+#mars <- earth(x=desmat,y= asassn_data$mag[good_data],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty,subset=not.dips)
+mars <- earth(x=desmat,y= asassn_data$mag[good_data],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty,weights=my.weights)
 
 # plot limits
 my.y.lims <- c(max(asassn_data$mag[good_data]) + mag.margin,min(asassn_data$mag[good_data]) - mag.margin)
@@ -56,7 +58,9 @@ plot(plot.times,asassn_data$mag[good_data],col="darkgreen",pch=20,main="ASASSN V
 grid(col="black")
 
 # plot MARS fir as a line
-lines(x=desmat[not.dips],y=mars$fitted.values,col= "black",lwd=2)
+#lines(x=desmat[not.dips],y=mars$fitted.values,col= "black",lwd=2)
+lines(x=desmat,y=mars$fitted.values,col= "black",lwd=2)
+
 # plot vertical lines if any
 jdLine <- jdLine - tmin
 verticalDateLines(jdLine, jdLineText, my.y.lims, jdLineColor)
