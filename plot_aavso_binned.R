@@ -9,6 +9,7 @@ source("plot_funcs.R")
 rm(allFits)
 rm(cleanBand)
 rm(binCurve)
+rm(bts)
 # options
 options(digits=12) # hard to read JDs without this setting
 # load the required packages
@@ -271,7 +272,6 @@ if (generateTS) {
 	myts <- binAAVSO_ts(lightcurve, cleanBand,allBands, tsBinWidth)
 	if (smoothTS) {
 		tsMain <- paste("Smoothed",tsMain," - Order = ", tsSmoothOrder)
-		tsMain 
 		okts <- !sapply(X=myts,FUN=is.na,simplify="logical")
 		for(iband in 1:numBands) {
 			tsScratch <- myts[,iband]
@@ -290,14 +290,18 @@ if (generateTS) {
 		colnames(bts) <- sapply(allBands$bandinQ,FUN=paste,"Mag",sep=" ")
 		plot.ts(bts,plot.type="multiple",xlim= myxlims,ylim = myYlims,main=tsMain,cex.axis=0.9,lwd=2)
 	} else {
-		plot(bts,ylim=myYlims,main=tsMain,lwd=2,col=allBands$plotColor,ylab=paste(allBands$bandinQ,"Mag"))
+		plot_times <- time(bts) - tmin
+		my.xlab <- paste("Days since",tmin)
+		plot(as.vector(plot_times),as.vector(bts),ylim=myYlims,type="l",pch=20,main=tsMain,lwd=2,col=allBands$plotColor,ylab=paste(allBands$bandinQ,"Mag"),xlab=my.xlab)
 		points(myts,col="grey",pch=20,cex=0.5)
+		##### draw vertical lines at various dates
+		if(drawDateLine) { verticalDateLines(jdLine, jdLineText, myYlims, jdLineColor)}
 
 	}
 	grid(col="black")
 }
 
-# plot the residuals if desired:
+################ plot the residuals if desired:
 if (plotResiduals & !splineRaw) {
 	quartz("Flux Relative to Fit")
 	irow <- 1
