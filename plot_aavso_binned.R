@@ -202,7 +202,8 @@ for (thisBand in allBands$bandinQ) {
 	my.y.minus<-  binCurve$Magnitude[btest] - binCurve$Uncertainty[btest]
 		
 	if(icol==1) {
-		errbar(myTimes[btest],binCurve[btest,"Magnitude"],yplus=my.y.plus,yminus=my.y.minus,col=allBands$plotColor[icol],xlab= myXLabel,ylab="Magnitude",xlim= myxlims,ylim = myYlims,main=myPlotTitle,pch=3,cex.main=0.7,add=FALSE,errbar.col=allBands$plotColor[icol])
+		errbar(myTimes[btest],binCurve[btest,"Magnitude"],yplus=my.y.plus,yminus=my.y.minus,col=allBands$plotColor[icol],xlab= myXLabel,ylab="Magnitude",xlim= myxlims,ylim = myYlims,main=myPlotTitle,pch=3,cex.main=0.7,add=FALSE,errbar.col=ebar.color)
+		points(myTimes[btest],binCurve[btest,"Magnitude"],col=allBands$plotColor[icol],pch=3)
 		title(main=myPlotTitle)
 	} else {
 		errbar(myTimes[btest],binCurve$Magnitude[btest],yplus=my.y.plus,yminus=my.y.minus,col=allBands$plotColor[icol],errbar.col=allBands$plotColor[icol],pch=3,add=TRUE)
