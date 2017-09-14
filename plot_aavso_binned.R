@@ -96,6 +96,7 @@ for (thisBand in allBands$bandinQ) {
 	btest <- (binCurve$Band == thisBand) & uncertaintyTest
     # mask out data taken during dips (0 weight)
     dipless <- filter.dips.JD(binCurve$JD[btest],dip.mask)
+    dipless <- dipless | !mask.Dips #option to turn off the dip masking
 	desmat <- binCurve$JD[btest] - tmin # subtract off the earliest time to avoid numerical problems
 	if(length(desmat) < 2) {
 			cat("\n\nWarning: fewer than 2 points in the band:",thisBand,"\n")
@@ -123,10 +124,21 @@ for (thisBand in allBands$bandinQ) {
 		if(splineRaw) {
 			# do the spline fit on the unbinned data
 			desmat <- lightcurve$JD[cleanBand[,index]] - tmin
-			thisFit <- earth(x=desmat,y=lightcurve$Magnitude[cleanBand[,index]],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty)
+			# hello earth()
+			thisFit <- earth(x=desmat,y=lightcurve$Magnitude[cleanBand[,index]],
+							nk= marsOrder,
+							pmethod= marsPMethod,
+							penalty = marsPenalty,
+							thresh = mars.thresh,
+							minspan = mars.minspan)
 		} else {
-			thisFit <- earth(x=desmat,y=binCurve$Magnitude[btest],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty,weights=dipless)
-	#		print(class(thisFit))
+			thisFit <- earth(x=desmat,y=binCurve$Magnitude[btest],
+								nk= marsOrder,
+								pmethod= marsPMethod,
+								penalty = marsPenalty,
+								weights=binWeights,
+								thresh = mars.thresh,
+								minspan = mars.minspan)
 		}
 	} 
 	

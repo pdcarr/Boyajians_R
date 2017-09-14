@@ -1,15 +1,15 @@
 ##################
 # input parameters for binning and plotting AAVSO data
 llightcurve_name <- "data/aavso_latest_data.csv"
-maxairmass <- 2.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxairmass <- 1.25 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.1  # maximum AAVSO uncertainty estimate
-maxBinUncertainty <- 0.025 # worst standard deviation to accept for a binned set of observations
+maxBinUncertainty <- 0.01 # worst standard deviation to accept for a binned set of observations
 wildsd <- 6.0 # worst number of standard deviations from mean allowed
 
 earliestJD = 2457294 # only data on or after this JD will be used
 #earliestJD <- 2457700
 startPlot <- earliestJD
-startPlot <- 2457880
+#startPlot <- 2457880
 #startPlot <- 2457960
 #startPlot <- 2457580
 plotRelTimes <- TRUE
@@ -22,7 +22,7 @@ ExclCodes <- c("LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJ
 #ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LWHA","JM") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP") # I ensemble
 #ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","JM") # candidate B ensemble
-#ExclCodes <- c("LDJ","DUBF")
+ExclCodes <- c("LDJ")
 #ExclCodes <- c("DUBF")
 #ExclCodes <- c("SWIA","CPP")	# B band exclusions
 #ExclCodes <- c("BJFB","COO","LBG","BMAK") # I band exclusion
@@ -65,11 +65,14 @@ ebar.color <- "lightgrey"
 weightedBins <- TRUE # set to TRUE to weight lower uncertainty bins more and exclude bins in dips
 
 ####### MARS
-marsOrder <- 7 # maximum number of knots
+marsOrder <- 11 # maximum number of knots
 marsPenalty <- 5 # set to 0 to avoid penalizing knots in pruning pass
 #marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "backward" # set to "none" to avoid pruning
+mars.thresh <- 0.00005 # threshold parameter for earth().
+mars.minspan <- 5 # minimum number of observations between knots
 splineRaw <-  FALSE # do the spline on the raw lightcurve, not binned.
+mask.Dips <- TRUE
 ############################## Comparison Stars
 okComparison <- "(000-?BLS-?556)|(000-?BLS-?551)|(000-?BLS-?553)|(000-?BLS-?552)|(000-?BLS-?554)|(000-?BLS-?549)|(BLS-549)|(BLS-555)|(000-?BLS-?555)|(108)|(113)|(116)|(118)|(121)|(124)|(128)|(ENSEMBLE)|(APASS20062365[+-]442738)|(3162-1853-1)" # regular expression from AAVSO photometry table
 
