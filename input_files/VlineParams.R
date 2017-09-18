@@ -4,5 +4,5 @@ drawDateLine <-  TRUE
 jdLine <- c(2457892.0, 2457917.5,2457965.5,2458002)
 jdLineColor <- "red"
 #jdLineText <- c("Elsie","Celeste")
-jdLineText <- c("Elsie","Celeste","Skara Brae","Angkora")
+jdLineText <- c("Elsie","Celeste","Skara Brae","Angkor")
 #jdLineText <- c("18May17","11Jun17","2Aug16")
