@@ -1,9 +1,9 @@
 ##################
 # input parameters for binning and plotting AAVSO data
 llightcurve_name <- "data/aavso_latest_data.csv"
-maxairmass <- 1.25 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxairmass <- 1.75 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.1  # maximum AAVSO uncertainty estimate
-maxBinUncertainty <- 0.01 # worst standard deviation to accept for a binned set of observations
+maxBinUncertainty <- 0.010 # worst standard deviation to accept for a binned set of observations
 wildsd <- 6.0 # worst number of standard deviations from mean allowed
 
 earliestJD = 2457294 # only data on or after this JD will be used
@@ -18,7 +18,7 @@ includeExclude <- TRUE # TRUE if your list of observer codes is to to be include
 ExclCodes <- "None"
 #ExclCodes <- c("JM","LDJ","ELYA","DKS","OJJ","OAR","ATE","BPAD","HJW")
 #ExclCodes <- c("JM","LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT","PALE","OAR") # V & B
-ExclCodes <- c("LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","WROC","MAND","HDHA","VBPA","NOT","PALE","LPAC","OAR","GKA") # V & B
+#ExclCodes <- c("LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","WROC","MAND","HDHA","VBPA","NOT","PALE","LPAC","OAR","GKA") # V & B
 #ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LWHA","JM") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP") # I ensemble
 #ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","JM") # candidate B ensemble
@@ -30,7 +30,7 @@ ExclCodes <- c("LDJ")
 #ExclCodes <- "JM"
 ########
 plotMee <- NA # do not highlight any particular observer code
-#plotMee <- "DUBF"
+plotMee <- "DUBF"
 meeColor <- "darkviolet"
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
@@ -70,7 +70,7 @@ marsPenalty <- 5 # set to 0 to avoid penalizing knots in pruning pass
 #marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "backward" # set to "none" to avoid pruning
 mars.thresh <- 0.00005 # threshold parameter for earth().
-mars.minspan <- 5 # minimum number of observations between knots
+mars.minspan <- 4 # minimum number of observations between knots
 splineRaw <-  FALSE # do the spline on the raw lightcurve, not binned.
 mask.Dips <- TRUE
 ############################## Comparison Stars

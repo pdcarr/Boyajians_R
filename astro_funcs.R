@@ -29,3 +29,9 @@ ReverseMagnitude <- function(relMag) {
 	# relMag is a difference in astronomical magnitudes
 	return(10^(-relMag/2.5))
 }
+
+##########################################################
+
+HillRadius <- function(m=1,M=1000,a,e=0) {
+	return(a*(1-e)*(m/(3*M))^(1/3))
+}
