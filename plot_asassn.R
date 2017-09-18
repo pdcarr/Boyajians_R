@@ -15,13 +15,14 @@ mag.cull.limit = 0.05
 mag.margin <- 0.025
 tmargin <- 1 # positive number, days extra on xscale. 
 ####### MARS
-marsOrder <- 7 # maximum number of knots
+marsOrder <- 50 # maximum number of knots
 marsPenalty <- 5 # set to 0 to avoid penalizing knots in pruning pass
+mars.thresh <- 0.00005
 #marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "backward" # set to "none" to avoid pruning
 ##########
 earliestJD <- 2457449
-
+earliestJD <- 2457940
 source("input_files/VlineParams.R")
 source("input_files/dip_mask.R")
 
@@ -44,7 +45,13 @@ desmat <- asassn_data$HJD[good_data] - tmin
 #calculate weights for data outside the dips
 my.weights <- (1/asassn_data$mag_err[good_data])*(as.numeric(not.dips))
 #mars <- earth(x=desmat,y= asassn_data$mag[good_data],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty,subset=not.dips)
-mars <- earth(x=desmat,y= asassn_data$mag[good_data],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty,weights=my.weights)
+mars <- earth(x=desmat,y= asassn_data$mag[good_data],
+				nk= marsOrder,
+				pmethod= marsPMethod,
+				penalty = marsPenalty,
+				weights=my.weights,
+				thresh= mars.thresh,
+				minspan=10)
 
 # plot limits
 my.y.lims <- c(max(asassn_data$mag[good_data]) + mag.margin,min(asassn_data$mag[good_data]) - mag.margin)
