@@ -7,4 +7,4 @@ editUser <- rbind(editUser,c("JM",2457466.9,2457468.6,"V"),c("PXR",2457573.0,245
 editUser <- rbind(editUser,c("HDHA",2457907,2457908.1,"V"),c("UJHA",2457925.2,2457926.5,"V"),c("SJAR",2457620.9,2457621.91,"I"),c("PALE",2457667.1,2457668.2,"V"))
 editUser <- rbind(editUser,c("PXR",2457531.0,2457532.2,"B"),c("MJB",2457570.2, 2457571.2,"V"),c("DUBF",2457628.8,2457629.9,"B"))
 editUser <- rbind(editUser,c("HBB", 2457489.3, 2457490.4,"V"),c("KTHC",2457956.0,2457957.2,"V"),c("MJB",2457624.2,2457625.3,"V"),c("MJB",2457660.2,2457661.6,"V"))
-editUser <- rbind(editUser,c("SJAR", 2457620.9, 2457622.0,"V"))
+editUser <- rbind(editUser,c("SJAR", 2457620.9, 2457622.0,"V"),c("BJFB",2457935,2457928,"V"))
