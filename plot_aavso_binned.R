@@ -102,6 +102,23 @@ for (thisBand in allBands$bandinQ) {
 			cat("\n\nWarning: fewer than 2 points in the band:",thisBand,"\n")
 			next
 		}
+		
+	# apply any defined observer biases to the binned magnitude(s)
+	if (exists("biasObserver")) {
+		biasBand <- biasObserver$band == thisBand
+		# if there are observer biases for this band, then apply them
+		# loop over all the observers in the biases data frame
+		for (thisObs in unique(biasObserver$obsCode[biasBand])) {
+			cat("\nApplying biases to",thisBand,"\n")			
+			myObs <- binCurve$Observer_Code[btest] == thisObs
+			myBias <- as.numeric(biasObserver$bias[biasBand & biasObserver$obsCode==thisObs][1])
+			if(sum(myObs) > 0) {
+				 mag.x <- binCurve$Magnitude[btest][myObs]
+				 mag.x <-  mag.x - myBias
+				 binCurve$Magnitude[btest][myObs] <- mag.x
+			}
+		}		
+	}
 	
 	# determine the bin weights, if any
 	if (userlm & !plotMARS) {
