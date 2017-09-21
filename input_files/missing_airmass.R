@@ -9,6 +9,7 @@ Potomac <- c(38.02,-77.21) # approx location of PALE
 Coventry <- c(52.4,-1.52) # approximate location of KTHC
 Ponferrada <- c(42.55,-6.598) # approximate location of PJVA
 Cotopaxi <- c(38.38,-105.69) # approximate location of HJW
+Minneapolis <- c(44.9778,-93.265)
 tabbysLoc <- c("+44d 27m 24.61s","20h 06m 15.457s") # right ascension and declination of the star.
-missingAirmass <- c("JM","PXR","JSJA","MATA","WROC","FJQ","PALE","KTHC","PJVA","HJW")	# observer code
-missingAMLocs = rbind(lasCruces,Leominster,Warrington,Erd,Haan,LosAngeles,Potomac,Coventry,Ponferrada,Cotopaxi)
+missingAirmass <- c("JM","PXR","JSJA","MATA","WROC","FJQ","PALE","KTHC","PJVA","HJW","DRZ")	# observer code
+missingAMLocs = rbind(lasCruces,Leominster,Warrington,Erd,Haan,LosAngeles,Potomac,Coventry,Ponferrada,Cotopaxi,Minneapolis)
