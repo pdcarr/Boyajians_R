@@ -11,6 +11,8 @@ editUser <- rbind(editUser,c("SJAR", 2457620.9, 2457622.0,"V"),c("BJFB",2457925,
 
 ############################################################
 biasObserver <- data.frame(obsCode = "OAR",band="B",bias = as.numeric(-0.0125),stringsAsFactors=FALSE)
-biasObserver <- rbind(biasObserver,c("JM","V",-0.020),
+biasObserver <- rbind(biasObserver, c("JM","B",-0.015),
+                                    c("JM","V",-0.020),
 									c("JM","R",0.02),
-									c("LDJ","R",0.085))
+									c("LDJ","R",0.085),
+                                    c("ELYA","B",0.02))
