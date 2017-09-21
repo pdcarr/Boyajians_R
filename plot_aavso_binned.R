@@ -84,7 +84,7 @@ cat("binning the data\n")
 binCurve <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD)
 
 # test for less than max uncertainty
-uncertaintyTest <- binCurve$Uncertainty <= maxBinUncertainty
+uncertaintyTest <- binCurve$Uncertainty <= maxBinUncertainty & binCurve$Uncertainty > 0
 
 index = 1
 
