@@ -63,16 +63,18 @@ allQFits <- list()
 allResistFit <- list()
 tmin <- head(lightcurve$JD,n=1)
 cat("earliest time in file: ",tmin,"\n")
+
 #set tmin to some rounder number:
-tmin <- 10*floor(tmin/10)
-index = 1
+if(exists("pretty.JD.interval")) {
+	tmin <- pretty.JD.interval*floor(tmin/pretty.JD.interval)
+} else {tmin <- 10*floor(tmin/10)}
 
 # edit specific observers over time range(s) and specific passband
 cat("editing specific observers\n")
 editCurve <- ObserverJDEdit(editUser,lightcurve)
 
 #clean and separate and the bands in question
-
+index = 1
 for (thisBand in allBands$bandinQ) {
 	cat("cleaning ",thisBand,"\n")
 	# clean the data for this passband
@@ -105,20 +107,22 @@ for (thisBand in allBands$bandinQ) {
 			next
 		}
 		
-	# apply any defined observer biases to the binned magnitude(s)
-	if (exists("biasObserver")) {
-		biasBand <- biasObserver$band == thisBand
-		# if there are observer biases for this band, then apply them
-		# loop over all the observers in the biases data frame
-		for (thisObs in unique(biasObserver$obsCode[biasBand])) {
-			cat("\n applying biases for",thisObs,"in",thisBand)
-#			cat("\nApplying biases to",thisBand,"\n")			
-			myObs <- binCurve$Observer_Code[btest] == thisObs
-			myBias <- as.numeric(biasObserver$bias[biasBand & biasObserver$obsCode==thisObs][1])
-			if(sum(myObs) > 0) {
-				 mag.x <- binCurve$Magnitude[btest][myObs]
-				 mag.x <-  mag.x - myBias
-				 binCurve$Magnitude[btest][myObs] <- mag.x
+	# apply any defined observer biases to the binned magnitude(s) if(use.static.biases)
+	if (exists("biasObserver") & exists("use.static.biases")) {
+		if(use.static.biases) {
+			biasBand <- biasObserver$band == thisBand
+			# if there are observer biases for this band, then apply them
+			# loop over all the observers in the biases data frame
+			for (thisObs in unique(biasObserver$obsCode[biasBand])) {
+				cat("\n applying biases for",thisObs,"in",thisBand)
+	#			cat("\nApplying biases to",thisBand,"\n")			
+				myObs <- binCurve$Observer_Code[btest] == thisObs
+				myBias <- as.numeric(biasObserver$bias[biasBand & biasObserver$obsCode==thisObs][1])
+				if(sum(myObs) > 0) {
+					 mag.x <- binCurve$Magnitude[btest][myObs]
+					 mag.x <-  mag.x - myBias
+					 binCurve$Magnitude[btest][myObs] <- mag.x
+				}
 			}
 		}		
 	}
@@ -205,7 +209,14 @@ if(exists("stop.plot")) {
 
 # calculate pretty y limits
 
-myYlims = c(ceiling(max(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE)*10)/10,floor(10*min(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE))/10) # set up Y limits for reversed Y axis
+if(exists("pretty.interval")) {
+	myYlims = c(ceiling(max(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE)* pretty.interval)/pretty.interval,
+				floor(pretty.interval*min(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE))/pretty.interval) # set up Y limits for reversed Y axis
+} else {
+	myYlims = c(ceiling(max(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE)*10)/10,
+				floor(10*min(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE))/10) # set up Y limits for reversed Y axis	
+}
+
 
 # set up plot title text
 howManyObs = length(unique(binCurve$Observer_Code[uncertaintyTest]))
@@ -240,7 +251,9 @@ for (thisBand in allBands$bandinQ) {
 	my.y.minus<-  binCurve$Magnitude[btest] - binCurve$Uncertainty[btest]
 		
 	if(icol==1) {
-		errbar(myTimes[btest],binCurve[btest,"Magnitude"],yplus=my.y.plus,yminus=my.y.minus,col=allBands$plotColor[icol],xlab= myXLabel,ylab="Magnitude",xlim= myxlims,ylim = myYlims,main=myPlotTitle,pch=3,cex.main=0.7,add=FALSE,errbar.col=ebar.color)
+		errbar(myTimes[btest],binCurve[btest,"Magnitude"],yplus=my.y.plus,yminus=my.y.minus,col=allBands$plotColor[icol],
+				xlab= myXLabel,ylab="Magnitude",xlim= myxlims,ylim = myYlims,main=myPlotTitle,pch=3,cex.main=0.7,
+				add=FALSE,errbar.col=ebar.color)
 		points(myTimes[btest],binCurve[btest,"Magnitude"],col=allBands$plotColor[icol],pch=3)
 		title(main=myPlotTitle)
 	} else {
