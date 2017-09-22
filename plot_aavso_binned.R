@@ -38,12 +38,13 @@ if (includeExclude) {
 }
 
 
+# lightcurve, which is the AAVSO data read in via read.csv with header=TRUE
 lightcurve <- read.csv(file=llightcurve_name,header=TRUE,check.names=TRUE,na.strings="NA")
 
-# lightcurve, which is the AAVSO data read in via read.csv with header=TRUE
 totalRec = length(lightcurve$JD)
 cat("\n\nTotal records read from file: ",totalRec,"\n\n")
 
+latestJD <- max(lightcurve$JD,na.rm=TRUE)
 # make a list of every record with a Magnitude reported
 goodMags <- !is.na(lightcurve$Magnitude)
 
@@ -94,6 +95,7 @@ cat("fitting the data \n")
 for (thisBand in allBands$bandinQ) {
 	# fold in test for passband
 	btest <- (binCurve$Band == thisBand) & uncertaintyTest
+	
     # mask out data taken during dips (0 weight)
     dipless <- filter.dips.JD(binCurve$JD[btest],dip.mask)
     dipless <- dipless | !mask.Dips #option to turn off the dip masking
@@ -109,7 +111,8 @@ for (thisBand in allBands$bandinQ) {
 		# if there are observer biases for this band, then apply them
 		# loop over all the observers in the biases data frame
 		for (thisObs in unique(biasObserver$obsCode[biasBand])) {
-			cat("\nApplying biases to",thisBand,"\n")			
+			cat("\n applying biases for",thisObs,"in",thisBand)
+#			cat("\nApplying biases to",thisBand,"\n")			
 			myObs <- binCurve$Observer_Code[btest] == thisObs
 			myBias <- as.numeric(biasObserver$bias[biasBand & biasObserver$obsCode==thisObs][1])
 			if(sum(myObs) > 0) {
@@ -192,7 +195,13 @@ for (thisBand in allBands$bandinQ) {
 ##################################### Plot This Stuff ##################################
 # axis limits
 
-myxlims = c(startPlot,max(binCurve$JD,na.rm=TRUE))
+if(exists("stop.plot")) {
+	if(!is.na(stop.plot) & stop.plot > startPlot) {
+		myxlims <- c(startPlot,stop.plot)
+	} else {
+		myxlims <- c(startPlot,max(binCurve$JD,na.rm=TRUE))
+	}
+}
 
 # calculate pretty y limits
 

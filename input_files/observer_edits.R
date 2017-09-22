@@ -7,12 +7,25 @@ editUser <- rbind(editUser,c("JM",2457466.9,2457468.6,"V"),c("PXR",2457573.0,245
 editUser <- rbind(editUser,c("HDHA",2457907,2457908.1,"V"),c("UJHA",2457925.2,2457926.5,"V"),c("SJAR",2457620.9,2457621.91,"I"),c("PALE",2457667.1,2457668.2,"V"))
 editUser <- rbind(editUser,c("PXR",2457531.0,2457532.2,"B"),c("MJB",2457570.2, 2457571.2,"V"),c("DUBF",2457628.8,2457629.9,"B"))
 editUser <- rbind(editUser,c("HBB", 2457489.3, 2457490.4,"V"),c("KTHC",2457956.0,2457957.2,"V"),c("MJB",2457624.2,2457625.3,"V"),c("MJB",2457660.2,2457661.6,"V"))
-editUser <- rbind(editUser,c("SJAR", 2457620.9, 2457622.0,"V"),c("BJFB",2457925,2457928,"V"))
+editUser <- rbind(editUser,c("SJAR", 2457620.9, 2457622.0,"V"),c("BJFB",2457925,2457928,"V"),c("LPB",2457348,2457349.5,"B"),c("LPB",2457385,2457386,"R"),
+							c("LPB",2457348,2457349.5,"V"),c("SJAR",2457363,2457365,"R"),c("SJAR",2457363,2457365,"V"))
 
 ############################################################
-biasObserver <- data.frame(obsCode = "OAR",band="B",bias = as.numeric(-0.0125),stringsAsFactors=FALSE)
-biasObserver <- rbind(biasObserver, c("JM","B",-0.015),
-                                    c("JM","V",-0.020),
-									c("JM","R",0.02),
-									c("LDJ","R",0.085),
-                                    c("ELYA","B",0.02))
+biasObserver <- data.frame(obsCode=character(),band=character(),bias=numeric(),stringsAsFactors=FALSE)
+biasObserver <- rbind(biasObserver, list(obsCode="OAR",band="B",bias=-0.0125),
+									list("JM","B",-0.015),
+                                    list("JM","V",-0.020),
+									list("JM","R",0.02),
+									list("LDJ","R",0.088),
+                                    list("ELYA","B",0.02),
+                                    list("LPB","R",0.07),
+                                    list("GKA","R",0.036),
+                                    list("HDHA","V",0.01),
+                                    list("SDB","V",-0.015),
+                                    list("PXR","V",-0.014),
+                                    list("OAR","V",0.011),
+                                    list("OAR","B",-0.003),
+                                    list("HJW","V",0.017),
+                                    list("LDJ","V",-0.01),
+                                    list("DUBF","B",-0.003),
+                                    list("DKS","B",0.006))
