@@ -1,36 +1,38 @@
 ##################
 # input parameters for binning and plotting AAVSO data
 llightcurve_name <- "data/aavso_latest_data.csv"
-maxairmass <- 1.75 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
-maxuncertainty <- 0.1  # maximum AAVSO uncertainty estimate
-maxBinUncertainty <- 0.010 # worst standard deviation to accept for a binned set of observations
-wildsd <- 6.0 # worst number of standard deviations from mean allowed
+maxairmass <- 2.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxuncertainty <- 0.5  # maximum AAVSO uncertainty estimate
+maxBinUncertainty <- 0.021 # worst standard deviation to accept for a binned set of observations
+wildsd <- 10.0 # worst number of standard deviations from mean allowed
 
-earliestJD = 2457294 # only data on or after this JD will be used
+earliestJD = 2457290 # only data on or after this JD will be used
 #earliestJD <- 2457700
 startPlot <- earliestJD
-#startPlot <- 2457880
+#startPlot <- 2457690
 #startPlot <- 2457960
 #startPlot <- 2457580
+stop.plot <- NA
+#stop.plot <- 2457540
 plotRelTimes <- TRUE
 ##########
 includeExclude <- TRUE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
 ExclCodes <- "None"
 #ExclCodes <- c("JM","LDJ","ELYA","DKS","OJJ","OAR","ATE","BPAD","HJW")
 #ExclCodes <- c("JM","LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT","PALE","OAR") # V & B
-#ExclCodes <- c("LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","WROC","MAND","HDHA","VBPA","NOT","PALE","LPAC","OAR","GKA") # V & B
-#ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LWHA","JM") # R ensemble
+ExclCodes <- c("LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","WROC","MAND","HDHA","VBPA","NOT","PALE","LPAC","OAR","GKA","JM") # V & B
+#ExclCodes <- c("DUBF","GKA","SJAR","LBG","LWHA","JM","LDJ","LPB") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP") # I ensemble
-#ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","JM") # candidate B ensemble
-ExclCodes <- c("LDJ")
-#ExclCodes <- c("DUBF")
-#ExclCodes <- c("SWIA","CPP")	# B band exclusions
+#ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","JM","FJQ","MNIC","OAR") # candidate B ensemble
+#ExclCodes <- c("LPB","SGEA") # R exclusion
+#ExclCodes <- c("LDJ")
+#ExclCodes <- c("SWIA","CPP","DRZ","LPAC")	# B band exclusions
 #ExclCodes <- c("BJFB","COO","LBG","BMAK") # I band exclusion
 #ExclCodes <- c("LDJ","DUBF","UJHA","DKS","HBB")
 #ExclCodes <- "JM"
 ########
 plotMee <- NA # do not highlight any particular observer code
-plotMee <- "DUBF"
+#plotMee <- "JM"
 meeColor <- "darkviolet"
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
@@ -59,7 +61,7 @@ plotResiduals <- TRUE # set to true to plot the residuals vs. time
 res.plot.type = "p" # should be a legit plot() type
 plot2Lines <-  FALSE  # two line feature doesn't work well
 lqsColor <- "darkgreen"
-ebar.color <- "lightgrey"
+ebar.color <- "grey"
 
 ###################
 weightedBins <- TRUE # set to TRUE to weight lower uncertainty bins more and exclude bins in dips
@@ -73,7 +75,11 @@ mars.thresh <- 0.00005 # threshold parameter for earth().
 mars.minspan <- 4 # minimum number of observations between knots
 splineRaw <-  FALSE # do the spline on the raw lightcurve, not binned.
 mask.Dips <- TRUE
+
 ############################## Comparison Stars
-okComparison <- "(000-?BLS-?556)|(000-?BLS-?551)|(000-?BLS-?553)|(000-?BLS-?552)|(000-?BLS-?554)|(000-?BLS-?549)|(BLS-549)|(BLS-555)|(000-?BLS-?555)|(108)|(113)|(116)|(118)|(121)|(124)|(128)|(ENSEMBLE)|(APASS20062365[+-]442738)|(3162-1853-1)" # regular expression from AAVSO photometry table
+#okComparison <- "(000-?BLS-?556)|(000-?BLS-?551)|(000-?BLS-?553)|(000-?BLS-?552)|(000-?BLS-?554)|(000-?BLS-?549)|(BLS-549)|(BLS-555)|(000-?BLS-?555)|(108)|(113)|(116)|(118)|(121)|(124)|(128)|(ENSEMBLE)|(APASS20062365[+-]442738)|(3162-1853-1)" # regular expression from AAVSO photometry table
+okComparison <- "."
 
 ##########################################################################
+pretty.interval <- 100 # controls rounding of plot limits
+pretty.JD.interval <- 100
