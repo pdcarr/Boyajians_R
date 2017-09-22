@@ -11,21 +11,33 @@ editUser <- rbind(editUser,c("SJAR", 2457620.9, 2457622.0,"V"),c("BJFB",2457925,
 							c("LPB",2457348,2457349.5,"V"),c("SJAR",2457363,2457365,"R"),c("SJAR",2457363,2457365,"V"))
 
 ############################################################
+use.static.biases <- TRUE
 biasObserver <- data.frame(obsCode=character(),band=character(),bias=numeric(),stringsAsFactors=FALSE)
 biasObserver <- rbind(biasObserver, list(obsCode="OAR",band="B",bias=-0.0125),
 									list("JM","B",-0.015),
-                                    list("JM","V",-0.020),
+                                    list("JM","V",-0.022),
 									list("JM","R",0.02),
+									list("JM","I",0.017),
 									list("LDJ","R",0.088),
+									list("LDJ","I",-0.011),
                                     list("ELYA","B",0.02),
                                     list("LPB","R",0.07),
                                     list("GKA","R",0.036),
+                                    list("GKA","I",0.014),
                                     list("HDHA","V",0.01),
+                                    list("HDHA","I",-0.015),
                                     list("SDB","V",-0.015),
                                     list("PXR","V",-0.014),
                                     list("OAR","V",0.011),
                                     list("OAR","B",-0.003),
-                                    list("HJW","V",0.017),
+                                    list("OAR","I",0.026),
+                                    list("HJW","V",0.015),
                                     list("LDJ","V",-0.01),
                                     list("DUBF","B",-0.003),
-                                    list("DKS","B",0.006))
+                                    list("DUBF","V",-0.003),
+                                    list("DKS","B",0.006),
+                                    list("MJB","I",0.01),
+                                    list("MJB","V",0.006),
+                                    list("OJJ","I",-0.039),
+                                    list("LBG","I",-0.074),
+                                    list("JSJA","V",-0.004))
