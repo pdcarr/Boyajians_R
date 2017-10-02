@@ -78,7 +78,7 @@ index = 1
 for (thisBand in allBands$bandinQ) {
 	cat("cleaning ",thisBand,"\n")
 	# clean the data for this passband
-	cleanBand[,index] <- cleanAAVSO3(lightcurve,thisBand,ExclCodes,includeExclude,maxairmass,maxuncertainty,wildsd,earliestJD,okComparison) & editCurve
+	cleanBand[,index] <- cleanAAVSO3(lightcurve,thisBand,ExclCodes,includeExclude,maxairmass,maxuncertainty,wildsd,earliestJD,okComparison,bad.comp.star) & editCurve
 	index = index + 1
 }
 	

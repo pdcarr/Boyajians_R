@@ -208,7 +208,7 @@ cleanAAVSO2 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 
 ###########################################################################################
 
-cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty,wildsigma,earliestJD,okCompStars) {
+cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty,wildsigma,earliestJD,okCompStars,bad.stars=NA) {
 	# this is an improved version of cleanAAVSO that allows the calling script to determin whether or include or exclude observers.
 	# this function returns a binary vector specfiying which records (rows) in a lightcurve fram to use. 
 	# lightcurve is the AAVSO data frame 
@@ -219,7 +219,8 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 	# max uncertainty is maximum acceptable reported uncertainty in magnitudes. Set to >=10 to not test for this
 	# wildsigma is for filtering wild points. Set to the number of standard deviations you want to edit out.
 	# earliestJD is the earliest Julian date to allow
-	# okCompstars is a regular expression that shoud match any valid comparison star
+	# okCompstars is a regular expression that should match any valid comparison star
+	# bad compstars is a regualr expression that should match bad comparison stars
 
 # lightcurve is a data frame with AAVSO data	
 	# filter out any missing data
@@ -294,7 +295,7 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 #	print(unique(runningClean))
 
 # which observers are not reporting ok comparison star 1 (what is "ensemble"?)
-	starsOK <- !is.na(lightcurve$Comp_Star_1) & !is.na(lightcurve$Comp_Star_2) # check that a compaison star is provided
+	starsOK <- !is.na(lightcurve$Comp_Star_1) & !is.na(lightcurve$Comp_Star_2) # check that a comparison star is provided
 	blankMask <- starsOK & FALSE 	# creates a matching mask of indices all FALSE
 	okIndex  <- grep(okComparison,as.character(lightcurve$Comp_Star_1),ignore.case=TRUE) # check the first comparison star
 	if (length(okIndex) != 0) {blankMask[okIndex] <- TRUE} # checks for an unlikely circumstance
@@ -305,6 +306,19 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 	starsOK <- starsOK & blankMask
 	runningClean <- runningClean & starsOK
 	
+ # are there any bad comparison stars we need to watch out for?
+	if (!is.na(bad.stars)) {
+		blankMask <- starsOK | TRUE 	# creates a matching mask of indices all TRUE
+		these.are.bad <- grep(bad.stars,as.character(lightcurve$Comp_Star_1,ignore.case=TRUE)) # check if the first comperison star is bad
+		if (length(these.are.bad) != 0) {blankMask[these.are.bad] <- FALSE} # checks for an unlikely circumstance
+		starsOK <- starsOK & blankMask
+		blankMask <- starsOK | TRUE 	# creates a matching mask of indices all TRUE
+		these.are.bad <- grep(bad.stars,as.character(lightcurve$Comp_Star_2,ignore.case=TRUE)) # check if the second comperison star is bad
+		if (length(these.are.bad) != 0) {blankMask[these.are.bad] <- FALSE} # checks for an unlikely circumstance
+		starsOK <- starsOK & blankMask
+
+		runningClean <- runningClean & starsOK
+	}
 #done
 	
 	return(runningClean)
