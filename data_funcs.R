@@ -223,7 +223,10 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 
 # lightcurve is a data frame with AAVSO data	
 	# filter out any missing data
-	runningClean <- !is.na(lightcurve$JD) & !is.na(lightcurve$Magnitude) &!is.na(lightcurve$Observer_Code)
+	runningClean <- !is.na(lightcurve$JD) & !is.nan(lightcurve$JD) & 
+					!is.na(lightcurve$Magnitude) & !is.nan(lightcurve$Magnitude)
+					!is.na(lightcurve$Observer_Code) & 
+					!is.na(lightcurve$Comp_Star_1)
 	
 #	print(unique(runningClean))
 	
@@ -649,7 +652,7 @@ hinge.eval <- function(x,mars.fit) {
 				if (dirs[j] == 0) {
 					y <- y + mars.fit$coefficients[j]
 				} else {
-					slope <- slope +  dirs[j]*mars.fit$coefficients[j]
+					slope <- dirs[j]*mars.fit$coefficients[j]
 #					print(slope)
 				}
 			} else {
