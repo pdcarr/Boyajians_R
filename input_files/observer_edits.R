@@ -16,7 +16,7 @@ biasObserver <- data.frame(obsCode=character(),band=character(),bias=numeric(),s
 biasObserver <- rbind(biasObserver, list(obsCode="OAR",band="B",bias=-0.0125),
 									list("JM","B",-0.016),
                                     list("JM","V",-0.022),
-									list("JM","R",0.02),
+									list("JM","R",0.0),
 									list("JM","I",0.017),
 									list("LDJ","R",0.088),
 									list("LDJ","I",-0.011),
