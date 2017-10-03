@@ -24,7 +24,7 @@ AirMass <- function(JD,locObs,starLoc) {
 #	print(myHAs)
 	#calculate elevation angles from hour angles and observatory latitude
 	myEls = elev(dec.sou=starLoc[1],ha=myHAs,lat.obs=rad2dms(locObs[1]*pi/180))
-	print(myEls)
+#	print(myEls)
 	return(1/abs(sin(myEls*pi/180)))
 }
 
