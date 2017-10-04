@@ -102,6 +102,10 @@ for (thisBand in allBands$bandinQ) {
     # mask out data taken during dips (0 weight)
     dipless <- filter.dips.JD(binCurve$JD[btest],dip.mask)
     dipless <- dipless | !mask.Dips #option to turn off the dip masking
+    used.in.fit <- btest
+    used.in.fit[btest] <- dipless
+    binCurve <- cbind(binCurve,used.in.fit,deparse.level = 1)
+    
 	desmat <- binCurve$JD[btest] - tmin # subtract off the earliest time to avoid numerical problems
 	if(length(desmat) < 2) {
 			cat("\n\nWarning: fewer than 2 points in the band:",thisBand,"\n")
