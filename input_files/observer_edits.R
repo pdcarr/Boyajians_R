@@ -8,7 +8,8 @@ editUser <- rbind(editUser,c("HDHA",2457907,2457908.1,"V"),c("UJHA",2457925.2,24
 editUser <- rbind(editUser,c("PXR",2457531.0,2457532.2,"B"),c("MJB",2457570.2, 2457571.2,"V"),c("DUBF",2457628.8,2457629.9,"B"))
 editUser <- rbind(editUser,c("HBB", 2457489.3, 2457490.4,"V"),c("KTHC",2457956.0,2457957.2,"V"),c("MJB",2457624.2,2457625.3,"V"),c("MJB",2457660.2,2457661.6,"V"))
 editUser <- rbind(editUser,c("SJAR", 2457620.9, 2457622.0,"V"),c("BJFB",2457925,2457928,"V"),c("LPB",2457348,2457349.5,"B"),c("LPB",2457385,2457386,"R"),
-							c("LPB",2457348,2457349.5,"V"),c("SJAR",2457363,2457365,"R"),c("SJAR",2457363,2457365,"V"),c("SJAR",2458013.7,2458014.9,"R"))
+							c("LPB",2457348,2457349.5,"V"),c("SJAR",2457363,2457365,"R"),c("SJAR",2457363,2457365,"V"),c("SJAR",2458013.7,2458014.9,"R"),
+							c("JM",2457982,2457983.4,"R"),c("JM",2457717,2457718.2,"R"),c("JM",2457468.4,2457469.5,"R"))
 
 ############################################################
 use.static.biases <- TRUE
@@ -16,9 +17,9 @@ biasObserver <- data.frame(obsCode=character(),band=character(),bias=numeric(),s
 biasObserver <- rbind(biasObserver, list(obsCode="OAR",band="B",bias=-0.0125),
 									list("JM","B",-0.016),
                                     list("JM","V",-0.02),
-									list("JM","R",0.0),
+									list("JM","R",0.029),
 									list("JM","I",0.017),
-									list("LDJ","R",0.088),
+									list("LDJ","R",0.074),
 									list("LDJ","I",-0.011),
 									list("LDJ","B",0.007),
                                     list("ELYA","B",0.02),
