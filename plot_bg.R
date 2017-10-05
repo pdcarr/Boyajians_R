@@ -8,13 +8,17 @@ source("plot_funcs.R")
 
 ######################## control parameters
 maxAirmass <- 2.0 # data with airmass higher than this will not be included
-bin.width = 1/24 # days
+bin.width = 1/2 # days
 t.epsilon = 1.0 # days
 mag.epsilon <- 0.01 # magnitudes
 bin.it <- TRUE
 plot.col = "darkgreen"
 plot.pch <- 20
-dfile.name <- "data/BruceGary.csv"
+#dfile.name <- "data/BruceGary.csv"
+dfile.name <- "data/BG_gprime_latest.txt"
+data.type <- "G prime"
+#data.type <- "V"
+source("input_files/dip_mask.R")
 ############################################################
 
 ###### read in the data
@@ -36,16 +40,19 @@ if (floor(tmin*2) %% 2 == 0) {
 
 tmax = max(bg.data$MJD[ok.airmass],na.rm=TRUE)
 x.limits <- c(0,(tmax-tmin) + t.epsilon)
-y.limits <- c(max(bg.data$V.mag[ok.airmass],na.rm=TRUE) + mag.epsilon,
-			 min(bg.data$V.mag[ok.airmass],na.rm=TRUE) - mag.epsilon)
+y.limits <- c(max(bg.data$V.mag[ok.airmass],na.rm=TRUE) - mag.epsilon,
+			 min(bg.data$V.mag[ok.airmass],na.rm=TRUE) + mag.epsilon)
 x.label <- paste("MJD - ",tmin)
 
 # if binning, do this:
 if (bin.it) {
 	plot.title <- paste("Bruce Gary Data binned with width",bin.width,"Days")
-	y.label <- "Mean V over bin"
+	y.label <- paste("Mean",data.type,"over bin")
 	allSuperObs <- data.frame(MJD=numeric(),V.mag=numeric(),Uncertainty=numeric(),stringsAsFactors=FALSE)
 	superObs <- data.frame(MJD=numeric(),V.mag=numeric(),Uncertainty=numeric(),stringsAsFactors=FALSE)
+	
+
+
 	for (t in seq(tmin,tmax,by=bin.width)) {
 		in.bin <- !is.na(bg.data$MJD) & bg.data$MJD >= t & bg.data$MJD < (t + bin.width) & ok.airmass
 		n.in.bin <- length(bg.data$MJD[in.bin])
@@ -58,9 +65,13 @@ if (bin.it) {
 			next
 		}
 	}
+	# mask dips from the fit
+	bg.binned.JDs <- allSuperObs$MJD  + 2400000.5
+    dipless <- filter.dips.JD(bg.binned.JDs,dip.mask)
+    binWeights <- as.numeric(dipless) # weight of 1 if not in a known dip, 0 otherwise.
 	# calculate robust linear fit
 	desmat <- allSuperObs$MJD - tmin
-	theFit <- rlm(allSuperObs$V.mag ~ desmat,na.action="na.omit",psi=psi.bisquare)
+	theFit <- rlm(allSuperObs$V.mag ~ desmat,na.action="na.omit",psi=psi.bisquare,subset=dipless)
 	quartz("binned Data Plot")
 	plot(desmat,allSuperObs$V.mag,xlim=x.limits,ylim=y.limits,xlab=x.label,ylab=y.label,main=plot.title,pch= plot.pch,col=plot.col)
 } else {
