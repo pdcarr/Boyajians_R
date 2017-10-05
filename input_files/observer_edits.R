@@ -9,7 +9,7 @@ editUser <- rbind(editUser,c("PXR",2457531.0,2457532.2,"B"),c("MJB",2457570.2, 2
 editUser <- rbind(editUser,c("HBB", 2457489.3, 2457490.4,"V"),c("KTHC",2457956.0,2457957.2,"V"),c("MJB",2457624.2,2457625.3,"V"),c("MJB",2457660.2,2457661.6,"V"))
 editUser <- rbind(editUser,c("SJAR", 2457620.9, 2457622.0,"V"),c("BJFB",2457925,2457928,"V"),c("LPB",2457348,2457349.5,"B"),c("LPB",2457385,2457386,"R"),
 							c("LPB",2457348,2457349.5,"V"),c("SJAR",2457363,2457365,"R"),c("SJAR",2457363,2457365,"V"),c("SJAR",2458013.7,2458014.9,"R"),
-							c("JM",2457982,2457983.4,"R"),c("JM",2457717,2457718.2,"R"),c("JM",2457468.4,2457469.5,"R"))
+							c("JM",2457982,2457983.4,"R"),c("JM",2457717,2457718.2,"R"),c("JM",2457468.4,2457469.5,"R"),c("SGEA",2457929.3, 2457930.4,"V"))
 
 ############################################################
 use.static.biases <- TRUE
@@ -26,18 +26,18 @@ biasObserver <- rbind(biasObserver, list(obsCode="OAR",band="B",bias=-0.0125),
                                     list("LPB","R",0.07),
                                     list("GKA","R",0.036),
                                     list("GKA","I",0.014),
-                                    list("GKA","V",0.001),
+                                    list("GKA","V",0.005),
                                     list("HDHA","V",0.01),
                                     list("HDHA","I",-0.015),
                                     list("SDB","V",-0.015),
-                                    list("PXR","V",-0.014),
+                                    list("PXR","V",-0.010),
                                     list("OAR","V",0.006),
                                     list("OAR","B",-0.009),
                                     list("OAR","I",0.026),
                                     list("HJW","V",0.016),
                                     list("LDJ","V",0.0),
                                     list("DUBF","B",-0.003),
-                                    list("DUBF","V",-0.004),
+                                    list("DUBF","V",-0.006),
                                     list("DKS","B",-0.0015),
                                     list("MJB","I",0.01),
                                     list("MJB","V",0.007),
@@ -45,4 +45,6 @@ biasObserver <- rbind(biasObserver, list(obsCode="OAR",band="B",bias=-0.0125),
                                     list("OJJ","V",-0.006),
                                     list("OJJ","I",-0.039),
                                     list("LBG","I",-0.074),
-                                    list("JSJA","V",-0.004))
+                                    list("JSJA","V",-0.004),
+                                    list("SDB","V",0.005),
+                                    list("SGEA","V",0.025))

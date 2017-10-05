@@ -140,7 +140,15 @@ for (thisBand in allBands$bandinQ) {
 		thisFit <- rlm(binCurve$Magnitude[btest] ~ desmat,na.action="na.omit",psi=psi.bisquare)
 	} else {
 		if (weightedBins) {
-			binWeights <- (1/binCurve[btest,"Uncertainty"])*as.numeric(dipless)
+			de.weight <- dipless
+			if(exists("weightless") & !is.na(weightless)) {
+			    for (thisObs in weightless) {
+			    	# there may be observers whose observations we want to weight zero
+		    		de.weight <- de.weight & !(binCurve$Observer_Code[btest] == weightless)
+		    }
+		    }
+
+			binWeights <- (1/binCurve[btest,"Uncertainty"])*as.numeric(de.weight)
 		} else {
 			binWeights <- NULL
 		}
@@ -411,10 +419,10 @@ cat("    ",length(binCurve$JD[uncertaintyTest]),"binned observations with",delta
 #cat("\n\nObserver Stats for this set of fits")
 #AAVSOObsStats(lightcurve,cleanBand,allBands)
 
-for (index in 1:numBands) {
-	cat("\n\n",allBands$bandinQ[index],"    Summary\n")
-	pctPerYear <- (10^(-1*coefficients(allFits[index,])[2]*365.24/2.5)-1)*100
-	cat("    ",coefficients(allFits[index,])[2]*365.24*100,"magnitudes per century","or",pctPerYear,"% per year\n")
-}
+#for (index in 1:numBands) {
+#	cat("\n\n",allBands$bandinQ[index],"    Summary\n")
+#	pctPerYear <- (10^(-1*coefficients(allFits[index,])[2]*365.24/2.5)-1)*100
+#	cat("    ",coefficients(allFits[index,])[2]*365.24*100,"magnitudes per century","or",pctPerYear,"% per year\n")
+#}
 
 
