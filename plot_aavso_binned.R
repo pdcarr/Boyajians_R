@@ -91,7 +91,7 @@ binCurve <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD)
 uncertaintyTest <- binCurve$Uncertainty <= maxBinUncertainty & binCurve$Uncertainty > 0
 
 index = 1
-
+used.in.fit <- matrix(nrow=length(binCurve$JD),ncol=length(allBands$bandinQ))
 # loop over the passbands and do regression for each one
 
 cat("fitting the data \n")
@@ -102,9 +102,11 @@ for (thisBand in allBands$bandinQ) {
     # mask out data taken during dips (0 weight)
     dipless <- filter.dips.JD(binCurve$JD[btest],dip.mask)
     dipless <- dipless | !mask.Dips #option to turn off the dip masking
-    used.in.fit <- btest
-    used.in.fit[btest] <- dipless
-    binCurve <- cbind(binCurve,used.in.fit,deparse.level = 1)
+    used.in.fit[,index] <- btest
+    used.in.fit[btest,index] <- dipless
+    if(index==1) {binCurve <- cbind(binCurve,used.in.fit,deparse.level = 1)} else {
+	    	binCurve$used.in.fit <- 	binCurve$used.in.fit | used.in.fit
+    }
     
 	desmat <- binCurve$JD[btest] - tmin # subtract off the earliest time to avoid numerical problems
 	if(length(desmat) < 2) {
@@ -364,14 +366,18 @@ if (plotResiduals & !splineRaw) {
 	irow <- 1
 	for (thisBand in allBands$bandinQ) {
 		btest <- (binCurve$Band == thisBand) & uncertaintyTest
+		not.in.dip <- used.in.fit[,irow][btest]
 		relFlux <- sapply(allFits[irow,]$residual,ReverseMagnitude)
 		fluxYLims <-c(min(sapply(allFits[irow,]$residual,ReverseMagnitude))-0.01,
 						max(sapply(allFits[irow,]$residual,ReverseMagnitude))+0.01)
 		if(irow == 1) {
-			plot(myTimes[btest],relFlux,col= allBands$plotColor[irow],xlab=myXLabel,ylab="Relative Flux",xlim= myxlims,
+			plot(myTimes[btest][not.in.dip],relFlux[not.in.dip],col= allBands$plotColor[irow],xlab=myXLabel,ylab="Relative Flux",xlim= myxlims,
 				ylim= fluxYLims,main="Residuals",pch=20,cex.main=1.0,type= res.plot.type)
+			points(myTimes[btest][!not.in.dip],relFlux[!not.in.dip],col="grey",pch=20)
 		} else {
-			points(x=myTimes[btest],y= relFlux,col=allBands$plotColor[irow],pch=20)
+			points(x=myTimes[btest][not.in.dip],y= relFlux[not.in.dip],col=allBands$plotColor[irow],pch=20)
+			points(myTimes[btest][!not.in.dip],relFlux[!not.in.dip],col="grey",pch=20)
+
 		}
 		irow <- irow + 1
 	}
