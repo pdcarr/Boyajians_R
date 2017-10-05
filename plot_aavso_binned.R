@@ -102,11 +102,6 @@ for (thisBand in allBands$bandinQ) {
     # mask out data taken during dips (0 weight)
     dipless <- filter.dips.JD(binCurve$JD[btest],dip.mask)
     dipless <- dipless | !mask.Dips #option to turn off the dip masking
-    used.in.fit[,index] <- btest
-    used.in.fit[btest,index] <- dipless
-    if(index==1) {binCurve <- cbind(binCurve,used.in.fit,deparse.level = 1)} else {
-	    	binCurve$used.in.fit <- 	binCurve$used.in.fit | used.in.fit
-    }
     
 	desmat <- binCurve$JD[btest] - tmin # subtract off the earliest time to avoid numerical problems
 	if(length(desmat) < 2) {
@@ -155,6 +150,12 @@ for (thisBand in allBands$bandinQ) {
 		# do the linear regression in the binned data for this band, starting at the earliest time in the file
 #		thisFit <- lm(binCurve[btest,"Magnitude"] ~ desmat, weights= binWeights)
 	}	
+
+    used.in.fit[,index] <- btest # create the column using btest (test for correct band)
+    used.in.fit[btest,index] <- de.weight
+    if(index==1) {binCurve <- cbind(binCurve,used.in.fit,deparse.level = 1)} else {
+	    	binCurve$used.in.fit <- binCurve$used.in.fit | used.in.fit
+    }
 	
 	# if MARS is selected (plotMARS == TRUE), use it to do the regression
 	if(plotMARS) {
