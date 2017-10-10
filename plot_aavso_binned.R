@@ -153,10 +153,12 @@ for (thisBand in allBands$bandinQ) {
 
     used.in.fit[,index] <- btest # create the column using btest (test for correct band)
     used.in.fit[btest,index] <- de.weight
-    if(index==1) {binCurve <- cbind(binCurve,used.in.fit,deparse.level = 1)} else {
-	    	binCurve$used.in.fit <- binCurve$used.in.fit | used.in.fit
-    }
-	
+    if(index==1) {
+	    	binCurve <- cbind(binCurve,used.in.fit[,index],deparse.level = 1)
+		} else {
+		    	binCurve$used.in.fit <- binCurve$used.in.fit | as.logical(used.in.fit[,index])
+	    }
+
 	# if MARS is selected (plotMARS == TRUE), use it to do the regression
 	if(plotMARS) {
 		# use MARS algorithm in earth()
