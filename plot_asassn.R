@@ -1,5 +1,5 @@
 # read in and plot ASASSN data
-# alittle housekeeping
+# a little housekeeping
 options(digits=12)
 library("earth") # for MARS
 library("crayon") # to add color to text
@@ -15,14 +15,14 @@ mag.cull.limit = 0.05
 mag.margin <- 0.025
 tmargin <- 1 # positive number, days extra on xscale. 
 ####### MARS
-marsOrder <- 50 # maximum number of knots
-marsPenalty <- 5 # set to 0 to avoid penalizing knots in pruning pass
+marsOrder <- 35 # maximum number of knots
+marsPenalty <- 3 # set to 0 to avoid penalizing knots in pruning pass
 mars.thresh <- 0.00005
 #marsPMethod <- "none" # set to "none" to avoid pruning
-marsPMethod <- "backward" # set to "none" to avoid pruning
+marsPMethod <- "exhaustive" # set to "none" to avoid pruning
 ##########
 earliestJD <- 2457449
-earliestJD <- 2457940
+earliestJD <- 2457840
 source("input_files/VlineParams.R")
 source("input_files/dip_mask.R")
 
@@ -53,6 +53,7 @@ mars <- earth(x=desmat,y= asassn_data$mag[good_data],
 				thresh= mars.thresh,
 				minspan=10)
 
+print(summary(mars))
 # plot limits
 my.y.lims <- c(max(asassn_data$mag[good_data]) + mag.margin,min(asassn_data$mag[good_data]) - mag.margin)
 my.xlab <- paste("Julian Date - ",tmin)
@@ -60,7 +61,10 @@ my.x.lims <- c(0,max(desmat) + tmargin)
 # plot
 quartz("asas-sn")
 plot.times <- asassn_data$HJD[good_data] - tmin
-plot(plot.times,asassn_data$mag[good_data],col="darkgreen",pch=20,main="ASASSN V Data",xlab=my.xlab,ylab="V magnitude",ylim=my.y.lims,xlim= my.x.lims)
+# plot the points used in the fit
+plot(plot.times[not.dips],asassn_data$mag[good_data][not.dips],col="darkgreen",pch=20,main="ASASSN V Data",xlab=my.xlab,ylab="V magnitude",ylim=my.y.lims,xlim= my.x.lims)
+# add the points not used in the fit in grey
+points(plot.times[!not.dips],asassn_data$mag[good_data][!not.dips],col="grey",pch=20)
 # add grid
 grid(col="black")
 
