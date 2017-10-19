@@ -30,6 +30,7 @@ source("input_files/observer_edits.R")
 source("input_files/missing_airmass.R")
 source("input_files/VlineParams.R")
 source("input_files/dip_mask.R")
+source("input_files/spline_control.R")
 
 if (includeExclude) {
 	inclWord <- "used"
@@ -228,7 +229,7 @@ if(exists("stop.plot")) {
 # calculate pretty y limits
 
 if(exists("pretty.interval")) {
-	myYlims = c(ceiling(max(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE)* pretty.interval)/pretty.interval,
+	= c(ceiling(max(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE)* pretty.interval)/pretty.interval,
 				floor(pretty.interval*min(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE))/pretty.interval) # set up Y limits for reversed Y axis
 } else {
 	myYlims = c(ceiling(max(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE)*10)/10,
