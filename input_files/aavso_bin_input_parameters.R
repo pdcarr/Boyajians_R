@@ -1,16 +1,16 @@
 ##################
 # input parameters for binning and plotting AAVSO data
 llightcurve_name <- "data/aavso_latest_data.csv"
-maxairmass <- 2.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxairmass <- 1.5 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.04  # maximum AAVSO uncertainty estimate
 maxBinUncertainty <- 0.036 # worst standard deviation to accept for a binned set of observations
-wildsd <- 15.0 # worst number of standard deviations from mean allowed
+wildsd <- 8.0 # worst number of standard deviations from mean allowed
 
 earliestJD = 2457290 # only data on or after this JD will be used
 #earliestJD <- 2457700
 startPlot <- earliestJD
 #startPlot <- 2457690
-#startPlot <- 2457900
+#startPlot <- 2457980
 #startPlot <- 2457580
 startPlot <- 2457800
 stop.plot <- NA
@@ -21,9 +21,9 @@ includeExclude <- TRUE # TRUE if your list of observer codes is to to be include
 ExclCodes <- "None"
 #ExclCodes <- c("JM","LDJ","ELYA","DKS","OJJ","OAR","ATE","BPAD","HJW")
 #ExclCodes <- c("JM","LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT","PALE","OAR") # V & B
-ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA",
-				"WROC","MAND","VBPA","NOT","PALE","GKA","JM","AMID","SGEA","ELYA") # V & B
-#ExclCodes <- c("DUBF","GKA","SJAR","LBG","LWHA","JM","LPB","LDJ") # R ensemble
+#ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA",
+#				"WROC","MAND","VBPA","NOT","PALE","GKA","JM","AMID","SGEA","ELYA") # V & B
+ExclCodes <- c("DUBF","GKA","SJAR","LBG","LWHA","JM","LPB","LDJ") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LBG","LDJ","CMP","JM") # I ensemble
 #ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","JM","FJQ","MNIC") # candidate B ensemble
 #ExclCodes <- c("LPB","SGEA") # R exclusion
@@ -35,18 +35,18 @@ ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MA
 #ExclCodes <- c("JM","DUBF","LDJ")
 ########
 plotMee <- NA # do not highlight any particular observer code
-#plotMee <- "LDJ"	# an observer's points to highlight
+#plotMee <- "JM"	# an observer's points to highlight
 meeColor <- "darkviolet"
 #weightless <- c("JM","LDJ") # observers to plot, but not use in MARS fit.
-#weightless <- c("LDJ") # observers to plot, but not use in MARS fit.
+#weightless <- c("JM") # observers to plot, but not use in MARS fit.
 weightless <- NA
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAsFactors=FALSE)
-#allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
-#allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R","B"),plotColor=c("darkviolet","red","blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R","V","B"),plotColor=c("red","green","blue"), stringsAsFactors=FALSE)
@@ -62,25 +62,12 @@ smoothTS <- TRUE # set to TRUE to smooth the times series
 tsSmoothOrder <- 6 # the order for the moving average to smooth the time series
 tryLQS <- FALSE # set to TRUE is you want to try resistant regression.
 userlm <- TRUE # set to TRUE to use robust lm, or rlm() if not using MARS.
-plotMARS <-  TRUE # set to TRUE to try a MARS fit instead of lm() or rlm()
 plotResiduals <- TRUE # set to true to plot the residuals vs. time
 res.plot.type = "p" # should be a legit plot() type
 plot2Lines <-  FALSE  # two line feature doesn't work well
 lqsColor <- "darkgreen"
 ebar.color <- "grey"	 # color to use for error bars
 
-###################
-weightedBins <- TRUE # set to TRUE to weight lower uncertainty bins more and exclude bins in dips
-
-####### MARS
-marsOrder <- 21 # maximum number of knots
-marsPenalty <- 5 # set to 0 to avoid penalizing knots in pruning pass
-#marsPMethod <- "none" # set to "none" to avoid pruning
-marsPMethod <- "exhaustive" # set to "none" to avoid pruning
-mars.thresh <- 0.00002 # threshold parameter for earth().
-mars.minspan <- 5 # minimum number of observations between knots
-splineRaw <-  FALSE # do the spline on the raw lightcurve, not binned.
-mask.Dips <- TRUE
 
 ############################## Comparison Stars
 #okComparison <- "(000-?BLS-?556)|(000-?BLS-?551)|(000-?BLS-?553)|(000-?BLS-?552)|(000-?BLS-?554)|(000-?BLS-?549)|(BLS-549)|(BLS-555)|(000-?BLS-?555)|(108)|(113)|(116)|(118)|(121)|(124)|(128)|(ENSEMBLE)|(APASS20062365[+-]442738)|(3162-1853-1)" # regular expression from AAVSO photometry table
