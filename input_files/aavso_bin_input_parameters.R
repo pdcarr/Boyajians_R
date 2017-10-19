@@ -1,9 +1,9 @@
 ##################
 # input parameters for binning and plotting AAVSO data
 llightcurve_name <- "data/aavso_latest_data.csv"
-maxairmass <- 1.5 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
-maxuncertainty <- 0.03  # maximum AAVSO uncertainty estimate
-maxBinUncertainty <- 0.03 # worst standard deviation to accept for a binned set of observations
+maxairmass <- 2.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxuncertainty <- 0.04  # maximum AAVSO uncertainty estimate
+maxBinUncertainty <- 0.036 # worst standard deviation to accept for a binned set of observations
 wildsd <- 15.0 # worst number of standard deviations from mean allowed
 
 earliestJD = 2457290 # only data on or after this JD will be used
@@ -12,6 +12,7 @@ startPlot <- earliestJD
 #startPlot <- 2457690
 #startPlot <- 2457900
 #startPlot <- 2457580
+startPlot <- 2457800
 stop.plot <- NA
 #stop.plot <- 2457540
 plotRelTimes <- TRUE
@@ -21,21 +22,23 @@ ExclCodes <- "None"
 #ExclCodes <- c("JM","LDJ","ELYA","DKS","OJJ","OAR","ATE","BPAD","HJW")
 #ExclCodes <- c("JM","LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT","PALE","OAR") # V & B
 ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA",
-				"WROC","MAND","HDHA","VBPA","NOT","PALE","GKA","JM","AMID","SGEA","ELYA") # V & B
-#ExclCodes <- c("DUBF","GKA","SJAR","LBG","LWHA","JM","LPB") # R ensemble
-#ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP") # I ensemble
+				"WROC","MAND","VBPA","NOT","PALE","GKA","JM","AMID","SGEA","ELYA") # V & B
+#ExclCodes <- c("DUBF","GKA","SJAR","LBG","LWHA","JM","LPB","LDJ") # R ensemble
+#ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LBG","LDJ","CMP","JM") # I ensemble
 #ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","JM","FJQ","MNIC") # candidate B ensemble
 #ExclCodes <- c("LPB","SGEA") # R exclusion
 #ExclCodes <- c("LDJ")
-#ExclCodes <- c("SWIA","CPP","DRZ","LPAC")	# B band exclusions
+#ExclCodes <- c("SWIA","CPP","DRZ","LPAC","HDHA) 	# B band exclusions
 #ExclCodes <- c("BJFB","COO","LBG","BMAK") # I band exclusion
 #ExclCodes <- c("LDJ","DUBF","UJHA","DKS","HBB")
-#ExclCodes <- "JM"
+#ExclCodes <- c("DUBF","JM")
+#ExclCodes <- c("JM","DUBF","LDJ")
 ########
 plotMee <- NA # do not highlight any particular observer code
-#plotMee <- "ELYA"	# an observer's points to highlight
+#plotMee <- "LDJ"	# an observer's points to highlight
 meeColor <- "darkviolet"
-weightless <- "ELYA" # observers to plot, but not use in MARS fit.
+#weightless <- c("JM","LDJ") # observers to plot, but not use in MARS fit.
+#weightless <- c("LDJ") # observers to plot, but not use in MARS fit.
 weightless <- NA
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
@@ -64,25 +67,25 @@ plotResiduals <- TRUE # set to true to plot the residuals vs. time
 res.plot.type = "p" # should be a legit plot() type
 plot2Lines <-  FALSE  # two line feature doesn't work well
 lqsColor <- "darkgreen"
-ebar.color <- "grey"
+ebar.color <- "grey"	 # color to use for error bars
 
 ###################
 weightedBins <- TRUE # set to TRUE to weight lower uncertainty bins more and exclude bins in dips
 
 ####### MARS
-marsOrder <- 9 # maximum number of knots
+marsOrder <- 21 # maximum number of knots
 marsPenalty <- 5 # set to 0 to avoid penalizing knots in pruning pass
 #marsPMethod <- "none" # set to "none" to avoid pruning
-marsPMethod <- "backward" # set to "none" to avoid pruning
-mars.thresh <- 0.00005 # threshold parameter for earth().
-mars.minspan <- 10 # minimum number of observations between knots
+marsPMethod <- "exhaustive" # set to "none" to avoid pruning
+mars.thresh <- 0.00002 # threshold parameter for earth().
+mars.minspan <- 5 # minimum number of observations between knots
 splineRaw <-  FALSE # do the spline on the raw lightcurve, not binned.
 mask.Dips <- TRUE
 
 ############################## Comparison Stars
 #okComparison <- "(000-?BLS-?556)|(000-?BLS-?551)|(000-?BLS-?553)|(000-?BLS-?552)|(000-?BLS-?554)|(000-?BLS-?549)|(BLS-549)|(BLS-555)|(000-?BLS-?555)|(108)|(113)|(116)|(118)|(121)|(124)|(128)|(ENSEMBLE)|(APASS20062365[+-]442738)|(3162-1853-1)" # regular expression from AAVSO photometry table
 okComparison <- "."
-bad.comp.star <- "(000-?BLS-549)|(000-?BLS-?540)|(BLS-549)"
+bad.comp.star <- "(000-?BLS-549)|(000-?BLS-?549)|(BLS-549)"
 
 ##########################################################################
 pretty.interval <- 100 # controls rounding of plot limits

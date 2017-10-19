@@ -16,8 +16,8 @@ mag.margin <- 0.025
 tmargin <- 1 # positive number, days extra on xscale. 
 ####### MARS
 marsOrder <- 35 # maximum number of knots
-marsPenalty <- 3 # set to 0 to avoid penalizing knots in pruning pass
-mars.thresh <- 0.00005
+marsPenalty <- 4 # set to 0 to avoid penalizing knots in pruning pass
+mars.thresh <- 0.00002
 #marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "exhaustive" # set to "none" to avoid pruning
 ##########
