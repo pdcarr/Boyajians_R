@@ -220,7 +220,7 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 	# wildsigma is for filtering wild points. Set to the number of standard deviations you want to edit out.
 	# earliestJD is the earliest Julian date to allow
 	# okCompstars is a regular expression that should match any valid comparison star
-	# bad compstars is a regualr expression that should match bad comparison stars
+	# bad.stars is a regular expression that should match bad comparison stars
 
 # lightcurve is a data frame with AAVSO data	
 	# filter out any missing data

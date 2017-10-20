@@ -132,7 +132,8 @@ for (thisBand in allBands$bandinQ) {
 	}
 	
 	# determine the bin weights, if any then do the fit(s)
-	if (userlm & !plotMARS) {
+	used.in.fit[,index] <- btest # create the column using btest (test for correct band)
+	if (userlm & !plotMARS & !perform.smooth) {
 		# use robust algorithm
 		thisFit <- rlm(binCurve$Magnitude[btest] ~ desmat,na.action="na.omit",psi=psi.bisquare)
 	} else {
@@ -140,11 +141,12 @@ for (thisBand in allBands$bandinQ) {
 			de.weight <- dipless
 			if(exists("weightless") & !is.na(weightless)) {
 			    for (thisObs in weightless) {
-			    	# there may be observers whose observations we want to weight zero
-		    		de.weight <- de.weight & !(binCurve$Observer_Code[btest] == weightless)
+				    	# there may be observers whose observations we want to weight zero
+			    		de.weight <- de.weight & !(binCurve$Observer_Code[btest] == weightless)
+			    }
 		    }
-		    }
-
+	    
+		    used.in.fit[btest,index] <- de.weight	#  set weights of dips to zero
 			binWeights <- (1/binCurve[btest,"Uncertainty"])*as.numeric(de.weight)
 		} else {
 			binWeights <- NULL
@@ -153,8 +155,6 @@ for (thisBand in allBands$bandinQ) {
 #		thisFit <- lm(binCurve[btest,"Magnitude"] ~ desmat, weights= binWeights)
 	}	
 
-    used.in.fit[,index] <- btest # create the column using btest (test for correct band)
-    used.in.fit[btest,index] <- de.weight
     if(index==1) {
 	    	binCurve <- cbind(binCurve,used.in.fit[,index],deparse.level = 1)
 		} else {
@@ -324,8 +324,9 @@ for (thisBand in allBands$bandinQ) {
 		these.values <- predict(smoove.fit,desmat)$y
 		lines(desmat, these.values,col=smoove.color,lwd=2) # plot as a line of specified color
 		
-		these.resids <- these.values - binCurve$Magnitude[btest] # store residuals
+		these.resids <- binCurve$Magnitude[btest] - these.values # store residuals
 		resid.mat <- rbind(resid.mat,these.resids)
+
 	}
 	
 	#optionally plot the LQS fit
@@ -428,7 +429,7 @@ if (plotMARS & plotResiduals & !splineRaw) {
 
 		}
 		irow <- irow + 1
-		
+		grid(col="black")
 	}
 }
 
