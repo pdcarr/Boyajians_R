@@ -9,7 +9,7 @@ source("plot_funcs.R")
 rm(allFits)
 rm(cleanBand)
 rm(binCurve)
-rm(bts)
+#rm(bts)
 # options
 options(digits=12) # hard to read JDs without this setting
 # load the required packages
@@ -60,6 +60,7 @@ for (index in 1:length(missingAirmass)){
 numBands = length(allBands$bandinQ)
 cleanBand <- matrix(nrow=totalRec,ncol=numBands)
 allFits <- list()
+all.smoove <- list()
 allQFits <- list()
 allResistFit <- list()
 tmin <- head(lightcurve$JD,n=1)
@@ -130,7 +131,7 @@ for (thisBand in allBands$bandinQ) {
 		}		
 	}
 	
-	# determine the bin weights, if any
+	# determine the bin weights, if any then do the fit(s)
 	if (userlm & !plotMARS) {
 		# use robust algorithm
 		thisFit <- rlm(binCurve$Magnitude[btest] ~ desmat,na.action="na.omit",psi=psi.bisquare)
@@ -189,6 +190,18 @@ for (thisBand in allBands$bandinQ) {
 	cat("\n\n Band",thisBand,"summary")
 	print(summary(thisFit))
 	
+	# do a smooth.spline on the bins if called for
+	if(perform.smooth) {
+		smoove.fit <- smooth.spline(desmat,binCurve$Magnitude[btest],
+									w=binWeights,
+									all.knots=FALSE,nknots= smooth.n.knots,
+									keep.data=TRUE,cv=do.CV,penalty= df.penalty)
+		cat("\n\n Smooth Spline Fit: \n")
+		print(smoove.fit$call)
+		cat("\n")
+		print(smoove.fit$fit)
+	}
+	
 	# try resistant regression if selected
 	if (tryLQS) {
 		resistFit <- lqs(formula = binCurve$Magnitude[btest] ~ desmat)
@@ -206,7 +219,6 @@ for (thisBand in allBands$bandinQ) {
 	}
 	#package the fits into one matrix
 	allFits <- rbind(allFits,thisFit)
-
 	if(index==1) {
 		allClean <- cleanBand[,index]
 	} else {
@@ -229,7 +241,7 @@ if(exists("stop.plot")) {
 # calculate pretty y limits
 
 if(exists("pretty.interval")) {
-	= c(ceiling(max(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE)* pretty.interval)/pretty.interval,
+	myYlims <- c(ceiling(max(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE)* pretty.interval)/pretty.interval,
 				floor(pretty.interval*min(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE))/pretty.interval) # set up Y limits for reversed Y axis
 } else {
 	myYlims = c(ceiling(max(binCurve$Magnitude[uncertaintyTest],na.rm=TRUE)*10)/10,
@@ -246,7 +258,7 @@ myBands = paste(allBands$bandinQ,collapse=" ")
 titleString <- c(paste("AAVSO",myBands,"Data with",deltaJD,"Day Bins",sep=" "), paste(as.character(howManyObs),"Observers",sep=" "))
 myPlotTitle <- paste(titleString,collapse="\n")
 
-
+resid.mat = list()
 
 # plot the cleaned and binned data, the fit lines and the excluded points
 icol=1
@@ -263,7 +275,6 @@ if(plotRelTimes) {
 
 quartz("AAVSO Magnitude Data")
 for (thisBand in allBands$bandinQ) {
-#	if (icol > 1){par(new=TRUE)}
 	ourCleanData <- cleanBand[,icol]
 	btest <- (binCurve$Band == thisBand) & uncertaintyTest
 	my.y.plus <- binCurve$Magnitude[btest] + binCurve$Uncertainty[btest]
@@ -276,28 +287,47 @@ for (thisBand in allBands$bandinQ) {
 		points(myTimes[btest],binCurve[btest,"Magnitude"],col=allBands$plotColor[icol],pch=3)
 		title(main=myPlotTitle)
 	} else {
-		errbar(myTimes[btest],binCurve$Magnitude[btest],yplus=my.y.plus,yminus=my.y.minus,col=allBands$plotColor[icol],errbar.col=allBands$plotColor[icol],pch=3,add=TRUE)
+		errbar(myTimes[btest],binCurve$Magnitude[btest],yplus=my.y.plus,yminus=my.y.minus,
+				col=allBands$plotColor[icol],errbar.col=allBands$plotColor[icol],pch=3,add=TRUE)
 	}
 	
 	# plot line fit
-	if(plot2Lines) {
-		cat(red("plt2Lines doesn't really work. Use earth() instead"))
-	} else if(!plotMARS) {
+	 if(!plotMARS & userlm) {
 		# plot the lm() or rlm() fit
 		myslope <- coefficients(allFits[icol,])[2]
 		basemag <- coefficients(allFits[icol,])[1]
 		curve(basemag + myslope*(x-tmin),from=min(binCurve$JD,na.rm=TRUE),to=max(binCurve$JD,na.rm=TRUE), add=TRUE,col="black")
 	} 
+	
 	# plot the MARS fit if that is selected
 	if (plotMARS) {
 		mars <- allFits[icol,]
 		if (splineRaw) {
 			lines(x=lcTimes[cleanBand[,icol]],y=mars$fitted.values,col= "black",lwd=2)
 		} else {
-            btest <- btest
 			lines(x=myTimes[btest],y=mars$fitted.values,col= "black",lwd=2)
 		}
 	}
+	
+
+	# plot the smooth spline (of last color on list)
+		# do a smooth.spline on the bins if called for
+	if(perform.smooth) {
+		smoove.fit <- smooth.spline(desmat,binCurve$Magnitude[btest],
+									w=binWeights,
+									all.knots=FALSE,nknots= smooth.n.knots,
+									keep.data=TRUE,cv=do.CV,penalty= df.penalty)
+		cat("\n\n Smooth Spline Fit: \n")
+		print(smoove.fit$call)
+		cat("\n")
+		print(smoove.fit$fit)
+		these.values <- predict(smoove.fit,desmat)$y
+		lines(desmat, these.values,col=smoove.color,lwd=2) # plot as a line of specified color
+		
+		these.resids <- these.values - binCurve$Magnitude[btest] # store residuals
+		resid.mat <- rbind(resid.mat,these.resids)
+	}
+	
 	#optionally plot the LQS fit
 	if (tryLQS) {
 		myslope <- coefficients(allResistFit[icol,])[2]
@@ -305,23 +335,7 @@ for (thisBand in allBands$bandinQ) {
 		curve(basemag + myslope*(x-tmin),from=min(binCurve$JD,na.rm=TRUE),to=max(binCurve$JD,na.rm=TRUE), add=TRUE,col=lqsColor)
 	}
 	
-	# an option to plot the quadratic fit
-	if (plotQuadratic) {
-		#quadratic fit
-		basemag <- coefficients(allQFits[icol,])[1]
-		linterm <- coefficients(allQFits[icol,])[2]
-		qterm <- coefficients(allQFits[icol,])[3]
-		curve(basemag + linterm*(x-tmin) + qterm*(x -tmin)^2,from=min(binCurve$JD,na.rm=TRUE),to=max(binCurve$JD,na.rm=TRUE), add=TRUE,col="red")
-	}
-	
-#plot the excluded points, if option selected
-	if(plotExcluded) {
-		# plot excluded points in black
-		IResid <- !ourCleanData & goodMags & (lightcurve$Band == allBands$bandinQ[icol])		
-		points(lcTimes[IResid],lightcurve[IResid,"Magnitude"],col="black",pch=20) # plot removed points in black
-	}	
-	icol = icol + 1
-}
+}	
 
 if (!is.na(plotMee)) {
 	imSpecial <- grep(plotMee,binCurve$Observer_Code,ignore.case=TRUE)
@@ -363,7 +377,8 @@ if (generateTS) {
 	} else {
 		plot_times <- time(bts) - tmin
 		my.xlab <- paste("Days since",tmin)
-		plot(as.vector(plot_times),as.vector(bts),ylim=myYlims,type="l",pch=20,main=tsMain,lwd=2,col=allBands$plotColor,ylab=paste(allBands$bandinQ,"Mag"),xlab=my.xlab)
+		plot(as.vector(plot_times),as.vector(bts),ylim=myYlims,type="l",pch=20,main=tsMain,lwd=2,col=allBands$plotColor,
+					ylab=paste(allBands$bandinQ,"Mag"),xlab=my.xlab)
 		points(myts,col="grey",pch=20,cex=0.5)
 		##### draw vertical lines at various dates
 		if(drawDateLine) { verticalDateLines(jdLine, jdLineText, myYlims, jdLineColor)}
@@ -373,7 +388,7 @@ if (generateTS) {
 }
 
 ################ plot the residuals if desired:
-if (plotResiduals & !splineRaw) {
+if (plotMARS & plotResiduals & !splineRaw) {
 	quartz("Flux Relative to Fit")
 	irow <- 1
 	for (thisBand in allBands$bandinQ) {
@@ -394,6 +409,27 @@ if (plotResiduals & !splineRaw) {
 		irow <- irow + 1
 	}
 	grid(col="black")
+} else if(! plotMARS & plotResiduals & perform.smooth) {
+	quartz("Flux Relative to Fit")	
+	irow <- 1
+	# loop over all the bands under consideration
+	for (thisBand in allBands$bandinQ) {
+		btest <- (binCurve$Band == thisBand) & uncertaintyTest
+		not.in.dip <- used.in.fit[,irow][btest]
+		relFlux <- sapply(resid.mat[irow,],ReverseMagnitude) # convert magnitiude difference to flux ratio
+		fluxYLims <-c(min(relFlux)-0.01,max(relFlux)+0.01)	# calcuate y plot limits with a little more room
+		if(irow == 1) {
+			plot(myTimes[btest][not.in.dip],relFlux[not.in.dip],col= allBands$plotColor[irow],xlab=myXLabel,ylab="Relative Flux",xlim= myxlims,
+				ylim= fluxYLims,main="Residuals",pch=20,cex.main=1.0,type= res.plot.type)
+			points(myTimes[btest][!not.in.dip],relFlux[!not.in.dip],col="grey",pch=20)
+		} else {
+			points(x=myTimes[btest][not.in.dip],y= relFlux[not.in.dip],col=allBands$plotColor[irow],pch=20)
+			points(myTimes[btest][!not.in.dip],relFlux[!not.in.dip],col="grey",pch=20)
+
+		}
+		irow <- irow + 1
+		
+	}
 }
 
 if(drawDateLine) { verticalDateLines(jdLine, jdLineText, fluxYLims, jdLineColor)}
@@ -420,13 +456,5 @@ cat("   ",length(lightcurve$JD),"total observations loaded\n")
 #cat("    ",length(lightcurve[cleanI | cleanR | cleanV | cleanB,"JD"]),"raw observations after cleaning\n")
 cat("    ",length(binCurve$JD[uncertaintyTest]),"binned observations with",deltaJD,"day bins")
 
-#cat("\n\nObserver Stats for this set of fits")
-#AAVSOObsStats(lightcurve,cleanBand,allBands)
-
-#for (index in 1:numBands) {
-#	cat("\n\n",allBands$bandinQ[index],"    Summary\n")
-#	pctPerYear <- (10^(-1*coefficients(allFits[index,])[2]*365.24/2.5)-1)*100
-#	cat("    ",coefficients(allFits[index,])[2]*365.24*100,"magnitudes per century","or",pctPerYear,"% per year\n")
-#}
 
 
