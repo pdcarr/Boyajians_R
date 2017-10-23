@@ -18,4 +18,4 @@ perform.smooth <- TRUE
 smooth.n.knots <- 9
 df.penalty <- 1
 do.CV <- TRUE
-smoove.color <- "slategray"
+smoove.color <- "yellow"
