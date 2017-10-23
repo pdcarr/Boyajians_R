@@ -72,6 +72,7 @@ if (bin.it) {
 	# calculate robust linear fit
 	desmat <- allSuperObs$MJD - tmin
 	theFit <- rlm(allSuperObs$V.mag ~ desmat,na.action="na.omit",psi=psi.bisquare,subset=dipless)
+	print(summary(theFit))
 	quartz("binned Data Plot")
 	plot(desmat,allSuperObs$V.mag,xlim=x.limits,ylim=y.limits,xlab=x.label,ylab=y.label,main=plot.title,pch= plot.pch,col=plot.col)
 } else {
