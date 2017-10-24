@@ -9,6 +9,8 @@ source("plot_funcs.R")
 rm(allFits)
 rm(cleanBand)
 rm(binCurve)
+rm(deriv.mat)
+rm(resid.mat)
 #rm(bts)
 # options
 options(digits=12) # hard to read JDs without this setting
@@ -145,8 +147,9 @@ for (thisBand in allBands$bandinQ) {
 			    		de.weight <- de.weight & !(binCurve$Observer_Code[btest] == weightless)
 			    }
 		    }
-	    
+	    	
 		    used.in.fit[btest,index] <- de.weight	#  set weights of dips to zero
+
 			binWeights <- (1/binCurve[btest,"Uncertainty"])*as.numeric(de.weight)
 		} else {
 			binWeights <- NULL
@@ -185,10 +188,7 @@ for (thisBand in allBands$bandinQ) {
 								minspan = mars.minspan)
 		}
 	} 
-	
-	# output a summary to the console 	
-	cat("\n\n Band",thisBand,"summary")
-	print(summary(thisFit))
+	print(length(desmat))
 	
 	# do a smooth.spline on the bins if called for
 	if(perform.smooth) {
@@ -258,8 +258,11 @@ myBands = paste(allBands$bandinQ,collapse=" ")
 titleString <- c(paste("AAVSO",myBands,"Data with",deltaJD,"Day Bins",sep=" "), paste(as.character(howManyObs),"Observers",sep=" "))
 myPlotTitle <- paste(titleString,collapse="\n")
 
-resid.mat = list()
-deriv.mat = list()
+# initialize some data structures
+these.resids <- vector(mode="numeric",length=length(binCurve$JD))
+my.derivs <- vector(mode="numeric",length=length(binCurve$JD))
+resid.mat = vector(mode="numeric",length=length(binCurve$JD))
+deriv.mat = vector(mode="numeric",length=length(binCurve$JD))
 
 # plot the cleaned and binned data, the fit lines and the excluded points
 icol=1
@@ -311,33 +314,37 @@ for (thisBand in allBands$bandinQ) {
 	}
 	
 
-	# plot the smooth spline (of last color on list)
-		# do a smooth.spline on the bins if called for
+	# do a smooth.spline on the bins if called for
 	if(perform.smooth) {
-		smoove.fit <- smooth.spline(desmat,binCurve$Magnitude[btest],
-									w=binWeights,
+		smoove.fit <- smooth.spline(myTimes[btest],binCurve$Magnitude[btest],
+									w= (1/binCurve[btest,"Uncertainty"])*as.numeric(used.in.fit[btest,icol]),
 									all.knots=FALSE,nknots= smooth.n.knots,
 									keep.data=TRUE,cv=do.CV,penalty= df.penalty)
 		cat("\n\n Smooth Spline Fit: \n")
 		print(smoove.fit$call)
 		cat("\n")
 		print(smoove.fit$fit)
-		these.values <- predict(smoove.fit,desmat)$y
-		lines(desmat, these.values,col=smoove.color,lwd=2) # plot as a line of specified color
+		these.values <- predict(smoove.fit,myTimes[btest])$y
+		lines(myTimes[btest],these.values,col=smoove.color,lwd=3) # plot as a line of specified color
 		
-		these.resids <- binCurve$Magnitude[btest] - these.values # store residuals
-		resid.mat <- rbind(resid.mat,these.resids)
+		these.resids[btest] <- binCurve$Magnitude[btest] - these.values # store residuals
+		if(icol==1) {
+			resid.mat <- these.resids
+		} else {
+			resid.mat <- rbind(resid.mat,these.resids)
+		}
 		if(smooth.deriv) { 
-				my.derivs  <- predict(smoove.fit,desmat,deriv=1)$y
+				my.derivs[btest]  <- predict(smoove.fit, myTimes[btest],deriv=1)$y
 				deriv.bounds[1] <- min(deriv.bounds[1],my.derivs,na.rm=TRUE)
 				deriv.bounds[2] <- max(deriv.bounds[2],my.derivs,na.rm=TRUE)
-				deriv.mat <- rbind(deriv.mat,my.derivs)
+				if (icol==1) {
+					deriv.mat <- my.derivs
+				} else {
+					deriv.mat <- rbind(deriv.mat,my.derivs)
+				}
 		}
 		
 	}
-
-
-	
 	
 	#optionally plot the LQS fit
 	if (tryLQS) {
@@ -345,7 +352,7 @@ for (thisBand in allBands$bandinQ) {
 		basemag <- coefficients(allResistFit[icol,])[1]
 		curve(basemag + myslope*(x-tmin),from=min(binCurve$JD,na.rm=TRUE),to=max(binCurve$JD,na.rm=TRUE), add=TRUE,col=lqsColor)
 	}
-	
+	icol = icol + 1
 }	
 
 if (!is.na(plotMee)) {
@@ -427,7 +434,7 @@ if (plotMARS & plotResiduals & !splineRaw) {
 	for (thisBand in allBands$bandinQ) {
 		btest <- (binCurve$Band == thisBand) & uncertaintyTest
 		not.in.dip <- used.in.fit[,irow][btest]
-		relFlux <- sapply(resid.mat[irow,],ReverseMagnitude) # convert magnitiude difference to flux ratio
+		relFlux <- sapply(resid.mat[irow,btest],ReverseMagnitude) # convert magnitiude difference to flux ratio
 		fluxYLims <-c(min(relFlux)-0.01,max(relFlux)+0.01)	# calcuate y plot limits with a little more room
 		if(irow == 1) {
 			plot(myTimes[btest][not.in.dip],relFlux[not.in.dip],col= allBands$plotColor[irow],xlab=myXLabel,ylab="Relative Flux",xlim= myxlims,
@@ -458,13 +465,13 @@ if(perform.smooth & smooth.deriv) {
 				myXlabel <- "time"
 				myYlabel <- "1st Derivative of Magnitude wrt Time"
 				if(irow == 1) {
-					plot(myTimes[btest],deriv.mat[irow,],col= allBands$plotColor[irow],
+					plot(myTimes[btest],deriv.mat[irow,btest],col= allBands$plotColor[irow],
 						xlab=myXLabel,ylab=myYlabel,
 						main="Derivative of Smooth Spline",
 						cex.main=1.0,type= "l",
 						xlim= myxlims,ylim=deriv.margin*deriv.bounds)
 				} else {
-					lines(myTimes[btest],deriv.mat[irow,],col= allBands$plotColor[irow])
+					lines(myTimes[btest],deriv.mat[irow,btest],col= allBands$plotColor[irow])
 				}
 				irow <- irow + 1
 			}
