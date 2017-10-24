@@ -14,8 +14,10 @@ splineRaw <-  FALSE # do the spline on the raw lightcurve, not binned.
 mask.Dips <- TRUE
 
 ############# smooth.spline
-perform.smooth <- TRUE
-smooth.n.knots <- 9
+perform.smooth <- TRUE # TRUE if you want to plot a smooth cubic spline
+smooth.deriv <- TRUE	 # TRUE if you want to plot the first derivative of the smooth spline as well.
+deriv.margin = 1.02
+smooth.n.knots <- 9 # number of knows, including the two endpoints
 df.penalty <- 1
-do.CV <- TRUE
-smoove.color <- "yellow"
+do.CV <- TRUE	# do cross validation
+smoove.color <- "slategray" # color of the line drawn on the magnitude plot

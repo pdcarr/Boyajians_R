@@ -259,6 +259,7 @@ titleString <- c(paste("AAVSO",myBands,"Data with",deltaJD,"Day Bins",sep=" "), 
 myPlotTitle <- paste(titleString,collapse="\n")
 
 resid.mat = list()
+deriv.mat = list()
 
 # plot the cleaned and binned data, the fit lines and the excluded points
 icol=1
@@ -272,7 +273,7 @@ if(plotRelTimes) {
 	myTimes <- binCurve$JD
 	myXLabel <- "Julian Date"
 }
-
+deriv.bounds <- c(NA,NA)
 quartz("AAVSO Magnitude Data")
 for (thisBand in allBands$bandinQ) {
 	ourCleanData <- cleanBand[,icol]
@@ -326,8 +327,17 @@ for (thisBand in allBands$bandinQ) {
 		
 		these.resids <- binCurve$Magnitude[btest] - these.values # store residuals
 		resid.mat <- rbind(resid.mat,these.resids)
-
+		if(smooth.deriv) { 
+				my.derivs  <- predict(smoove.fit,desmat,deriv=1)$y
+				deriv.bounds[1] <- min(deriv.bounds[1],my.derivs,na.rm=TRUE)
+				deriv.bounds[2] <- max(deriv.bounds[2],my.derivs,na.rm=TRUE)
+				deriv.mat <- rbind(deriv.mat,my.derivs)
+		}
+		
 	}
+
+
+	
 	
 	#optionally plot the LQS fit
 	if (tryLQS) {
@@ -430,10 +440,41 @@ if (plotMARS & plotResiduals & !splineRaw) {
 		}
 		irow <- irow + 1
 		grid(col="black")
+		##### draw vertical lines at various dates
+		if(drawDateLine) { verticalDateLines(jdLine, jdLineText, fluxYLims, jdLineColor)}
+
 	}
+
 }
 
-if(drawDateLine) { verticalDateLines(jdLine, jdLineText, fluxYLims, jdLineColor)}
+# smooth fit derivative plot
+
+if(perform.smooth & smooth.deriv) {
+			quartz("Derivative of Spline Fit")
+			
+			irow <- 1
+			for (thisBand in allBands$bandinQ) {
+				btest <- (binCurve$Band == thisBand) & uncertaintyTest	# the subset of the bins to use
+				myXlabel <- "time"
+				myYlabel <- "1st Derivative of Magnitude wrt Time"
+				if(irow == 1) {
+					plot(myTimes[btest],deriv.mat[irow,],col= allBands$plotColor[irow],
+						xlab=myXLabel,ylab=myYlabel,
+						main="Derivative of Smooth Spline",
+						cex.main=1.0,type= "l",
+						xlim= myxlims,ylim=deriv.margin*deriv.bounds)
+				} else {
+					lines(myTimes[btest],deriv.mat[irow,],col= allBands$plotColor[irow])
+				}
+				irow <- irow + 1
+			}
+			grid(col="black")
+			##### draw vertical lines at various dates
+			if(drawDateLine) { verticalDateLines(jdLine, jdLineText, myYlims, jdLineColor)}
+
+		}
+
+if(drawDateLine) { verticalDateLines(jdLine, jdLineText, deriv.bounds, jdLineColor)}
 
 
 
