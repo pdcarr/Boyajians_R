@@ -36,3 +36,7 @@ plots/*.pdf
 .RData
 .Rapp.history
 R Console.txt
+##################
+# not ready for prime time #
+montet_comparison.R
+
