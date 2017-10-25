@@ -187,6 +187,7 @@ for (thisBand in allBands$bandinQ) {
 								thresh = mars.thresh,
 								minspan = mars.minspan)
 		}
+		allFits <- rbind(allFits,thisFit)
 	} 
 	print(length(desmat))
 	
@@ -200,6 +201,7 @@ for (thisBand in allBands$bandinQ) {
 		print(smoove.fit$call)
 		cat("\n")
 		print(smoove.fit$fit)
+		all.smoove[[index]] <- smoove.fit
 	}
 	
 	# try resistant regression if selected
@@ -217,8 +219,7 @@ for (thisBand in allBands$bandinQ) {
 		qfit <- lm(binCurve$Magnitude[btest] ~ desmat, weights= binWeights)
 		allQFits <- rbind(allQFits,qfit)
 	}
-	#package the fits into one matrix
-	allFits <- rbind(allFits,thisFit)
+	#package the cleanBands into one matrix
 	if(index==1) {
 		allClean <- cleanBand[,index]
 	} else {
@@ -261,14 +262,15 @@ myPlotTitle <- paste(titleString,collapse="\n")
 # initialize some data structures
 these.resids <- vector(mode="numeric",length=length(binCurve$JD))
 my.derivs <- vector(mode="numeric",length=length(binCurve$JD))
-resid.mat = vector(mode="numeric",length=length(binCurve$JD))
-deriv.mat = vector(mode="numeric",length=length(binCurve$JD))
+resid.mat = matrix(ncol=length(binCurve$JD))
+deriv.mat = matrix(ncol=length(binCurve$JD))
 
 # plot the cleaned and binned data, the fit lines and the excluded points
 icol=1
 if(plotRelTimes) {
 	myTimes <- binCurve$JD - tmin
 	jdLine <- jdLine - tmin
+	if(add.predict > 0) {myxlims[2] <- myxlims[2] + add.predict}
 	myxlims <- myxlims - tmin
 	lcTimes = lightcurve$JD - tmin
 	myXLabel <- paste("Julian Date -",as.character(tmin),sep=" ")
@@ -276,6 +278,7 @@ if(plotRelTimes) {
 	myTimes <- binCurve$JD
 	myXLabel <- "Julian Date"
 }
+
 deriv.bounds <- c(NA,NA)
 quartz("AAVSO Magnitude Data")
 for (thisBand in allBands$bandinQ) {
@@ -316,20 +319,19 @@ for (thisBand in allBands$bandinQ) {
 
 	# do a smooth.spline on the bins if called for
 	if(perform.smooth) {
-		smoove.fit <- smooth.spline(myTimes[btest],binCurve$Magnitude[btest],
-									w= (1/binCurve[btest,"Uncertainty"])*as.numeric(used.in.fit[btest,icol]),
-									all.knots=FALSE,nknots= smooth.n.knots,
-									keep.data=TRUE,cv=do.CV,penalty= df.penalty)
-		cat("\n\n Smooth Spline Fit: \n")
-		print(smoove.fit$call)
-		cat("\n")
-		print(smoove.fit$fit)
+		smoove.fit <- all.smoove[[icol]]
 		these.values <- predict(smoove.fit,myTimes[btest])$y
 		lines(myTimes[btest],these.values,col=smoove.color,lwd=3) # plot as a line of specified color
+		##### add prediction if add.predict > 0
+		if(add.predict > 0) {
+			predict.days <- seq(from=tail(myTimes[btest],n=1),to=tail(myTimes[btest],n=1)+add.predict,by=1)
+			add.prediction <- predict(smoove.fit,predict.days,deriv=0)
+			lines(predict.days,add.prediction$y,lty="dashed",lwd=3,col=smoove.color)
+		}
 		
 		these.resids[btest] <- binCurve$Magnitude[btest] - these.values # store residuals
 		if(icol==1) {
-			resid.mat <- these.resids
+			resid.mat[icol,] <- these.resids
 		} else {
 			resid.mat <- rbind(resid.mat,these.resids)
 		}
@@ -338,7 +340,7 @@ for (thisBand in allBands$bandinQ) {
 				deriv.bounds[1] <- min(deriv.bounds[1],my.derivs,na.rm=TRUE)
 				deriv.bounds[2] <- max(deriv.bounds[2],my.derivs,na.rm=TRUE)
 				if (icol==1) {
-					deriv.mat <- my.derivs
+					deriv.mat[icol,btest] <- my.derivs[btest]
 				} else {
 					deriv.mat <- rbind(deriv.mat,my.derivs)
 				}
@@ -437,7 +439,7 @@ if (plotMARS & plotResiduals & !splineRaw) {
 		relFlux <- sapply(resid.mat[irow,btest],ReverseMagnitude) # convert magnitiude difference to flux ratio
 		fluxYLims <-c(min(relFlux)-0.01,max(relFlux)+0.01)	# calcuate y plot limits with a little more room
 		if(irow == 1) {
-			plot(myTimes[btest][not.in.dip],relFlux[not.in.dip],col= allBands$plotColor[irow],xlab=myXLabel,ylab="Relative Flux",xlim= myxlims,
+			plot(myTimes[btest][not.in.dip],relFlux[not.in.dip],col= allBands$plotColor[irow],xlab=myXLabel,ylab="Relative Flux",
 				ylim= fluxYLims,main="Residuals",pch=20,cex.main=1.0,type= res.plot.type)
 			points(myTimes[btest][!not.in.dip],relFlux[!not.in.dip],col="grey",pch=20)
 		} else {
@@ -449,7 +451,6 @@ if (plotMARS & plotResiduals & !splineRaw) {
 		grid(col="black")
 		##### draw vertical lines at various dates
 		if(drawDateLine) { verticalDateLines(jdLine, jdLineText, fluxYLims, jdLineColor)}
-
 	}
 
 }
@@ -468,10 +469,15 @@ if(perform.smooth & smooth.deriv) {
 					plot(myTimes[btest],deriv.mat[irow,btest],col= allBands$plotColor[irow],
 						xlab=myXLabel,ylab=myYlabel,
 						main="Derivative of Smooth Spline",
-						cex.main=1.0,type= "l",
+						cex.main=1.0,type= "l",lwd=2,
 						xlim= myxlims,ylim=deriv.margin*deriv.bounds)
 				} else {
-					lines(myTimes[btest],deriv.mat[irow,btest],col= allBands$plotColor[irow])
+					lines(myTimes[btest],deriv.mat[irow,btest],col= allBands$plotColor[irow],lwd=2)
+				}
+				if(add.predict > 0) {
+					add.times <- seq(from=tail(myTimes[btest],n=1),to=tail(myTimes[btest],n=1) + add.predict,by=1)
+					add.derivs <-predict(all.smoove[[irow]],add.times,deriv=1)
+					lines(add.times,add.derivs$y,col=allBands$plotColor[irow],lty="dashed",lwd=2)
 				}
 				irow <- irow + 1
 			}

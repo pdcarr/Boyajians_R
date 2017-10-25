@@ -12,9 +12,10 @@ startPlot <- earliestJD
 #startPlot <- 2457690
 #startPlot <- 2457980
 #startPlot <- 2457580
-startPlot <- 2457800
+startPlot <- 2457900
 stop.plot <- NA
 #stop.plot <- 2457540
+add.predict <- 100 # additional prediction days to add to plot
 plotRelTimes <- TRUE
 ##########
 includeExclude <- TRUE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
@@ -35,10 +36,10 @@ ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MA
 #ExclCodes <- c("JM","DUBF","LDJ")
 ########
 plotMee <- NA # do not highlight any particular observer code
-#plotMee <- "JM"	# an observer's points to highlight
+#plotMee <- "LDJ"	# an observer's points to highlight
 meeColor <- "darkviolet"
 #weightless <- c("JM","LDJ") # observers to plot, but not use in MARS fit.
-#weightless <- c("JM") # observers to plot, but not use in MARS fit.
+weightless <- c("LDJ") # observers to plot, but not use in MARS fit.
 weightless <- NA
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
@@ -61,7 +62,7 @@ tsBinWidth <- 5.0 # time series bin width in days. Important if generateTS is TR
 smoothTS <- TRUE # set to TRUE to smooth the times series
 tsSmoothOrder <- 6 # the order for the moving average to smooth the time series
 tryLQS <- FALSE # set to TRUE is you want to try resistant regression.
-userlm <- TRUE # set to TRUE to use robust lm, or rlm() if not using MARS.
+userlm <- FALSE # set to TRUE to use robust lm, or rlm() if not using MARS.
 plotResiduals <- TRUE # set to true to plot the residuals vs. time
 res.plot.type = "p" # should be a legit plot() type
 plot2Lines <-  FALSE  # two line feature doesn't work well
@@ -73,6 +74,7 @@ ebar.color <- "grey"	 # color to use for error bars
 #okComparison <- "(000-?BLS-?556)|(000-?BLS-?551)|(000-?BLS-?553)|(000-?BLS-?552)|(000-?BLS-?554)|(000-?BLS-?549)|(BLS-549)|(BLS-555)|(000-?BLS-?555)|(108)|(113)|(116)|(118)|(121)|(124)|(128)|(ENSEMBLE)|(APASS20062365[+-]442738)|(3162-1853-1)" # regular expression from AAVSO photometry table
 okComparison <- "."
 bad.comp.star <- "(000-?BLS-549)|(000-?BLS-?549)|(BLS-549)"
+bad.comp.star <- NA
 
 ##########################################################################
 pretty.interval <- 100 # controls rounding of plot limits
