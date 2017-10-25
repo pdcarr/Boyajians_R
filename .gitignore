@@ -35,3 +35,4 @@ plots/*.pdf
 .Rhistory
 .RData
 .Rapp.history
+R Console.txt
