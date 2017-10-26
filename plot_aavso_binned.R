@@ -325,7 +325,7 @@ for (thisBand in allBands$bandinQ) {
 		##### add prediction if add.predict > 0
 		if(add.predict > 0) {
 			predict.days <- seq(from=tail(myTimes[btest],n=1),to=tail(myTimes[btest],n=1)+add.predict,by=1)
-			add.prediction <- predict(smoove.fit,predict.days,deriv=0)
+			add.prediction <- predict.smooth.spline(smoove.fit,predict.days,deriv=0)
 			lines(predict.days,add.prediction$y,lty="dashed",lwd=3,col=smoove.color)
 		}
 		
