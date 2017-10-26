@@ -439,9 +439,19 @@ if (plotMARS & plotResiduals & !splineRaw) {
 		relFlux <- sapply(resid.mat[irow,btest],ReverseMagnitude) # convert magnitiude difference to flux ratio
 		fluxYLims <-c(min(relFlux)-0.01,max(relFlux)+0.01)	# calcuate y plot limits with a little more room
 		if(irow == 1) {
-			plot(myTimes[btest][not.in.dip],relFlux[not.in.dip],col= allBands$plotColor[irow],xlab=myXLabel,ylab="Relative Flux",
-				ylim= fluxYLims,main="Residuals",pch=20,cex.main=1.0,type= res.plot.type)
-			points(myTimes[btest][!not.in.dip],relFlux[!not.in.dip],col="grey",pch=20)
+			plot(myTimes[btest][not.in.dip],
+                relFlux[not.in.dip],
+                col= allBands$plotColor[irow],
+                xlab=myXLabel,ylab="Relative Flux",
+                xlim=myxlims,
+                ylim= fluxYLims,
+                main="Residuals",
+                pch=20,cex.main=1.0,
+                type= res.plot.type)
+            
+			points(myTimes[btest][!not.in.dip],
+                relFlux[!not.in.dip],
+                col="grey",pch=20)
 		} else {
 			points(x=myTimes[btest][not.in.dip],y= relFlux[not.in.dip],col=allBands$plotColor[irow],pch=20)
 			points(myTimes[btest][!not.in.dip],relFlux[!not.in.dip],col="grey",pch=20)
