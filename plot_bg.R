@@ -8,7 +8,7 @@ source("plot_funcs.R")
 
 ######################## control parameters
 maxAirmass <- 2.0 # data with airmass higher than this will not be included
-bin.width = 1/2 # days
+bin.width = 1 # days
 t.epsilon = 1.0 # days
 mag.epsilon <- 0.01 # magnitudes
 bin.it <- TRUE
