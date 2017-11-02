@@ -15,14 +15,14 @@ mag.cull.limit = 0.05
 mag.margin <- 0.025
 tmargin <- 1 # positive number, days extra on xscale. 
 ####### MARS
-marsOrder <- 35 # maximum number of knots
-marsPenalty <- 4 # set to 0 to avoid penalizing knots in pruning pass
+marsOrder <- 70 # maximum number of knots
+marsPenalty <- 3 # set to 0 to avoid penalizing knots in pruning pass
 mars.thresh <- 0.00002
 #marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "exhaustive" # set to "none" to avoid pruning
 ##########
 earliestJD <- 2457449
-earliestJD <- 2457840
+#earliestJD <- 2457840
 source("input_files/VlineParams.R")
 source("input_files/dip_mask.R")
 
