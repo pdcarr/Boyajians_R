@@ -7,7 +7,7 @@ maxBinUncertainty <- 0.05 # worst standard deviation to accept for a binned set 
 wildsd <- 8.0 # worst number of standard deviations from mean allowed
 
 earliestJD = 2457290 # only data on or after this JD will be used
-earliestJD <- 2457700
+#earliestJD <- 2457700
 startPlot <- earliestJD
 #startPlot <- 2457690
 #startPlot <- 2457980
@@ -27,7 +27,7 @@ ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MA
 #ExclCodes <- c("DUBF","JM","LDJ","GKA") # smaller V ensemble
 #ExclCodes <- c("DUBF","GKA","SJAR","LBG","LWHA","JM","LPB","LDJ") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LDJ","CMP","JM") # I ensemble
-ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","JM","FJQ","MNIC") # candidate B ensemble
+#ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","JM","FJQ","MNIC") # candidate B ensemble
 #ExclCodes <- c("LPB","SGEA") # R exclusion
 #ExclCodes <- c("LDJ")
 #ExclCodes <- c("SWIA","CPP","DRZ","LPAC","HDHA") 	# B band exclusions
@@ -44,7 +44,7 @@ weightless <- NA
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
-allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAsFactors=FALSE)
+#allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
@@ -74,7 +74,7 @@ ebar.color <- "grey"	 # color to use for error bars
 #okComparison <- "(000-?BLS-?556)|(000-?BLS-?551)|(000-?BLS-?553)|(000-?BLS-?552)|(000-?BLS-?554)|(000-?BLS-?549)|(BLS-549)|(BLS-555)|(000-?BLS-?555)|(108)|(113)|(116)|(118)|(121)|(124)|(128)|(ENSEMBLE)|(APASS20062365[+-]442738)|(3162-1853-1)" # regular expression from AAVSO photometry table
 okComparison <- "."
 bad.comp.star <- "(000-?BLS-549)|(000-?BLS-?549)|(BLS-549)"
-bad.comp.star <- NA
+#bad.comp.star <- NA
 
 ##########################################################################
 pretty.interval <- 100 # controls rounding of plot limits
