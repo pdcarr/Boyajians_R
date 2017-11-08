@@ -15,14 +15,19 @@ mag.cull.limit = 0.05
 mag.margin <- 0.025
 tmargin <- 1 # positive number, days extra on xscale. 
 ####### MARS
+mars.fit <- FALSE
 marsOrder <- 70 # maximum number of knots
 marsPenalty <- 3 # set to 0 to avoid penalizing knots in pruning pass
 mars.thresh <- 0.00002
 #marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "exhaustive" # set to "none" to avoid pruning
+
+######## Smooth Spline
+asassn.n.knots <- 5
+
 ##########
 earliestJD <- 2457449
-#earliestJD <- 2457840
+earliestJD <- 2457840
 source("input_files/VlineParams.R")
 source("input_files/dip_mask.R")
 
@@ -44,16 +49,33 @@ tmin <- 20*floor(tmin/20)
 desmat <- asassn_data$HJD[good_data] - tmin
 #calculate weights for data outside the dips
 my.weights <- (1/asassn_data$mag_err[good_data])*(as.numeric(not.dips))
-#mars <- earth(x=desmat,y= asassn_data$mag[good_data],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty,subset=not.dips)
-mars <- earth(x=desmat,y= asassn_data$mag[good_data],
-				nk= marsOrder,
-				pmethod= marsPMethod,
-				penalty = marsPenalty,
-				weights=my.weights,
-				thresh= mars.thresh,
-				minspan=10)
 
-print(summary(mars))
+if(mars.fit) {
+	#mars <- earth(x=desmat,y= asassn_data$mag[good_data],nk= marsOrder,pmethod= marsPMethod,penalty = marsPenalty,subset=not.dips)
+	mars <- earth(x=desmat,y= asassn_data$mag[good_data],
+					nk= marsOrder,
+					pmethod= marsPMethod,
+					penalty = marsPenalty,
+					weights=my.weights,
+					thresh= mars.thresh,
+					minspan=10)
+	
+	print(summary(mars))
+} else {
+		smoove.fit <- smooth.spline(x=desmat,
+									y= asassn_data$mag[good_data],
+									w=my.weights,
+									all.knots=FALSE,nknots= asassn.n.knots,
+									keep.data=TRUE,
+									cv=TRUE,
+									penalty= 1)
+		cat("\n\n Smooth Spline Fit: \n")
+		print(smoove.fit$call)
+		cat("\n")
+		print(smoove.fit$fit)
+
+}
+
 # plot limits
 my.y.lims <- c(max(asassn_data$mag[good_data]) + mag.margin,min(asassn_data$mag[good_data]) - mag.margin)
 my.xlab <- paste("Julian Date - ",tmin)
@@ -68,10 +90,14 @@ points(plot.times[!not.dips],asassn_data$mag[good_data][!not.dips],col="grey",pc
 # add grid
 grid(col="black")
 
-# plot MARS fir as a line
-#lines(x=desmat[not.dips],y=mars$fitted.values,col= "black",lwd=2)
-lines(x=desmat,y=mars$fitted.values,col= "black",lwd=2)
-
+if(mars.fit) {
+	# plot MARS fit as a line
+	#lines(x=desmat[not.dips],y=mars$fitted.values,col= "black",lwd=2)
+	lines(x=desmat,y=mars$fitted.values,col= "black",lwd=2)
+} else {
+	smoove.values <- predict(smoove.fit,desmat)$y
+	lines(x=desmat,y=smoove.values,col="black",lwd=2)
+}
 # plot vertical lines if any
 jdLine <- jdLine - tmin
 verticalDateLines(jdLine, jdLineText, my.y.lims, jdLineColor)
