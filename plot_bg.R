@@ -1,5 +1,6 @@
 #### housekeeping
 library("MASS") # for rlm() and lqs()
+library("earth")
 options(digits=12) # hard to read JDs without this setting
 rm("superObs")
 rm("allSuperObs")
@@ -19,6 +20,13 @@ dfile.name <- "data/BG_gprime_latest.txt"
 data.type <- "G prime"
 #data.type <- "V"
 source("input_files/dip_mask.R")
+########## MARS control
+n.knots <- 6
+knot.penalty <- 4
+min.span <- 5
+###########################
+
+
 ############################################################
 
 ###### read in the data
@@ -71,7 +79,15 @@ if (bin.it) {
     binWeights <- as.numeric(dipless) # weight of 1 if not in a known dip, 0 otherwise.
 	# calculate robust linear fit
 	desmat <- allSuperObs$MJD - tmin
-	theFit <- rlm(allSuperObs$V.mag ~ desmat,na.action="na.omit",psi=psi.bisquare,subset=dipless)
+    #theFit <- rlm(allSuperObs$V.mag ~ desmat,na.action="na.omit",psi=psi.bisquare,subset=dipless)
+    theFit <- earth(x=desmat,
+                    y=allSuperObs$V.mag,
+                    weights=binWeights,
+                    pmethod="exhaustive",
+                    nk=n.knots,
+                    penalty=knot.penalty,
+                    minspan=min.span)
+
 	print(summary(theFit))
 	quartz("binned Data Plot")
 	plot(desmat,allSuperObs$V.mag,xlim=x.limits,ylim=y.limits,xlab=x.label,ylab=y.label,main=plot.title,pch= plot.pch,col=plot.col)
@@ -85,10 +101,10 @@ if (bin.it) {
 }
 
 #### plot the fit 
-
 myslope <- coefficients(theFit)[2]
 basemag <- coefficients(theFit)[1]
-curve(basemag + myslope*x,from=0,to=tmax-tmin, add=TRUE,col="black")
+#curve(basemag + myslope*x,from=0,to=tmax-tmin, add=TRUE,col="black")
+lines(x=desmat,y=theFit$fitted.values,col="black")
 ##### draw vertical lines at various dates
 jdLine <- jdLine - 2400000.5 - tmin
 if(drawDateLine) { verticalDateLines(jdLine, jdLineText, y.limits, jdLineColor)}
