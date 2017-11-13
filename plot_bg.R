@@ -21,12 +21,9 @@ data.type <- "G prime"
 #data.type <- "V"
 source("input_files/dip_mask.R")
 ########## MARS control
-n.knots <- 6
+n.knots <- 21
 knot.penalty <- 4
 min.span <- 5
-###########################
-
-
 ############################################################
 
 ###### read in the data
