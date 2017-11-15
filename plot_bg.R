@@ -22,8 +22,8 @@ data.type <- "G prime"
 source("input_files/dip_mask.R")
 ########## MARS control
 n.knots <- 21
-knot.penalty <- 4
-min.span <- 5
+knot.penalty <- 6
+min.span <- 12
 ############################################################
 
 ###### read in the data
@@ -85,9 +85,21 @@ if (bin.it) {
                     penalty=knot.penalty,
                     minspan=min.span)
 
+	# let's see what the fit is
 	print(summary(theFit))
+	# open a window to plot in
 	quartz("binned Data Plot")
-	plot(desmat,allSuperObs$V.mag,xlim=x.limits,ylim=y.limits,xlab=x.label,ylab=y.label,main=plot.title,pch= plot.pch,col=plot.col)
+	# plot bins used in the fit
+	plot(desmat[dipless],allSuperObs$V.mag[dipless],
+		xlim=x.limits,ylim=y.limits,
+		xlab=x.label,ylab=y.label,
+		main=plot.title,
+		pch= plot.pch,col=plot.col)
+	# plot omitted bins
+	points(x=desmat[!dipless],
+		y=allSuperObs$V.mag[!dipless],
+		pch= plot.pch,col="grey")
+# not binned
 } else {
 	quartz("Data Plot")
 	y.label = "V Magnitude"
