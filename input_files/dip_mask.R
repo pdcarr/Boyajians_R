@@ -2,3 +2,6 @@ dip.mask <- data.frame(dipname="Elsie",JD.begins = 2457890,JD.ends=2457896,strin
 dip.mask <- rbind(dip.mask,c("Celeste",2457915,2457927),
 						   c("Skara Brae",2457968,2457985),
 						   c("Angkor",2458002,2458010))
+
+# adding mask of FWAIN, as observed by Bruce Gary.
+dip.mask <-rbind(dip.mask,c("FWAIN",2458051,2458057))
