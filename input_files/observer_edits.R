@@ -18,7 +18,7 @@ use.static.biases <- TRUE
 biasObserver <- data.frame(obsCode=character(),band=character(),bias=numeric(),stringsAsFactors=FALSE)
 # list each observer for each band only once
 biasObserver <- rbind(biasObserver, list(obsCode="OAR",band="B",bias=-0.0125),
-									list("JM","B",-0.016),
+									list("JM","B",-0.008),
                                     list("JM","V",-0.018),
 									list("JM","R",0.0),
 									list("JM","I",0.017),
