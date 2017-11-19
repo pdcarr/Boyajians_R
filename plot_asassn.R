@@ -26,7 +26,7 @@ bin.it <- TRUE
 plot.col = "darkgreen"
 plot.pch <- 20
 t.epsilon = 1.0 # days
-mag.epsilon <- 0.01 # magnitudes
+mag.epsilon <- 0.025 # magnitudes
 
 
 
@@ -39,12 +39,12 @@ mars.thresh <- 0.00002
 marsPMethod <- "exhaustive" # set to "none" to avoid pruning
 
 ######## Smooth Spline
-asassn.n.knots <- 4
+asassn.n.knots <- 5
 
 ##########
 earliestJD <- 2457449
-earliestJD <- 2457840
-earliestJD <- 2457990
+earliestJD <- 2457880
+#earliestJD <- 2457990
 source("input_files/VlineParams.R")
 source("input_files/dip_mask.R")
 
@@ -65,8 +65,8 @@ tmin <- 20*floor(tmin/20)
 tmax <- max(asassn_data$HJD[good_data])
 
 x.limits <- c(0,(tmax-tmin) + t.epsilon)
-y.limits <- c(max(asassn_data$mag[good_data],na.rm=TRUE) - mag.epsilon,
-			 min(asassn_data$mag[good_data],na.rm=TRUE) + mag.epsilon)
+y.limits <- c(max(asassn_data$mag[good_data],na.rm=TRUE) + mag.epsilon,
+			 min(asassn_data$mag[good_data],na.rm=TRUE) - mag.epsilon)
 x.label <- paste("JD - ",tmin)
 
 
@@ -163,9 +163,9 @@ if (bin.it) {
 		print(smoove.fit$fit)
 	}
 	# plot limits
-	my.y.lims <- c(max(asassn_data$mag[good_data]) + mag.margin,min(asassn_data$mag[good_data]) - mag.margin)
+	y.lims <- c(max(asassn_data$mag[good_data]) + mag.margin,min(asassn_data$mag[good_data]) - mag.margin)
 	my.xlab <- paste("Julian Date - ",tmin)
-	my.x.lims <- c(0,max(desmat) + tmargin)
+	x.lims <- c(0,max(desmat) + tmargin)
 	# plot
 	quartz("asas-sn")
 	plot.times <- asassn_data$HJD[good_data] - tmin
@@ -174,7 +174,7 @@ if (bin.it) {
 		col="darkgreen",pch=20,
 		main="ASASSN V Data",
 		xlab=my.xlab,ylab="V magnitude",
-		ylim=my.y.lims,xlim= my.x.lims)
+		ylim=y.limits,xlim= x.limits)
 	# add the points not used in the fit in grey
 	points(plot.times[!not.dips],asassn_data$mag[good_data][!not.dips],col="grey",pch=20)
 	# add grid
@@ -194,4 +194,4 @@ grid(col="black")
 
 # plot vertical lines if any
 jdLine <- jdLine - tmin
-verticalDateLines(jdLine, jdLineText, my.y.lims, jdLineColor)
+verticalDateLines(jdLine, jdLineText, y.limits, jdLineColor)
