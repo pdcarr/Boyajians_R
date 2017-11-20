@@ -6,7 +6,8 @@ source("special_funcs.R")
 # cleanBand is output fron the plotting script's cleaning process
 fit.resids <- FALSE	# TRUE if doing the periodogram to the residuals vs. a fit
 limit.period <- TRUE
-max.period <- 20 # days
+max.period <- 30
+plot.max.period <- 20 # days
 set.ofac <- 8
 use.frequency <- FALSE # set this to FALSE to plot vs. period
 ######## fitting parameters
@@ -84,9 +85,14 @@ if(use.frequency) {
 	mylsp <- lsp(x=X,times=mytimes,from=0.1,to=3.5,type="frequency",ofac=set.ofac,alpha=0.01)
 	plot(mylsp$scanned,mylsp$power,xlab="Frequency (cycles/day)",ylab="normalized power",col="darkgreen",type="l",main= title.string)
 } else {
-	mylsp <- lsp(x=X,times=mytimes,type="period",ofac=set.ofac,alpha=0.01)
+	mylsp <- lsp(x=X,
+				times=mytimes,
+				type="period",
+				ofac=set.ofac,
+				alpha=0.01,
+				to=max.period)
 	if(limit.period) {
-		myxlims <- c(0,max.period)
+		myxlims <- c(0, plot.max.period)
 		plot(mylsp$scanned,mylsp$power,xlab="Period (days)",ylab="power",col="darkgreen",type="l",main=title.string,xlim=myxlims)
 	} else {
 		plot(mylsp$scanned,mylsp$power,xlab="Period (days)",ylab="power",col="darkgreen",type="l",main=title.string)
