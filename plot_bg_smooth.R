@@ -4,6 +4,7 @@ library("earth")
 options(digits=12) # hard to read JDs without this setting
 rm("superObs")
 rm("allSuperObs")
+source("data_funcs.R")
 source("input_files/VlineParams.R")
 source("plot_funcs.R")
 source("special_funcs.R")
