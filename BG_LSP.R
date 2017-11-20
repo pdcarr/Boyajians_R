@@ -4,18 +4,18 @@ source("special_funcs.R")
 
 # lightcurve has been read in by the aavso plottng script with names autoassigned by read.csv()
 # cleanBand is output fron the plotting script's cleaning process
-fit.resids <- TRUE
+fit.resids <- FALSE	# TRUE if doing the periodogram to the residuals vs. a fit
 limit.period <- TRUE
 max.period <- 20 # days
 set.ofac <- 8
 use.frequency <- FALSE # set this to FALSE to plot vs. period
 ######## fitting parameters
+bin.it <- FALSE
 bg.n.knots <- 5
 
-quartz("LSP of Bruce Gary data")
 title.string <- "Bruce Gary Data L-S Periodogram"
 
-# confined Gaussian window
+# confined Gaussian window for binned data.
 if (bin.it) {
 	desmat <- allSuperObs$MJD - tmin
 	bg.binned.JDs <- allSuperObs$MJD  + 2400000.5
@@ -37,20 +37,40 @@ if (bin.it) {
 	mytimes <- desmat
 	w <- cg.window(mytimes)
 	X <- allSuperObs$V.mag
+	our.resids <- (allSuperObs$V.mag - fit.points)
 } else {
 	desmat <- bg.data$MJD[ok.airmass] - tmin
-	theFit <- rlm(bg.data$V.mag[ok.airmass] ~ desmat,na.action="na.omit",psi=psi.bisquare)
+	X <- bg.data$V.mag[ok.airmass]
+#	theFit <- rlm(bg.data$V.mag[ok.airmass] ~ desmat,na.action="na.omit",psi=psi.bisquare)
+    dipless <- filter.dips.JD(X,dip.mask)
+    binWeights <- as.numeric(dipless) # weight of 1 if not in a known dip or flare, 0 otherwise.
+	theFit <- smooth.spline(x=desmat,
+						y= X,
+						w= binWeights,
+						all.knots=FALSE,
+						nknots= bg.n.knots,
+						keep.data=TRUE,
+						cv=TRUE,
+						penalty= 1)
+
 	mytimes <- desmat
-	w <- vector(n= length(mytimes),mode="numeric")
-	w <- 1	# rectangular window
+	fit.points <- predict(theFit,x= mytimes)$y
+	our.resids <- (X - fit.points)
+
+	# set up window for LSP
+	N <- length(mytimes)
+	w <- hamming.window(N)	# rectangular window
 }
 	
 if (fit.resids) {
-	X <- (allSuperObs$V.mag - fit.points)
+
 	quartz("residuals plot")
-	plot(x= mytimes[dipless],y=X[dipless],col='red', 
+	plot(x= mytimes[dipless],
+		y=our.resids[dipless],
+		col='red', 
 		pch=20,
-		xlab="time",ylab="residual")
+		xlab="time",
+		ylab="residual")
 	points(x= mytimes[!dipless],y=X[!dipless],col='grey',pch=20)
 	lines(x=mytimes,y=fit.points,col="darkgrey",lwd=2)
 	grid(col="black")
