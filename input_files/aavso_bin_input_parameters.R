@@ -11,6 +11,7 @@ earliestJD = 2457290 # only data on or after this JD will be used
 startPlot <- earliestJD
 #startPlot <- 2457690
 #startPlot <- 2457980
+#startPlot <- 2457880
 #startPlot <- 2457580
 #startPlot <- 2457900
 stop.plot <- NA
@@ -21,22 +22,20 @@ plotRelTimes <- TRUE
 includeExclude <- TRUE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
 ExclCodes <- "None"
 #ExclCodes <- c("JM","LDJ","ELYA","DKS","OJJ","OAR","ATE","BPAD","HJW")
-#ExclCodes <- c("JM","LDJ","DUBF","HJW","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA","UJHA","WROC","MAND","HDHA","ELYA","VBPA","NOT","PALE","OAR") # V & B
 ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA",
 				"WROC","MAND","VBPA","NOT","PALE","GKA","JM","AMID","SGEA","ELYA","GCJ") # V & B
-#ExclCodes <- c("DUBF","JM","LDJ","GKA") # smaller V ensemble
 #ExclCodes <- c("DUBF","GKA","SJAR","LBG","LWHA","JM","LPB","LDJ") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LDJ","CMP","JM") # I ensemble
 #ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","JM","FJQ","MNIC") # candidate B ensemble
 #ExclCodes <- c("LPB","SGEA") # R exclusion
 #ExclCodes <- c("LDJ")
 #ExclCodes <- c("SWIA","CPP","DRZ","LPAC","HDHA") 	# B band exclusions
-#ExclCodes <- c("BJFB","COO","LBG","BMAK") # I band exclusion
-#ExclCodes <- c("DUBF","JM")
-#ExclCodes <- c("JM","DUBF","LDJ")
-########
+#ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA") # R ensemble
+#ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP") # I ensemble
+#ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","DUBF","JSJA","VBPA","DKS") # candidate B ensemble
+#ExclCodes <- c("SWIA","CPP")	# B band exclusions
 plotMee <- NA # do not highlight any particular observer code
-#plotMee <- "LDJ"	# an observer's points to highlight
+#plotMee <- "JM"
 meeColor <- "darkviolet"
 #weightless <- c("JM","LDJ") # observers to plot, but not use in MARS fit.
 #weightless <- c("GCJ") # observers to plot, but not use in MARS fit.
@@ -69,6 +68,13 @@ plot2Lines <-  FALSE  # two line feature doesn't work well
 lqsColor <- "darkgreen"
 ebar.color <- "grey"	 # color to use for error bars
 
+
+####### MARS
+marsOrder <- 11 # maximum number of knots
+marsPenalty <- 3 # set to 0 to avoid penalizing knots in pruning pass
+#marsPMethod <- "none" # set to "none" to avoid pruning
+marsPMethod <- "exhaustive" # set to "none" to avoid pruning
+splineRaw <-  FALSE # do the spline on the raw lightcurve, not binned.
 
 ############################## Comparison Stars
 #okComparison <- "(000-?BLS-?556)|(000-?BLS-?551)|(000-?BLS-?553)|(000-?BLS-?552)|(000-?BLS-?554)|(000-?BLS-?549)|(BLS-549)|(BLS-555)|(000-?BLS-?555)|(108)|(113)|(116)|(118)|(121)|(124)|(128)|(ENSEMBLE)|(APASS20062365[+-]442738)|(3162-1853-1)" # regular expression from AAVSO photometry table

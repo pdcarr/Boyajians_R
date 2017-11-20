@@ -38,6 +38,22 @@ cg.window <- function(t) {
 	}
 	return(w)
 } 
+
+############################################
+# Hamming window
+hamming.window <- function(N) {
+	if (N < 3) {
+		return(NA)
+	}
+	alpha =0.54
+	beta=0.46
+	w = vector(length=N,mode="numeric")
+	for (n in 1:N) {
+		w[n] =alpha - beta*cos(2*pi*n/(N-1))
+	}
+	return(w)
+}
+
 ##############################
 # Gaussian function for Gaussian window
 G.x <- function(x,sigma.t,N) {
