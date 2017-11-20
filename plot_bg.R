@@ -10,6 +10,7 @@ source("plot_funcs.R")
 ######################## control parameters
 maxAirmass <- 2.0 # data with airmass higher than this will not be included
 bin.width = 1 # days
+#bin.width <- 15/1440 # days
 t.epsilon = 1.0 # days
 mag.epsilon <- 0.01 # magnitudes
 bin.it <- TRUE
@@ -23,7 +24,7 @@ source("input_files/dip_mask.R")
 ########## MARS control
 n.knots <- 21
 knot.penalty <- 6
-min.span <- 12
+min.span <- 14
 ############################################################
 
 ###### read in the data
@@ -83,7 +84,8 @@ if (bin.it) {
                     pmethod="exhaustive",
                     nk=n.knots,
                     penalty=knot.penalty,
-                    minspan=min.span)
+                    minspan=min.span,
+                    thresh=0.0001)
 
 	# let's see what the fit is
 	print(summary(theFit))
