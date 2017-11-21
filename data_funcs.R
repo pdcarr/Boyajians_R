@@ -448,13 +448,14 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 		for (n in 2:ncol(cleanObs)) {allClean <- allClean | cleanObs[,n]}
 	}
 
-	#calculate the start and stop times from the llight curve Julian Dates 
+	#calculate the start and stop times from the light curve Julian Dates 
 	
 	startJD = floor(min(lightcurve[allClean,"JD"],na.rm=TRUE))
 	stopJD = ceiling(max(lightcurve[allClean,"JD"],na.rm=TRUE))
-#	print(length(lightcurve$JD[allClean]))
+#	print(length(lightcurve[allClean,"JD"]))
 #	print(startJD)
 #	print(stopJD)
+#	print(deltaJD)
 	weare = unique(lightcurve[allClean,"Observer_Code"]) # a list of all the observer codes
 	numBands = length(allBand$bandinQ) # the number of passbands
 	
