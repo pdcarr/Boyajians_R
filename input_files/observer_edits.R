@@ -51,4 +51,5 @@ biasObserver <- rbind(biasObserver, list(obsCode="OAR",band="B",bias=-0.0125),
                                     list("JSJA","V",-0.004),
                                     list("SDB","V",0.005),
                                     list("SGEA","V",0.027),
-                                    list("LPB","R",-0.013))
+                                    list("LPB","R",-0.013),
+                                    list("CPP","B",0.027))
