@@ -428,8 +428,10 @@ if (plotMARS & plotResiduals & !splineRaw) {
 		}
 		irow <- irow + 1
 	}
+	##### draw vertical lines at various dates
+	if(drawDateLine) { verticalDateLines(jdLine, jdLineText, fluxYLims, jdLineColor)}
 	grid(col="black")
-} else if(! plotMARS & plotResiduals & perform.smooth) {
+} else if(!plotMARS & plotResiduals & perform.smooth) {
 	quartz("Flux Relative to Fit")	
 	irow <- 1
 	# loop over all the bands under consideration
