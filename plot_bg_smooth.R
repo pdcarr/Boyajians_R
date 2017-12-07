@@ -14,7 +14,7 @@ source("input_files/dip_mask.R")
 ######################## control parameters
 maxAirmass <- 2.0 # data with airmass higher than this will not be included
 #bin.width = 15/1440 # days
-bin.width = 1 # days
+bin.width = 180/1440 # days
 
 t.epsilon = 1.0 # days
 mag.epsilon <- 0.01 # magnitudes
@@ -32,7 +32,7 @@ knot.penalty <- 0
 min.span <- 2
 earth.thresh <- 0.00001
 ######## fitting parameters
-bg.n.knots <- 6
+bg.n.knots <- 4
 
 ###### read in the data
 bg.data <- read.csv(dfile.name,header=TRUE)
@@ -140,5 +140,5 @@ if(drawDateLine) { verticalDateLines(jdLine, jdLineText, y.limits, jdLineColor)}
 
 # add a grid
 grid(col="black")
-
+cbind(allSuperObs,"spline fit" = fit.points)
 summary(theFit)
