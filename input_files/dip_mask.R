@@ -4,4 +4,4 @@ dip.mask <- rbind(dip.mask,c("Celeste",2457915,2457927),
 						   c("Angkor",2457994,2458011))
 
 # adding mask of FWAIN, as observed by Bruce Gary.
-dip.mask <-rbind(dip.mask,c("FWAIN",2458051,2458057))
+#dip.mask <-rbind(dip.mask,c("FWAIN",2458051,2458057))
