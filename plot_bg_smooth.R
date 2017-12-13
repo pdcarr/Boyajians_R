@@ -45,11 +45,7 @@ ok.airmass <- bg.data$air.mass <= maxAirmass
 # get the bin boundaries to be somewhere sensible
 
 tmin <-  min(bg.data$MJD[ok.airmass],na.rm=TRUE)
-if (floor(tmin*2) %% 2 == 0) {
-    tmin <- floor(tmin*2 -1)/2
-} else {
-    tmin <- floor(tmin*2)/2
-}
+tmin <- floor(tmin/10)*10
 
 tmax = max(bg.data$MJD[ok.airmass],na.rm=TRUE)
 x.limits <- c(0,(tmax-tmin) + t.epsilon)
