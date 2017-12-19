@@ -281,6 +281,9 @@ if(plotRelTimes) {
 
 deriv.bounds <- c(NA,NA)
 quartz("AAVSO Magnitude Data")
+bin.predict <- vector(mode="numeric",length=length(binCurve$JD))
+bin.predict[1:length(binCurve$JD)] <- NaN
+
 for (thisBand in allBands$bandinQ) {
 	ourCleanData <- cleanBand[,icol]
 	btest <- (binCurve$Band == thisBand) & uncertaintyTest
@@ -321,6 +324,8 @@ for (thisBand in allBands$bandinQ) {
 	if(perform.smooth) {
 		smoove.fit <- all.smoove[[icol]]
 		these.values <- predict(smoove.fit,myTimes[btest])$y
+		bin.predict[btest] <- these.values
+
 		lines(myTimes[btest],these.values,col=smoove.color,lwd=3) # plot as a line of specified color
 		##### add prediction if add.predict > 0
 		if(add.predict > 0) {
@@ -361,7 +366,8 @@ if (!is.na(plotMee)) {
 	imSpecial <- grep(plotMee,binCurve$Observer_Code,ignore.case=TRUE)
 	points(myTimes[imSpecial],binCurve$Magnitude[imSpecial],col=meeColor,pch=20,cex=1.5)
 }
-
+# tack the predictions onto the binCurve
+binCurve <- cbind(binCurve,bin.predict,deparse.level=1)
 grid(col="black")
 
 ##### draw vertical lines at various dates
