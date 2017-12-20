@@ -476,16 +476,13 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 				testObs <- lightcurve$Observer_Code == thisObs
 				allTests <- testTime & cleanObs[,bandIndex] & testObs
 				# compile the super observation
-				if(length(lightcurve[allTests,"JD"]) > 0) {
+				n <- length(lightcurve[allTests,"JD"])
+				if(n > 0) {
 					superObs[1,"JD"] <- mean(lightcurve[allTests,"JD"],na.rm=TRUE)
 					superObs[1,"Band"] <- allBand$bandinQ[bandIndex]
 					superObs[1,"Magnitude"] <- mean(lightcurve[allTests,"Magnitude"],na.rm=TRUE)
-					if (length(lightcurve[allTests,"JD"]) >=4 ) {
-							superObs[1,"Uncertainty"] <- sd(lightcurve[allTests,"Magnitude"],na.rm=TRUE)
-						} else {
-							superObs[1,"Uncertainty"] <- mean(lightcurve[allTests,"Uncertainty"],na.rm=TRUE)
-						}
-					if(is.na(superObs[1,"Uncertainty"])) {
+					superObs[1,"Uncertainty"] <- mean(lightcurve[allTests,"Uncertainty"],na.rm=TRUE)/sqrt(n)
+					if(is.na(superObs[1,"Uncertainty"]) | is.nan(superObs[1,"Uncertainty"])) {
 						print("invalid uncertainty - not a number")
 						next
 					}
