@@ -189,7 +189,7 @@ for (thisBand in allBands$bandinQ) {
 		}
 		allFits <- rbind(allFits,thisFit)
 	} 
-	print(length(desmat))
+#	print(length(desmat))
 	
 	# do a smooth.spline on the bins if called for
 	if(perform.smooth) {
