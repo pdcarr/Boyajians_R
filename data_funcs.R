@@ -280,6 +280,7 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 	
 	# calculate mean and sd over the cleaned set of magnitudes
 	Imean = mean(lightcurve[runningClean,"Magnitude"],na.rm=TRUE)
+#	print(Imean)
 	Istdev = sd(lightcurve[runningClean,"Magnitude"],na.rm=TRUE)
 
 	# Remove anything bigger than max sd from mean
@@ -292,7 +293,7 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 	notEarly <- lightcurve$JD >= earliestJD
 	runningClean <- runningClean & notEarly
 	
-#	print(unique(runningClean))
+	print(unique(runningClean))
 
 # which observers are not reporting ok comparison star 1 (what is "ensemble"?)
 	starsOK <- !is.na(lightcurve$Comp_Star_1) & !is.na(lightcurve$Comp_Star_2) # check that a comparison star is provided
@@ -305,6 +306,9 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 	if (length(okIndex) != 0) {blankMask[okIndex] <- TRUE} # checks for an unlikely circumstance
 	starsOK <- starsOK & blankMask
 	runningClean <- runningClean & starsOK
+#	print(length(runningClean))
+#	print(sum(runningClean))
+
 	
  # are there any bad comparison stars we need to watch out for?
 	if (!is.na(bad.stars)) {
@@ -320,7 +324,8 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 		runningClean <- runningClean & starsOK
 	}
 #done
-	
+#	print(length(runningClean))
+#	print(sum(runningClean))
 	return(runningClean)
 }
 
