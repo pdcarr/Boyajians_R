@@ -51,7 +51,7 @@ latestJD <- max(lightcurve$JD,na.rm=TRUE)
 # make a list of every record with a Magnitude reported
 goodMags <- !is.na(lightcurve$Magnitude)
 
-# replace missing airmass for JM
+# replace missing airmass for observer codes in missing Airmass
 cat("replacing missing airmass...\n")
 for (index in 1:length(missingAirmass)){
         jmtest = lightcurve$Observer_Code == missingAirmass[index] & is.na(lightcurve$Airmass)
@@ -59,6 +59,7 @@ for (index in 1:length(missingAirmass)){
 }
 
 # loop over the desired bands
+cat("initializing loop over bands\n")
 numBands = length(allBands$bandinQ)
 cleanBand <- matrix(nrow=totalRec,ncol=numBands)
 allFits <- list()
