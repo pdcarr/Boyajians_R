@@ -651,3 +651,13 @@ filter.dips.JD <- function(lightcurve.JDs,dip.mask) {
 	return(good.times)
 }
 
+##############################################
+# truncates a POSIX time to the day
+trunc.pxct <- function(PXct.time) {
+	scratch <- as.POSIXlt(PXct.time)
+	scratch$hour <-0
+	scratch$min <- 0
+	scratch$sec <- 0
+	return(as.POSIXct(scratch))
+}
+
