@@ -1,7 +1,7 @@
 ##################
 # input parameters for binning and plotting AAVSO data
 llightcurve_name <- "data/aavso_latest_data.csv"
-maxairmass <- 2.7 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxairmass <- 3.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.025  # maximum AAVSO uncertainty estimate
 maxBinUncertainty <- 0.03 # worst standard deviation to accept for a binned set of observations
 wildsd <- 10.0 # worst number of standard deviations from mean allowed
@@ -12,9 +12,9 @@ earliestJD = 2457290 # only data on or after this JD will be used
 startPlot <- earliestJD
 #startPlot <- 2457690
 #startPlot <- 2457980
-#startPlot <- 2457880
+startPlot <- 2457880
 #startPlot <- 2457580
-#startPlot <- 2457990
+startPlot <- 2457990
 stop.plot <- NA
 #stop.plot <- 2458020
 add.predict <- 0 # additional prediction days to add to plot
@@ -25,12 +25,12 @@ ExclCodes <- "None"
 ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA",
 				"WROC","MAND","VBPA","NOT","PALE","GKA","JM","AMID","SGEA","ELYA","GCJ","LBG","HJW") # V & B
 #ExclCodes <- c("LPB","SGEA") # R exclusion
-#ExclCodes <- c("LDJ")
+ExclCodes <- c("LDJ")
 #ExclCodes <- c("DUBF")
 #ExclCodes <- c("SWIA","CPP","DRZ","LPAC","HDHA") 	# B band exclusions
-#ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA","JM") # R ensemble
+#ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","JM") # I ensemble
-ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","JM") # B ensemble
+#ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","JM") # B ensemble
 #ExclCodes <- c("SWIA","CPP","BMAK","HDHA","LPAC","LPB")	# B band exclusions
 plotMee <- NA # do not highlight any particular observer code
 #plotMee <- "HJW"
@@ -42,7 +42,7 @@ weightless <- NA
 allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAsFactors=FALSE)
-allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
+#allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
@@ -50,7 +50,7 @@ allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALS
 #allBands <- data.frame(bandinQ=c("R","V","B"),plotColor=c("red","green","blue"), stringsAsFactors=FALSE)
 
 ########################
-deltaJD <- 4.0 # bin width in days
+deltaJD <- 1.0 # bin width in days
 ########################
 plotExcluded <- FALSE # set to TRUE to plot the points in the lightcurve not used in the fit.
 plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit
@@ -78,7 +78,7 @@ splineRaw <-  FALSE # do the spline on the raw lightcurve, not binned.
 #okComparison <- "(000-?BLS-?556)|(000-?BLS-?551)|(000-?BLS-?553)|(000-?BLS-?552)|(000-?BLS-?554)|(000-?BLS-?549)|(BLS-549)|(BLS-555)|(000-?BLS-?555)|(108)|(113)|(116)|(118)|(121)|(124)|(128)|(ENSEMBLE)|(APASS20062365[+-]442738)|(3162-1853-1)" # regular expression from AAVSO photometry table
 okComparison <- "."
 bad.comp.star <- "(000-?BLS-549)|(000-?BLS-?549)|(BLS-549)"
-#bad.comp.star <- NA
+bad.comp.star <- NA
 
 ##########################################################################
 pretty.interval <- 100 # controls rounding of plot limits
