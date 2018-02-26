@@ -7,4 +7,4 @@ dip.mask <- rbind(dip.mask,c("Celeste",2457915,2457927),
 #dip.mask <-rbind(dip.mask,c("FWAIN",2458051,2458057))
 
 # primarily observed by Gary Johnson, the "December Surprise"
-dip.mask <- rbind(dip.mask,c("December_Surprise",2458096,2458097))
+#dip.mask <- rbind(dip.mask,c("December_Surprise",2458096,2458097))

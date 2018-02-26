@@ -14,11 +14,11 @@ source("input_files/dip_mask.R")
 ######################## control parameters
 maxAirmass <- 2.0 # data with airmass higher than this will not be included
 #bin.width = 15/1440 # days
-bin.width = 180/1440 # days
+bin.width = 5/1440 # days
 
-t.epsilon = 1.0 # days
+t.epsilon = 0.0 # days
 mag.epsilon <- 0.01 # magnitudes
-bin.it <- TRUE
+bin.it <- FALSE
 plot.col = "darkgreen"
 plot.pch <- 20
 #dfile.name <- "data/BruceGary.csv"
@@ -26,26 +26,38 @@ dfile.name <- "data/BG_gprime_latest.txt"
 data.type <- "G prime"
 #data.type <- "V"
 source("input_files/dip_mask.R")
+#earliest.MJD <- 58096
+earliest.MJD <- NA
+#latest.MJD <- 58098
+latest.MJD <- NA
+#pretty.days <- 1
+pretty.days <- 10
 ########## MARS control
 n.knots <- 33
 knot.penalty <- 0
 min.span <- 2
 earth.thresh <- 0.00001
 ######## fitting parameters
-bg.n.knots <- 4
+bg.n.knots <- 5
 
 ###### read in the data
 bg.data <- read.csv(dfile.name,header=TRUE)
 
 # filter out the high airmass data
 ok.airmass <- bg.data$air.mass <= maxAirmass
+if(is.numeric(earliest.MJD)) {
+	ok.airmass <- ok.airmass & (bg.data$MJD >= earliest.MJD)
+}
+if(is.numeric(latest.MJD)) {
+	ok.airmass <- ok.airmass & (bg.data$MJD <= latest.MJD)
+}
 
 # find earliest and latest times and highest and lowest magnitudes
 
 # get the bin boundaries to be somewhere sensible
 
 tmin <-  min(bg.data$MJD[ok.airmass],na.rm=TRUE)
-tmin <- floor(tmin/10)*10
+tmin <- floor(tmin/pretty.days)*pretty.days
 
 tmax = max(bg.data$MJD[ok.airmass],na.rm=TRUE)
 x.limits <- c(0,(tmax-tmin) + t.epsilon)
@@ -123,6 +135,7 @@ if (bin.it) {
 	desmat <- bg.data$MJD[ok.airmass] - tmin
 	theFit <- rlm(bg.data$V.mag[ok.airmass] ~ desmat,na.action="na.omit",psi=psi.bisquare)
 	plot(desmat,bg.data$V.mag[ok.airmass],xlim=x.limits,ylim=y.limits,xlab=x.label,ylab=y.label,main=plot.title,pch= plot.pch,col=plot.col)
+	grid(col="black")
 }
 
 #### plot the fit 
