@@ -2,8 +2,8 @@
 # input parameters for binning and plotting AAVSO data
 llightcurve_name <- "data/aavso_latest_data.csv"
 maxairmass <- 3.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
-maxuncertainty <- 0.035  # maximum AAVSO uncertainty estimate
-maxBinUncertainty <- 0.035 # worst standard deviation to accept for a binned set of observations
+maxuncertainty <- 0.2  # maximum AAVSO uncertainty estimate
+maxBinUncertainty <- 0.2 # worst standard deviation to accept for a binned set of observations
 wildsd <- 10.0 # worst number of standard deviations from mean allowed
 
 earliestJD = 2457290 # only data on or after this JD will be used
@@ -12,7 +12,7 @@ earliestJD = 2457290 # only data on or after this JD will be used
 startPlot <- earliestJD
 #startPlot <- 2457690
 #startPlot <- 2457980
-startPlot <- 2457880
+#startPlot <- 2457880
 #startPlot <- 2457580
 #startPlot <- 2457990
 stop.plot <- NA
@@ -23,21 +23,20 @@ plotRelTimes <- TRUE
 includeExclude <- TRUE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
 ExclCodes <- "None"
 ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA",
-				"WROC","MAND","VBPA","NOT","PALE","GKA","JM","AMID","SGEA","ELYA","GCJ","LBG","HJW") # V & B
-#ExclCodes <- c("LPB","SGEA") # R exclusion
+				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","ELYA","GCJ","LBG","HJW","OAR") # V & B
 #ExclCodes <- c("LDJ")
 #ExclCodes <- c("DUBF")
 #ExclCodes <- c("SWIA","CPP","DRZ","LPAC","HDHA") 	# B band exclusions
 #ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","JM") # I ensemble
-ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","JM") # B ensemble
+ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","JM","HBB") # B ensemble
 #ExclCodes <- c("SWIA","CPP","BMAK","HDHA","LPAC","LPB")	# B band exclusions
 plotMee <- NA # do not highlight any particular observer code
-#plotMee <- "HJW"
+#plotMee <- "HBB"
 meeColor <- "darkviolet"
 weightless <- NA
 #weightless <- c("JM","LDJ") # observers to plot, but not use in fit.
-#weightless <- c("JM") # observers to plot, but not use in fit.
+#weightless <- c("HBB") # observers to plot, but not use in fit.
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
@@ -81,5 +80,5 @@ bad.comp.star <- "(000-?BLS-549)|(000-?BLS-?549)|(BLS-549)"
 #bad.comp.star <- NA
 
 ##########################################################################
-pretty.interval <- 50 # controls rounding of plot limits
+pretty.interval <- 100 # controls rounding of plot limits
 pretty.JD.interval <- 100
