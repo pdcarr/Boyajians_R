@@ -14,11 +14,11 @@ source("input_files/dip_mask.R")
 ######################## control parameters
 maxAirmass <- 2.0 # data with airmass higher than this will not be included
 #bin.width = 15/1440 # days
-bin.width = 5/1440 # days
+bin.width = 1440/1440 # days
 
 t.epsilon = 0.0 # days
 mag.epsilon <- 0.01 # magnitudes
-bin.it <- FALSE
+bin.it <- TRUE
 plot.col = "darkgreen"
 plot.pch <- 20
 #dfile.name <- "data/BruceGary.csv"
@@ -38,7 +38,7 @@ knot.penalty <- 0
 min.span <- 2
 earth.thresh <- 0.00001
 ######## fitting parameters
-bg.n.knots <- 5
+bg.n.knots <- 6
 
 ###### read in the data
 bg.data <- read.csv(dfile.name,header=TRUE)
