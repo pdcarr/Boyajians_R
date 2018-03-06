@@ -32,14 +32,15 @@ mag.epsilon <- 0.025 # magnitudes
 
 ####### MARS
 mars.fit <- FALSE
-marsOrder <- 70 # maximum number of knots
-marsPenalty <- 3 # set to 0 to avoid penalizing knots in pruning pass
-mars.thresh <- 0.00002
+marsOrder <- 21 # maximum number of knots
+marsPenalty <- 5 # set to 0 to avoid penalizing knots in pruning pass
+mars.thresh <- 0.000002
 #marsPMethod <- "none" # set to "none" to avoid pruning
 marsPMethod <- "exhaustive" # set to "none" to avoid pruning
+min.span <- 2
 
 ######## Smooth Spline
-asassn.n.knots <- 5
+asassn.n.knots <- 7
 
 ##########
 earliestJD <- 2457449
@@ -100,8 +101,8 @@ if (bin.it) {
 	                    y=allSuperObs$V.mag,
 	                    weights=binWeights,
 	                    pmethod="exhaustive",
-	                    nk=n.knots,
-	                    penalty=knot.penalty,
+	                    nk= marsOrder,
+	                    penalty= marsPenalty,
 	                    minspan=min.span)
 	
 		print(summary(theFit))
