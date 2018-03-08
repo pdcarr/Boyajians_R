@@ -43,6 +43,8 @@ if (includeExclude) {
 
 # lightcurve, which is the AAVSO data read in via read.csv with header=TRUE
 lightcurve <- read.csv(file=llightcurve_name,header=TRUE,check.names=TRUE,na.strings="NA",stringsAsFactors=FALSE)
+totalRec = length(lightcurve$JD)
+cat("\n\nTotal records read from file: ",totalRec,"\n\n")
 
 if (merge.asassn) {
 	cat("\nmerging in ASASSN Data\n")
@@ -50,8 +52,6 @@ if (merge.asassn) {
 	lightcurve <- asassn.merge(lightcurve,asassn_data,asassn.code) # function merges asassn data into lightcurve
 }
 
-totalRec = length(lightcurve$JD)
-cat("\n\nTotal records read from file: ",totalRec,"\n\n")
 
 latestJD <- max(lightcurve$JD,na.rm=TRUE)
 # make a list of every record with a Magnitude reported
