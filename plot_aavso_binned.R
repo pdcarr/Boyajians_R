@@ -44,6 +44,11 @@ if (includeExclude) {
 # lightcurve, which is the AAVSO data read in via read.csv with header=TRUE
 lightcurve <- read.csv(file=llightcurve_name,header=TRUE,check.names=TRUE,na.strings="NA",stringsAsFactors=FALSE)
 
+if (merge.asassn) {
+	asassn_data <- read.csv(asassn.csv.file,header=TRUE)
+	lightcurve <- asassn.merge(lightcurve,asassn_data) # function merges asassn data into lightcurve
+}
+
 totalRec = length(lightcurve$JD)
 cat("\n\nTotal records read from file: ",totalRec,"\n\n")
 

@@ -661,3 +661,35 @@ trunc.pxct <- function(PXct.time) {
 	return(as.POSIXct(scratch))
 }
 
+########################################
+asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",asassn.band="V",asassn.cs=c("UNK","UNK") {
+	n <- nrow(asassn.code)
+	m = ncol(lightcurve)
+	scratch <- lightcurve[1,]
+	for (index in 1:n) {
+		scratch$JD <- asassn.data$HJD[index]
+		scratch$Magnitude <- asassn.data$mag[index]
+		scratch$Observer_Code <- asassn.code
+		scratch$Uncertainty <- asassn.data$mag_err[index]
+		scratch$Band <- asassn.band
+		scratch$Comp_Star_1 <- asassn.cs[1]
+		scratch$Comp_Star_2 <- asassn.cs[2]
+		scratch$Comment <- "Merged ASASSN Data"
+		scratch$Credit <- "Ohio State"
+		scratch$Observer.Affiliation < - "Ohio State"
+		scratch$Airmass <- 1.0
+		
+		scratch$HQuncertainty <- NA
+		scratch$Comment.Code.s. <- NA
+		scratch$Charts <- NA
+		scratch$Transfomed <- NA
+		scratch$Validation.Flag <- NA
+		scratch$Cmag <- NA
+		scratch$Kmag <- NA
+		scratch$Measurement.Method <- NA
+		
+		lightcurve <- rbind(lightcurve,scratch)
+		
+	}
+	return(lightcurve)	
+}
