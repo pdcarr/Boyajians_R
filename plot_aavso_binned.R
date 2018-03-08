@@ -45,8 +45,9 @@ if (includeExclude) {
 lightcurve <- read.csv(file=llightcurve_name,header=TRUE,check.names=TRUE,na.strings="NA",stringsAsFactors=FALSE)
 
 if (merge.asassn) {
+	cat("\nmerging in ASASSN Data\n")
 	asassn_data <- read.csv(asassn.csv.file,header=TRUE)
-	lightcurve <- asassn.merge(lightcurve,asassn_data) # function merges asassn data into lightcurve
+	lightcurve <- asassn.merge(lightcurve,asassn_data,asassn.code) # function merges asassn data into lightcurve
 }
 
 totalRec = length(lightcurve$JD)
