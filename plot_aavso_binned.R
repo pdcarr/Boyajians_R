@@ -67,7 +67,7 @@ for (index in 1:length(missingAirmass)){
 # loop over the desired bands
 cat("initializing loop over bands\n")
 numBands = length(allBands$bandinQ)
-cleanBand <- matrix(nrow=totalRec,ncol=numBands)
+cleanBand <- matrix(nrow=nrow(lightcurve),ncol=numBands)
 allFits <- list()
 all.smoove <- list()
 allQFits <- list()
