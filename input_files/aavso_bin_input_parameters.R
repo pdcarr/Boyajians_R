@@ -28,19 +28,20 @@ plotRelTimes <- TRUE
 includeExclude <- TRUE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
 ExclCodes <- "None"
 ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA","JSJA",
-				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","ELYA","GCJ","LBG","HJW","OAR") # V & B
-ExclCodes <- c("LDJ")
+				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","ELYA","GCJ","LBG","HJW","OAR","ASASSN") # V & B
+#ExclCodes <- c("LDJ")
+#ExclCodes <- c("ASASSN")
 #ExclCodes <- c("DUBF")
 #ExclCodes <- c("SWIA","CPP","DRZ","LPAC","HDHA") 	# B band exclusions
 #ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","JM") # I ensemble
 #ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","JM","HBB") # B ensemble
 plotMee <- NA # do not highlight any particular observer code
-#plotMee <- "HBB"
+#plotMee <- "ASASSN"
 meeColor <- "darkviolet"
 weightless <- NA
 #weightless <- c("JM","LDJ") # observers to plot, but not use in fit.
-#weightless <- c("HBB") # observers to plot, but not use in fit.
+#weightless <- c("ASASSN") # observers to plot, but not use in fit.
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
