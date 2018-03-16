@@ -624,8 +624,8 @@ ObserverJDEdit <- function(editFrame,lightcurve) {
 aavsoJDbounds <- function(lightcurve,jdbias=0) {
 	# takes an AAVSO light curve as an argument. Based upon last Julian Date in the file, recommends a set of time bounds for downloading new data
 	# from AAVSO.org
-	natest <- !is.na(lightcurve$JD)
-	jdEnd = tail(lightcurve$JD[natest],n=1) + 0.00001 + jdbias
+	natest <- is.numeric(lightcurve$JD)
+	jdEnd = max(lightcurve$JD[natest]) + 0.00001 + jdbias
 	jdNew = ctDate2JD(Sys.time()) 
 	return(c(jdEnd,jdNew))
 }
