@@ -1,6 +1,7 @@
 #### housekeeping
 library("MASS") # for rlm() and lqs()
 library("earth")
+library("Hmisc")
 options(digits=12) # hard to read JDs without this setting
 rm("superObs")
 rm("allSuperObs")
@@ -13,8 +14,8 @@ source("input_files/dip_mask.R")
 
 ######################## control parameters
 maxAirmass <- 2.0 # data with airmass higher than this will not be included
-#bin.width = 15/1440 # days
-bin.width = 1440/1440 # days
+bin.width = 15/1440 # days
+#bin.width = 1440/1440 # days
 
 t.epsilon = 0.0 # days
 mag.epsilon <- 0.01 # magnitudes
@@ -38,7 +39,7 @@ knot.penalty <- 0
 min.span <- 2
 earth.thresh <- 0.00001
 ######## fitting parameters
-bg.n.knots <- 6
+bg.n.knots <- 7
 
 ###### read in the data
 bg.data <- read.csv(dfile.name,header=TRUE)
@@ -117,12 +118,17 @@ if (bin.it) {
 	fit.points <- predict(theFit,x=desmat)$y
 	# open a window to plot in
 	quartz("binned Data Plot")
+	# error bars
+	my.y.plus <- allSuperObs$V.mag[dipless]  + allSuperObs$Uncertainty[dipless]
+	my.y.minus <- allSuperObs$V.mag[dipless] -  allSuperObs$Uncertainty[dipless]
 	# plot bins used in the fit
-	plot(desmat[dipless],allSuperObs$V.mag[dipless],
+	errbar(desmat[dipless],allSuperObs$V.mag[dipless],
+		yplus=my.y.plus,yminus=my.y.minus,
 		xlim=x.limits,ylim=y.limits,
 		xlab=x.label,ylab=y.label,
 		main=plot.title,
 		pch= plot.pch,col=plot.col)
+		title(plot.title)
 	# plot omitted bins
 	points(x=desmat[!dipless],
 		y=allSuperObs$V.mag[!dipless],
