@@ -14,7 +14,7 @@ source("input_files/dip_mask.R")
 
 ######################## control parameters
 maxAirmass <- 2.0 # data with airmass higher than this will not be included
-bin.width = 15/1440 # days
+bin.width = 10/1440 # days
 #bin.width = 1440/1440 # days
 
 t.epsilon = 0.0 # days
@@ -27,18 +27,19 @@ dfile.name <- "data/BG_gprime_latest.txt"
 data.type <- "G prime"
 #data.type <- "V"
 source("input_files/dip_mask.R")
-#earliest.MJD <- 58096
-earliest.MJD <- NA
+earliest.MJD <- 58197
+#earliest.MJD <- NA
 #latest.MJD <- 58098
 latest.MJD <- NA
 #pretty.days <- 1
-pretty.days <- 10
+pretty.days <- 1
 ########## MARS control
 n.knots <- 33
 knot.penalty <- 0
 min.span <- 2
 earth.thresh <- 0.00001
 ######## fitting parameters
+plot.spline <- FALSE
 bg.n.knots <- 7
 
 ###### read in the data
@@ -103,19 +104,6 @@ if (bin.it) {
 #                    minspan=min.span,
 #                    thresh=earth.thresh)
 
-	theFit <- smooth.spline(x=desmat,
-					y= allSuperObs$V.mag,
-					w= binWeights,
-					all.knots=FALSE,nknots= bg.n.knots,
-					keep.data=TRUE,
-					cv=TRUE,
-					penalty= 1)
-	# let's see what the fit is
-	cat("\n\n Smooth Spline Fit: \n")
-	print(theFit $call)
-	cat("\n")
-	print(theFit $fit)
-	fit.points <- predict(theFit,x=desmat)$y
 	# open a window to plot in
 	quartz("binned Data Plot")
 	# error bars
@@ -144,11 +132,28 @@ if (bin.it) {
 	grid(col="black")
 }
 
-#### plot the fit 
-#myslope <- coefficients(theFit)[2]
-#basemag <- coefficients(theFit)[1]
-#curve(basemag + myslope*x,from=0,to=tmax-tmin, add=TRUE,col="black")
-lines(x=desmat,y=fit.points,col="black")
+#### plot the fit if selected
+if(plot.spline) {
+	theFit <- smooth.spline(x=desmat,
+		y= allSuperObs$V.mag,
+		w= binWeights,
+		all.knots=FALSE,nknots= bg.n.knots,
+		keep.data=TRUE,
+		cv=TRUE,
+		penalty= 1)
+	# let's see what the fit is
+	cat("\n\n Smooth Spline Fit: \n")
+	print(theFit$call)
+	cat("\n")
+	print(theFit$fit)
+	fit.points <- predict(theFit,x=desmat)$y
+
+	#myslope <- coefficients(theFit)[2]
+	#basemag <- coefficients(theFit)[1]
+	#curve(basemag + myslope*x,from=0,to=tmax-tmin, add=TRUE,col="black")
+	lines(x=desmat,y=fit.points,col="black")
+
+}
 ##### draw vertical lines at various dates
 jdLine <- jdLine - 2400000.5 - tmin
 if(drawDateLine) { verticalDateLines(jdLine, jdLineText, y.limits, jdLineColor)}
