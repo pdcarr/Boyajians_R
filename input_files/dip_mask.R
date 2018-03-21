@@ -7,5 +7,5 @@ dip.mask <- rbind(dip.mask,c("Celeste",2457915,2457927),
 # adding mask of FWAIN, as observed by Bruce Gary.
 #dip.mask <-rbind(dip.mask,c("FWAIN",2458051,2458057))
 
-# primarily observed by Gary Johnson, the "December Surprise"
+# primarily observed by Bruce Gary, the "December Surprise"
 #dip.mask <- rbind(dip.mask,c("December_Surprise",2458096,2458097))
