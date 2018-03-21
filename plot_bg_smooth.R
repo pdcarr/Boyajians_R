@@ -14,7 +14,7 @@ source("input_files/dip_mask.R")
 
 ######################## control parameters
 maxAirmass <- 2.0 # data with airmass higher than this will not be included
-bin.width = 10/1440 # days
+bin.width = 120/1440 # days
 #bin.width = 1440/1440 # days
 
 t.epsilon = 0.0 # days
@@ -27,8 +27,8 @@ dfile.name <- "data/BG_gprime_latest.txt"
 data.type <- "G prime"
 #data.type <- "V"
 source("input_files/dip_mask.R")
-earliest.MJD <- 58197
-#earliest.MJD <- NA
+#earliest.MJD <- 58197
+earliest.MJD <- NA
 #latest.MJD <- 58098
 latest.MJD <- NA
 #pretty.days <- 1
@@ -39,7 +39,7 @@ knot.penalty <- 0
 min.span <- 2
 earth.thresh <- 0.00001
 ######## fitting parameters
-plot.spline <- FALSE
+plot.spline <- TRUE
 bg.n.knots <- 7
 
 ###### read in the data
