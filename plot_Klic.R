@@ -1,18 +1,19 @@
 dips <- NULL
 ############# Inputs #############
-#klic.file <- "data/kplr008462852-2009350155506_llc_t1.txt"
-#klic.file <- "data/kplr008462852-2013131215648_llc_t1.txt"
+klic.file <- "data/kplr008462852-2009350155506_llc_t1.txt"
+klic.file <- "data/kplr008462852-2013131215648_llc_t1.txt"
 #klic.file <- "data/kplr008462852-2012179063303_llc_t1.txt"
 #klic.file <- "data/kplr008462852-2009131105131_llc_t1.txt" # QUARTER 0
 #klic.file <- "data/kplr008462852-2013098041711_llc_t1.txt"
 
 plot.title <- "Kepler PDCSAP data"
 earliest.day <- 0
-earliest.day <- 1470
+#earliest.day <- 1470
 #earliest.day <- 1200
 last.day <- 1600
-last.day <- 1560
+#last.day <- 1560
 #last.day <- 1220
+NA.string <- "NA"
 NA.string <- "NULL"
 plot_both = FALSE
 pad = 100
@@ -22,7 +23,7 @@ dips <- data.frame(dstart=1505,dstop=1525,stringsAsFactors=FALSE)
 dips <-  rbind(dips,c(1530,1550))
 
 ###################
-klightcurve <- read.csv(file=klic.file,header=FALSE,check.names=TRUE,na.strings=NA.string)
+klightcurve <- read.csv(file=klic.file,header=FALSE,check.names=TRUE,na.strings=NA.string,stringsAsFactors=FALSE)
 
 colnames(klightcurve) <-  c("Time","TIMECORR","CADENCENO","SAP_flux","SAP_flux_err","SPA_BKG","SAP_BKG_ERR","PDCSAP_flux","PDCSAP_flux_err","SAP_quality","PSF_centr1","PSF_centr1_err",
 	"PSF_CENTR2","PSF_CENTR2_ERR","MOM_CENTR1","MOM_CENTR1_ERR","MOM_CENTR2","MOM_CENTR2_ERR","POS_CORR1","POS_CORR2")
