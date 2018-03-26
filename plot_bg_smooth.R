@@ -29,10 +29,11 @@ data.type <- "G prime"
 source("input_files/dip_mask.R")
 #earliest.MJD <- 58197
 earliest.MJD <- NA
+earliest.plot.MJD <- 58170
 #latest.MJD <- 58098
 latest.MJD <- NA
+pretty.days <- 10
 #pretty.days <- 1
-pretty.days <- 1
 ########## MARS control
 n.knots <- 33
 knot.penalty <- 0
@@ -40,7 +41,7 @@ min.span <- 2
 earth.thresh <- 0.00001
 ######## fitting parameters
 plot.spline <- TRUE
-bg.n.knots <- 7
+bg.n.knots <- 5
 
 ###### read in the data
 bg.data <- read.csv(dfile.name,header=TRUE)
