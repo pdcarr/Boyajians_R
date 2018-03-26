@@ -6,7 +6,7 @@ asassn.csv.file <- "data/ASASSN_latest.csv"
 merge.asassn <- TRUE # merge asasn data into light curve
 asassn.code <- "ASASSN"
 
-maxairmass <- 3.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxairmass <- 2.5 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.2  # maximum AAVSO uncertainty estimate
 maxBinUncertainty <- 0.2 # worst standard deviation to accept for a binned set of observations
 wildsd <- 10.0 # worst number of standard deviations from mean allowed
@@ -35,7 +35,7 @@ ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MA
 #ExclCodes <- c("SWIA","CPP","DRZ","LPAC","HDHA") 	# B band exclusions
 #ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","JM") # I ensemble
-#ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","JM","HBB") # B ensemble
+ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","JM","HBB") # B ensemble
 plotMee <- NA # do not highlight any particular observer code
 #plotMee <- "ASASSN"
 meeColor <- "darkviolet"
@@ -46,7 +46,7 @@ weightless <- NA
 allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAsFactors=FALSE)
-#allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
