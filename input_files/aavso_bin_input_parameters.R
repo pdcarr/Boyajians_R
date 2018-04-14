@@ -6,7 +6,7 @@ asassn.csv.file <- "data/ASASSN_latest.csv"
 merge.asassn <- TRUE # merge asasn data into light curve
 asassn.code <- "ASASSN"
 
-maxairmass <- 2.5 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxairmass <- 2.8 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.2  # maximum AAVSO uncertainty estimate
 maxBinUncertainty <- 0.2 # worst standard deviation to accept for a binned set of observations
 wildsd <- 10.0 # worst number of standard deviations from mean allowed
