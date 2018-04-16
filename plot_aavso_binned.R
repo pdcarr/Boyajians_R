@@ -244,6 +244,8 @@ if(exists("stop.plot")) {
 	} else {
 		myxlims <- c(startPlot,max(binCurve$JD,na.rm=TRUE))
 	}
+} else {
+	myxlims <- c(startPlot,max(binCurve$JD,na.rm=TRUE))
 }
 
 # calculate pretty y limits
