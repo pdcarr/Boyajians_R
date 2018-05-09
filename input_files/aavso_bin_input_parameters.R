@@ -5,12 +5,12 @@ llightcurve_name <- "data/aavso_latest_data.csv"
 asassn.csv.file <- "data/ASASSN_latest.csv"
 merge.asassn <- TRUE # merge asasn data into light curve
 asassn.code <- "ASASSN"
-
+######### filters #########################
 maxairmass <- 3.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
-maxuncertainty <- 0.04 # maximum AAVSO uncertainty estimate
-maxBinUncertainty <- 0.03 # worst standard deviation to accept for a binned set of observations
-wildsd <- 10.0 # worst number of standard deviations from mean allowed
-
+maxuncertainty <- 0.02 # maximum AAVSO uncertainty estimate
+maxBinUncertainty <- 0.01 # worst standard deviation to accept for a binned set of observations
+wildsd <- 100.0 # worst number of standard deviations from mean allowed
+##########################################
 earliestJD = 2457290 # only data on or after this JD will be used
 #earliestJD = 2457800 # only data on or after this JD will be used
 #earliestJD <- 2457700
@@ -30,28 +30,30 @@ plotRelTimes <- TRUE
 ##########
 includeExclude <- TRUE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
 ExclCodes <- "None"
-ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","HBB","SDB","VBPA","OAS","MJB","MATA",
+ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
 				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","ELYA","GCJ","LBG","HJW","OAR","ASASSN") # V & B
+ExclCodes <- c("LDJ","BMAH")
 #ExclCodes <- c("LDJ")
 #ExclCodes <- c("ASASSN")
 #ExclCodes <- c("DUBF")
 #ExclCodes <- c("SWIA","CPP","DRZ","LPAC","HDHA") 	# B band exclusions
 #ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","JM") # I ensemble
-#ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","HBB") # B ensemble
+#ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR") # B ensemble
 plotMee <- NA # do not highlight any particular observer code
-#plotMee <- "ASASSN"
+#plotMee <- "HBB"
 meeColor <- "darkviolet"
 weightless <- NA
 #weightless <- c("HBB") # observers to plot, but not use in fit.
 #weightless <- c("ASASSN","JSJA") # observers to plot, but not use in fit.
 ########
-allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red","green","blue"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet","red","green","blue","aquamarine2"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("SG"),plotColor=c("aquamarine2"),stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R","B"),plotColor=c("darkviolet","red","blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R","V","B"),plotColor=c("red","green","blue"), stringsAsFactors=FALSE)
