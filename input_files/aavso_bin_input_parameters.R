@@ -21,7 +21,7 @@ startPlot <- earliestJD
 #startPlot <- 2457580
 #startPlot <- 2457990
 #startPlot <- 2458180
-#startPlot <- 2458000
+startPlot <- 2458000
 #startPlot <- 2457620
 #stop.plot <- 2457680
 #stop.plot <- 2458020
@@ -32,7 +32,7 @@ includeExclude <- TRUE # TRUE if your list of observer codes is to to be include
 ExclCodes <- "None"
 ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
 				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","ELYA","GCJ","LBG","HJW","OAR","ASASSN") # V & B
-ExclCodes <- c("LDJ","BMAH")
+#ExclCodes <- c("LDJ","BMAH")
 #ExclCodes <- c("LDJ")
 #ExclCodes <- c("ASASSN")
 #ExclCodes <- c("DUBF")
@@ -53,7 +53,7 @@ allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors
 #allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
-allBands <- data.frame(bandinQ=c("SG"),plotColor=c("aquamarine2"),stringsAsFactors=FALSE)
+#allBands <- data.frame(bandinQ=c("SG"),plotColor=c("aquamarine2"),stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R","B"),plotColor=c("darkviolet","red","blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R","V","B"),plotColor=c("red","green","blue"), stringsAsFactors=FALSE)
@@ -66,7 +66,7 @@ plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit
 generateTS <- FALSE # set to TRUE to creat a time series from the data
 tsBinWidth <- 5.0 # time series bin width in days. Important if generateTS is TRUE
 smoothTS <- TRUE # set to TRUE to smooth the times series
-tsSmoothOrder <- 6 # the order for the moving average to smootaavsoJDboundsaavsoJDddddaaaaaah the time series
+tsSmoothOrder <- 6 # the order for the moving average to smooth the time series
 tryLQS <- FALSE # set to TRUE is you want to try resistant regression.
 userlm <- FALSE # set to TRUE to use robust lm, or rlm() if not using MARS.
 plotResiduals <- TRUE # set to true to plot the residuals vs. time
