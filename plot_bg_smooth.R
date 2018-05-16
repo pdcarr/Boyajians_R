@@ -45,7 +45,8 @@ bg.n.knots <- 6
 #######
 plot.SG <- TRUE
 ###### read in the data
-bg.data <- read.csv(dfile.name,header=TRUE)
+my.cols <- c("numeric","numeric","numeric","numeric")
+bg.data <- read.csv(dfile.name,header=TRUE, stringsAsFactors=FALSE,colClasses=my.cols)
 
 # filter out the high airmass data
 ok.airmass <- bg.data$air.mass <= maxAirmass
