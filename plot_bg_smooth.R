@@ -162,7 +162,7 @@ if(drawDateLine) { verticalDateLines(jdLine, jdLineText, y.limits, jdLineColor)}
 
 # add a grid
 grid(col="black")
-cbind(allSuperObs,"spline fit" = fit.points)
+allSuperObs <- cbind(allSuperObs,"spline fit" = fit.points)
 summary(theFit)
 
 if(plot.SG) {
