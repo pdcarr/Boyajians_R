@@ -42,7 +42,8 @@ earth.thresh <- 0.00001
 ######## fitting parameters
 plot.spline <- TRUE
 bg.n.knots <- 6
-
+#######
+plot.SG <- TRUE
 ###### read in the data
 bg.data <- read.csv(dfile.name,header=TRUE)
 
@@ -163,3 +164,7 @@ if(drawDateLine) { verticalDateLines(jdLine, jdLineText, y.limits, jdLineColor)}
 grid(col="black")
 cbind(allSuperObs,"spline fit" = fit.points)
 summary(theFit)
+
+if(plot.SG) {
+	source("SG_plot_AAVSO.R")
+}
