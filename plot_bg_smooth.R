@@ -5,6 +5,8 @@ library("Hmisc")
 options(digits=12) # hard to read JDs without this setting
 rm("superObs")
 rm("allSuperObs")
+rm("tmin")
+rm("tmax")
 source("data_funcs.R")
 source("input_files/VlineParams.R")
 source("plot_funcs.R")
@@ -14,7 +16,7 @@ source("input_files/dip_mask.R")
 
 ######################## control parameters
 maxAirmass <- 2.0 # data with airmass higher than this will not be included
-bin.width = 60/1440 # days
+bin.width = 240/1440 # days
 #bin.width = 1440/1440 # days
 #################################
 t.epsilon = 0.0 # days
@@ -33,9 +35,9 @@ n.pts.tail <- 12 # number of points in tail of super observations to print
 #data.type <- "G prime"
 #data.type <- "V"
 source("input_files/dip_mask.R")
-#earliest.MJD <- 58197
 earliest.MJD <- NA
-earliest.plot.MJD <- 58170
+#earliest.MJD <- 58210
+earliest.plot.MJD <- NA
 #latest.MJD <- 58098
 latest.MJD <- NA
 pretty.days <- 10
@@ -49,7 +51,7 @@ earth.thresh <- 0.00001
 plot.spline <- TRUE
 #bg.n.knots <- 6
 #######
-plot.SG <- FALSE
+plot.SG <- TRUE
 ###### read in the data
 band.index <- 1
 for (data.type in allBands$data.type) {
@@ -67,15 +69,19 @@ for (data.type in allBands$data.type) {
 	
 	# find earliest and latest times and highest and lowest magnitudes
 	
-	# get the bin boundaries to be somewhere sensible
+	# get the bin boundaries to be somewhere sensible if not already set.
 	
-	tmin <-  min(bg.data$MJD[ok.airmass],na.rm=TRUE)
-	tmin <- floor(tmin/pretty.days)*pretty.days
+	if(!exists("tmin") | !exists("tmax")) {
+		tmin <-  min(bg.data$MJD[ok.airmass],na.rm=TRUE)
+		tmin <- floor(tmin/pretty.days)*pretty.days
+		tmax = max(bg.data$MJD[ok.airmass],na.rm=TRUE)
+	}
 	
-	tmax = max(bg.data$MJD[ok.airmass],na.rm=TRUE)
+	
 	x.limits <- c(0,(tmax-tmin) + t.epsilon)
 	y.limits <- c(max(bg.data$V.mag[ok.airmass],na.rm=TRUE) - mag.epsilon,
 				 min(bg.data$V.mag[ok.airmass],na.rm=TRUE) + mag.epsilon)
+				 
 	x.label <- paste("MJD - ",tmin)
 	
 	# if binning, do this:
@@ -184,10 +190,11 @@ for (data.type in allBands$data.type) {
 	allSuperObs <- cbind(allSuperObs,"spline fit" = fit.points)
 	print(tail(allSuperObs,n=12))
 	summary(theFit)
+	if(plot.SG & data.type =="g'") {
+		cat("\n plotting SG from AAVSO")
+		source("SG_plot_AAVSO.R")
+	}
 
 	band.index <- band.index + 1
 }
 
-if(plot.SG) {
-	source("SG_plot_AAVSO.R")
-}
