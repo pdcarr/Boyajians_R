@@ -15,7 +15,7 @@ source("input_files/dip_mask.R")
 
 
 ######################## control parameters
-maxAirmass <- 2.0 # data with airmass higher than this will not be included
+maxAirmass <- 1.75 # data with airmass higher than this will not be included
 bin.width = 240/1440 # days
 #bin.width = 1440/1440 # days
 #################################
