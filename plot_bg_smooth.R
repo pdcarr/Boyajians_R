@@ -40,7 +40,7 @@ earliest.MJD <- NA
 earliest.plot.MJD <- NA
 #latest.MJD <- 58098
 latest.MJD <- NA
-pretty.days <- 10
+pretty.days <- 1
 #pretty.days <- 1
 ########## MARS control
 n.knots <- 33
@@ -52,6 +52,8 @@ plot.spline <- TRUE
 #bg.n.knots <- 6
 #######
 plot.SG <- TRUE
+#######
+plot.same.timescale <-  FALSE
 ###### read in the data
 band.index <- 1
 for (data.type in allBands$data.type) {
@@ -71,14 +73,20 @@ for (data.type in allBands$data.type) {
 	
 	# get the bin boundaries to be somewhere sensible if not already set.
 	
+	earliest.t <- min(bg.data$MJD[ok.airmass],na.rm=TRUE)
 	if(!exists("tmin") | !exists("tmax")) {
-		tmin <-  min(bg.data$MJD[ok.airmass],na.rm=TRUE)
+		tmin <-  earliest.t
 		tmin <- floor(tmin/pretty.days)*pretty.days
 		tmax = max(bg.data$MJD[ok.airmass],na.rm=TRUE)
 	}
 	
+	if(plot.same.timescale) {
+		x.limits <- c(0,(tmax-tmin) + t.epsilon)
+	} else {
+		pretty.t <- floor(earliest.t/pretty.days)*pretty.days
+		x.limits <- c(0,(tmax-pretty.t) + t.epsilon)
+	}
 	
-	x.limits <- c(0,(tmax-tmin) + t.epsilon)
 	y.limits <- c(max(bg.data$V.mag[ok.airmass],na.rm=TRUE) - mag.epsilon,
 				 min(bg.data$V.mag[ok.airmass],na.rm=TRUE) + mag.epsilon)
 				 
@@ -110,7 +118,7 @@ for (data.type in allBands$data.type) {
 	    dipless <- filter.dips.JD(bg.binned.JDs,dip.mask)
 	    binWeights <- as.numeric(dipless) # weight of 1 if not in a known dip, 0 otherwise.
 		# calculate robust linear fit
-		desmat <- allSuperObs$MJD - tmin
+		desmat <- allSuperObs$MJD - ifelse(plot.same.timescale,tmin,pretty.t)
 	    #theFit <- rlm(allSuperObs$V.mag ~ desmat,na.action="na.omit",psi=psi.bisquare,subset=dipless)
 	#    theFit <- earth(x=desmat,
 	#                    y=allSuperObs$V.mag,
@@ -129,7 +137,8 @@ for (data.type in allBands$data.type) {
 		my.y.minus <- allSuperObs$V.mag[dipless] -  allSuperObs$Uncertainty[dipless]
 		# plot bins used in the fit
 		errbar(desmat[dipless],allSuperObs$V.mag[dipless],
-			yplus=my.y.plus,yminus=my.y.minus,
+			yplus=my.y.plus,
+			yminus=my.y.minus,
 			xlim=x.limits,ylim=y.limits,
 			xlab=x.label,ylab=y.label,
 			main=plot.title,
