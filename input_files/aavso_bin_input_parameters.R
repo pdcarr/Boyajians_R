@@ -20,8 +20,8 @@ startPlot <- earliestJD
 #startPlot <- 2457880
 #startPlot <- 2457580
 #startPlot <- 2457990
-#startPlot <- 2458180
-startPlot <- 2458000
+startPlot <- 2458150
+#startPlot <- 2458000
 #startPlot <- 2457620
 #stop.plot <- 2457680
 #stop.plot <- 2458020
@@ -51,7 +51,7 @@ allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet",
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
-#allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("SG"),plotColor=c("aquamarine2"),stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
