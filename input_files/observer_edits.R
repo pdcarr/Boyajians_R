@@ -65,4 +65,5 @@ biasObserver <- rbind(biasObserver, list(obsCode="OAR",band="B",bias=-0.0125),
                                     list("HBB","V",0.031),
                                     list("HBB","B",0.048),
                                     list("ASASSN","V",0.041),
-                                    list("VMT","V",-0.0275))
+                                    list("VMT","V",-0.0275),
+                                    list("VMT","V",0.03925))
