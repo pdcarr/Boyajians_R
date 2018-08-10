@@ -14,14 +14,14 @@ editUser <- rbind(editUser,c("SJAR", 2457620.9, 2457622.0,"V"),c("BJFB",2457925,
                             c("JSJA",2457899,2457900,"B"),c("JM",2458070.1,2458071.1,"B"),c("JM", 2458054.1, 2458055.1,"B"),c("OJJ",2458042.1,2458043.2,"I"),
                             c("DUBF",2457680	,2457790,"R"),c("JM",2458000,2458003,"B"),c("JM",2458048.1,2458049.2,"V"),c("JM",2457731.5,2457732.6,"B"),
                             c("AMID",2458073.8,2458074.8,"V"),c("AMID",2457937.0,2457938.0,"V"),c("ASASSN",2457689.2,2457690.3,"V"),c("JM",2458317.69,2458317.77,"R"),
-                            c("VMT",2458303.1,2458304.1,"V"),c("JM",2458317.83,2458317.84,"R"))
+                            c("VMT",2458303.1,2458304.1,"V"),c("JM",2458317.83,2458317.84,"R"),c("JM",2458242.3, 2458243.4,"B"))
 
 ############################################################
 use.static.biases <- TRUE
 biasObserver <- data.frame(obsCode=character(),band=character(),bias=numeric(),stringsAsFactors=FALSE)
 # list each observer for each band only once
 biasObserver <- rbind(biasObserver, list(obsCode="OAR",band="B",bias=-0.0125),
-									list("JM","B",-0.008),
+									list("JM","B",0.0003),
                                     list("JM","V",-0.018),
 									list("JM","R",0.0),
 									list("JM","I",0.017),
