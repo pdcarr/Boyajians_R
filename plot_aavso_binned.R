@@ -106,9 +106,12 @@ used.in.fit <- matrix(nrow=length(binCurve$JD),ncol=length(allBands$bandinQ))
 # loop over the passbands and do regression for each one
 
 cat("fitting the data \n")
+bias.vec <- vector(mode="numeric",length=length(binCurve$JD))
+
 for (thisBand in allBands$bandinQ) {
 	# fold in test for passband
 	btest <- (binCurve$Band == thisBand) & uncertaintyTest
+	bias.vec[!btest] <- NaN
 	
     # mask out data taken during dips (0 weight)
     dipless <- filter.dips.JD(binCurve$JD[btest],dip.mask)
@@ -135,6 +138,7 @@ for (thisBand in allBands$bandinQ) {
 					 mag.x <- binCurve$Magnitude[btest][myObs]
 					 mag.x <-  mag.x - myBias
 					 binCurve$Magnitude[btest][myObs] <- mag.x
+					 bias.vec[btest][myObs] <- myBias
 				}
 			}
 		}		
@@ -234,6 +238,7 @@ for (thisBand in allBands$bandinQ) {
 	}
 	index = index + 1	
 }
+binCurve <- cbind(binCurve,bias.vec,deparse.level=1)
 
 ##################################### Plot This Stuff ##################################
 # axis limits
