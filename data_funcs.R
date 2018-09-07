@@ -221,7 +221,9 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 	# earliestJD is the earliest Julian date to allow
 	# okCompstars is a regular expression that should match any valid comparison star
 	# bad.stars is a regular expression that should match bad comparison stars
-
+# debug stuff
+#	mnic <- lightcurve$Observer_Code == "MNIC"
+#	print(sum(mnic))
 # lightcurve is a data frame with AAVSO data	
 	# filter out any missing data
 	runningClean <- !is.na(lightcurve$JD) & !is.nan(lightcurve$JD) & 
@@ -230,7 +232,7 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 					!is.na(lightcurve$Comp_Star_1)
 	
 #	print(unique(runningClean))
-	
+#	print(sum(mnic & runningClean)) #debug print
 	# include exclude the observers in question
 	firstCode <- TRUE
 	for (ocode in ExclCodes) {
@@ -293,7 +295,7 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 	notEarly <- lightcurve$JD >= earliestJD
 	runningClean <- runningClean & notEarly
 	
-	print(unique(runningClean))
+#	print(unique(runningClean))
 
 # which observers are not reporting ok comparison star 1 (what is "ensemble"?)
 	starsOK <- !is.na(lightcurve$Comp_Star_1) & !is.na(lightcurve$Comp_Star_2) # check that a comparison star is provided
@@ -326,6 +328,7 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 #done
 #	print(length(runningClean))
 #	print(sum(runningClean))
+
 	return(runningClean)
 }
 
