@@ -44,7 +44,7 @@ asassn.n.knots <- 7
 
 ##########
 earliestJD <- 2457449
-earliestJD <- 2458150
+#earliestJD <- 2458150
 #earliestJD <- 2457990
 source("input_files/VlineParams.R")
 source("input_files/dip_mask.R")
