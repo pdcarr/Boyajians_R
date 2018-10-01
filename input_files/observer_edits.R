@@ -22,14 +22,14 @@ editUser <- rbind(editUser,c("VMT",2458282.0,2458283.1,"I"),c("GKA",2458354.15,2
 use.static.biases <- TRUE
 biasObserver <- data.frame(obsCode=character(),band=character(),bias=numeric(),stringsAsFactors=FALSE)
 # list each observer for each band only once
-biasObserver <- rbind(biasObserver, list(obsCode="OAR",band="B",bias=-0.0047),
+biasObserver <- rbind(biasObserver, list(obsCode="OAR",band="B",bias=0.007),
 									list("JM","B",0.001),
                                     list("JM","V",-0.018),
 									list("JM","R",0.0),
 									list("JM","I",0.017),
 									list("LDJ","R",0.0),
 									list("LDJ","I",0.003),
-									list("LDJ","B",0.007),
+									list("LDJ","B",0.000),
                                     list("LDJ","V",-0.004),
                                     list("LPB","R",0.07),
                                     list("GKA","R",0.015),
