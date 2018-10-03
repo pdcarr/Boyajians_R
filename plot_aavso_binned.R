@@ -48,7 +48,7 @@ cat("\n\nTotal records read from file: ",totalRec,"\n\n")
 
 if (merge.asassn) {
 	cat("\nmerging in ASASSN Data\n")
-	asassn_data <- read.csv(asassn.csv.file,header=TRUE)
+	asassn_data <- read.csv(asassn.csv.file,header=TRUE,stringsAsFactors=FALSE)
 	lightcurve <- asassn.merge(lightcurve,asassn_data,asassn.code) # function merges asassn data into lightcurve
 }
 
@@ -155,7 +155,7 @@ for (thisBand in allBands$bandinQ) {
 			if(exists("weightless") & !is.na(weightless)) {
 			    for (thisObs in weightless) {
 				    	# there may be observers whose observations we want to weight zero
-			    		de.weight <- de.weight & !(binCurve$Observer_Code[btest] == weightless)
+			    		de.weight <- de.weight & !(binCurve$Observer_Code[btest] == thisObs)
 			    }
 		    }
 	    	

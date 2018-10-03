@@ -674,7 +674,17 @@ asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",asassn.band
 		scratch$Magnitude <- asassn.data$mag[index]
 		scratch$Observer_Code <- asassn.code
 		scratch$Uncertainty <- asassn.data$mag_err[index]
-		scratch$Band <- asassn.band
+		
+		# all ASASSN data should be either "V" or "g" (which we think is g' or SG)
+		if(asassn.data$Filter[index] == "g") {
+			scratch$Band <- "SG"
+		} else if(asassn.data$Filter[index]=="V") {
+			scratch$Band <- "V" 
+		} else { 
+			print(asassn.data$Filter) # debug
+			next 
+		}
+			
 		scratch$Comp_Star_1 <- asassn.cs[1]
 		scratch$Comp_Star_2 <- asassn.cs[2]
 		scratch$Comments <- "Merged ASASSN Data"

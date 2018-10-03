@@ -27,7 +27,7 @@ plot.col = "darkgreen"
 plot.pch <- 20
 t.epsilon = 1.0 # days
 mag.epsilon <- 0.025 # magnitudes
-
+this.filter <- "V"
 
 
 ####### MARS
@@ -52,10 +52,12 @@ source("input_files/dip_mask.R")
 
 #####################################################################
 # load the files
-asassn_data <- read.csv(asassn.csv.file,header=TRUE)
+asassn_data <- read.csv(asassn.csv.file,header=TRUE,stringsAsFactors=FALSE)
 # clean obvious wild points
 mag.median <- median(asassn_data$mag)
-good_data <- (asassn_data$mag < (mag.median + abs(mag.cull.limit))) & (asassn_data$mag > (mag.median- abs(mag.cull.limit)))
+good_data <- (asassn_data$mag < (mag.median + abs(mag.cull.limit))) & 
+				(asassn_data$mag > (mag.median- abs(mag.cull.limit))) & 
+				(asassn_data$Filter == this.filter)
 
 #fit a spline after filtering out the dips
 # which points are NOT in the known dips?
@@ -73,7 +75,7 @@ x.label <- paste("JD - ",tmin)
 
 # if binning, do this:
 if (bin.it) {
-	plot.title <- paste("ASAS-SN Data binned with width",bin.width,"Days")
+	plot.title <- paste("ASAS-SN",this.filter,"band Data binned with width",bin.width,"Days")
 	y.label <- paste("Mean magnitude over bin")
 	allSuperObs <- data.frame(HJD=numeric(),V.mag=numeric(),Uncertainty=numeric(),stringsAsFactors=FALSE)
 	superObs <- data.frame(HJD=numeric(),V.mag=numeric(),Uncertainty=numeric(),stringsAsFactors=FALSE)
