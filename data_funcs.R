@@ -666,6 +666,12 @@ trunc.pxct <- function(PXct.time) {
 
 ########################################
 asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",asassn.band="V",asassn.cs=c("UNK","UNK")) {
+# this function merges in the ASASSN data in both V and SG bands into the AAVSO lightcurve, appending it to the end.
+# lightcurve is the AAVSO lightcurve read in from their .csv file
+# asassn.data is the ASAS-SN data read in form the .csv file (https://asas-sn.osu.edu/)
+# asassn.code is the observer Code you want ASASSN to have
+# asassn.band is no longer used
+# asassn.cs is the comp stars you want entered into the light curve.
 	n <- nrow(asassn.data)
 	m = ncol(lightcurve)
 	scratch <- lightcurve[1,]
@@ -706,4 +712,16 @@ asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",asassn.band
 		
 	}
 	return(lightcurve)	
+}
+
+####################### mean.resid ##########################
+mean.resid <- function(binCurve,these.resids,btest,Obs.code,dipless) {
+# calculates the mean residual for an observer code when not in a dip. Are the arguments are computed as a matter of course.
+# binCurve is the binned lightcurve	
+# these.resids are the residuals calculated relative to the fit and the smae length as a columnn of binCurve
+# btest is a logical vector the same length as a column of binCurve
+# Obs.code is a strong designating an observer, e.g. "OAR"
+# dipless is the dip mask, and must be the same length as sum(btest)
+	my.obs <- (binCurve$Observer_Code[btest] == Obs.code) & dipless
+	return(mean(these.resids[btest][oar]))
 }
