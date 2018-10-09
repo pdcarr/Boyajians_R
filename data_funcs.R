@@ -723,5 +723,6 @@ mean.resid <- function(binCurve,these.resids,btest,Obs.code,dipless) {
 # Obs.code is a strong designating an observer, e.g. "OAR"
 # dipless is the dip mask, and must be the same length as sum(btest)
 	my.obs <- (binCurve$Observer_Code[btest] == Obs.code) & dipless
-	return(mean(these.resids[btest][oar]))
+#	print()
+	return(mean(these.resids[btest][my.obs]))
 }
