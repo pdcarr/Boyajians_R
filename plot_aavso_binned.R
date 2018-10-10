@@ -11,6 +11,7 @@ rm(cleanBand)
 rm(binCurve)
 rm(deriv.mat)
 rm(resid.mat)
+rm(smoove.fit)
 #rm(bts)
 # options
 options(digits=12) # hard to read JDs without this setting
@@ -207,7 +208,7 @@ for (thisBand in allBands$bandinQ) {
 		smoove.fit <- smooth.spline(desmat,binCurve$Magnitude[btest],
 									w=binWeights,
 									all.knots=FALSE,nknots= smooth.n.knots,
-									keep.data=TRUE,cv=do.CV,penalty= df.penalty)
+									keep.data=TRUE,cv=FALSE,penalty= df.penalty)
 		cat("\n\n Smooth Spline Fit: \n")
 		print(smoove.fit$call)
 		cat("\n")
