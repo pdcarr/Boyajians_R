@@ -8,7 +8,7 @@ asassn.code <- "ASASSN"
 ######### filters #########################
 maxairmass <- 2.2 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.1 # maximum AAVSO uncertainty estimate
-maxBinUncertainty <- 0.02 # worst standard deviation to accept for a binned set of observations
+maxBinUncertainty <- 0.015 # worst standard deviation to accept for a binned set of observations
 wildsd <- 100.0 # worst number of standard deviations from mean allowed
 ##########################################
 earliestJD = 2457290 # only data on or after this JD will be used
@@ -32,35 +32,37 @@ plotRelTimes <- TRUE
 includeExclude <- TRUE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
 ExclCodes <- "None"
 ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
-				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","ELYA","GCJ","LBG","HJW","OAR","ASASSN","MMAO","JM","VMT","HBB","EEY","MNIC","KHAB","MMAO") # V & B
-#ExclCodes <- c("LDJ","BMAH")
+				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","GCJ","LBG","HJW","OAR","ASASSN","MMAO","VMT","HBB","EEY","MNIC","KHAB","MMAO") # V & B
+#ExclCodes <- c("LDJ","ASASSN")
 #ExclCodes <- c("LDJ")
-#ExclCodes <- c("LDJ","OAR","DKS","HBB") # new B ensemble under development
+#ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF") # good small V band ensemble
+ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA") # new B ensemble under development
 #ExclCodes <- c("ASASSN")
-#ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA","JM") # R ensemble
+#ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA","JM","SGEA") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","JM","VMT","SDB") # I ensemble
-#ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","VMT","SDB") # I ensemble without JM
+#ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","VMT","SDB","SGEA") # I ensemble without JM
 #ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","HBB") # B ensemble
 plotMee <- NA # do not highlight any particular observer code
-#plotMee <- "SDB"
-#plotMee <- "MMAO"
-#plotMee <- "HBB"
+#plotMee <- "ASASSN"
+#plotMee <- "JM"
+#plotMee <- "VMT"
 #plotMee <- "MMAO"
 meeColor <- "darkviolet"
 weightless <- NA
-#weightless <- c("MNIC","KHAB","MMAO")
-#weightless <- c("EEY") # observers to plot, but not use in fit.
-#weightless <- c("HBB")
+weightless <- c("MNIC","KHAB","MMAO")
+#weightless <- c("ASASSN") # observers to plot, but not use in fit.
+#weightless <- c("VMT")
 #weightless <- c("JM") # observers to plot, but not use in fit.
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet","red","green","blue","aquamarine2"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAsFactors=FALSE)
-#allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("SG"),plotColor=c("aquamarine2"),stringsAsFactors=FALSE)
+#allBands <- data.frame(bandinQ=c("V","SG"),plotColor=c("darkgreen","aquamarine2"),stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R","B"),plotColor=c("darkviolet","red","blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R","V","B"),plotColor=c("red","green","blue"), stringsAsFactors=FALSE)
