@@ -35,8 +35,8 @@ ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
 				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","GCJ","LBG","HJW","OAR","ASASSN","MMAO","VMT","HBB","EEY","MNIC","KHAB","MMAO") # V & B
 #ExclCodes <- c("LDJ","ASASSN")
 #ExclCodes <- c("LDJ")
-#ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF") # good small V band ensemble
-ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA") # new B ensemble under development
+ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY") # good small V band ensemble
+#ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA") # new B ensemble under development
 #ExclCodes <- c("ASASSN")
 #ExclCodes <- c("DUBF","GKA","BPAD","LPB","SJAR","LBG","LDJ","LWHA","JM","SGEA") # R ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","JM","VMT","SDB") # I ensemble
@@ -57,7 +57,7 @@ weightless <- c("MNIC","KHAB","MMAO")
 allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet","red","green","blue","aquamarine2"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAsFactors=FALSE)
-allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
+#allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
