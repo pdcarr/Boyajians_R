@@ -41,3 +41,9 @@ R Console.txt
 montet_comparison.R
 data/GaiaSource*.csv
 
+.DS_Store
+data/aavsodata_5ac63b6f0b67f.txt
+data/exo_CTL_06.02.csv
+data/kplr008462852-2009259160929_llc_t1.csv
+data/kplr008462852-2009259160929_llc_t1.txt
+data/tic_dec44_00N__46_00N.csv

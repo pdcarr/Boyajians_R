@@ -26,13 +26,13 @@ ExclCodes <- "None"
 #ExclCodes <- c("ATE") # observers to be used/not used in the fit. set to an invalid code (.e.g "None") if not interested
 #ExclCodes <- c("JM","LDJ","ELYA","DKS","OJJ","OAR","ATE","BPAD","HJW")
 #ExclCodes <- c("LDJ","UJHA","DKS","OJJ","JM","DUBF","ELYA","HJW")
-ExclCodes <- c("LDJ","OAR","LPB","DUBF","ELYA","DKS","OJJ","BSM","SDB","SWIA","VBPA","OAS","MJB","MBS","HBB")	 # B and V ensemble
+#ExclCodes <- c("LDJ","OAR","LPB","DUBF","ELYA","DKS","OJJ","BSM","SDB","SWIA","VBPA","OAS","MJB","MBS","HBB")	 # B and V ensemble
 #ExclCodes <- c("DUBF","OAR","LDJ","LPB","ELYA","LBG","OJJ","JM","SGEA")
 #ExclCodes <- c("DUBF","DKS","ELYA","OAR","ATE","HJW","BPAD","OJJ","LBG","LDJ","UJHA","OYE","GFRB","OAS","MJB","EEY") # V ensemble
 #ExclCodes <- c("LWHA","DUBF","GKA","BPAD","LPB","SJAR","LBG","JM","VBPA") # R ensemble
 #ExclCodes <- c("DUBF","LBG","JM","VBPA","GKA") # R ensemble
 #ExclCodes <- c("LBG","JM") # R ensemble
-#ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP") # I ensemble
+ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP") # I ensemble
 #ExclCodes <- c("ELYA","DUBF","OAR","HJW","DKS","LBG","UJHA","JM")
 #ExclCodes <- "JM"
 #ExclCodes <- c("BJFB","HJW","COO")
@@ -55,7 +55,7 @@ allBands <- data.frame(bandinQ=c("I","R","V","B"),plotColor=c("darkviolet","red"
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
-#allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R","B"),plotColor=c("darkviolet","red","blue"), stringsAsFactors=FALSE)
 
