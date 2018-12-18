@@ -74,7 +74,7 @@ biasObserver <- rbind(biasObserver,
                             list("ASASSN","V",0.041),
                             list("ASASSN","SG",0.058),
                             list("VMT","V",-0.0275),
-                            list("VMT","I",0.013),
+                            list("VMT","I",0.024),
                             list("VMT","B",0.1096),
                             list("SDB","I",0.0388),
                             list("EEY","V",-0.013))
