@@ -677,7 +677,11 @@ asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",asassn.band
 	scratch <- lightcurve[1,]
 	for (index in 1:n) {
 		scratch$JD <- asassn.data$HJD[index]
-		scratch$Magnitude <- asassn.data$mag[index]
+		if(is.numeric(asassn.data$mag[index])) {
+			scratch$Magnitude <- asassn.data$mag[index]
+		} else {
+			scratch$Magnitude <- NaN
+		}
 		scratch$Observer_Code <- asassn.code
 		scratch$Uncertainty <- asassn.data$mag_err[index]
 		
