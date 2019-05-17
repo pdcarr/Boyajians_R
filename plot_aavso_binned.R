@@ -391,45 +391,6 @@ grid(col="black")
 if(drawDateLine) { verticalDateLines(jdLine, jdLineText, myYlims, jdLineColor)}
 
 
-
-# generate a time series and plot if called for
-
-if (generateTS) {
-	quartz("Time Series")
-	tsMain <- "Time Series"	
-	myts <- binAAVSO_ts(lightcurve, cleanBand,allBands, tsBinWidth)
-	if (smoothTS) {
-		tsMain <- paste("Smoothed",tsMain," - Order = ", tsSmoothOrder)
-		okts <- !sapply(X=myts,FUN=is.na,simplify="logical")
-		for(iband in 1:numBands) {
-			tsScratch <- myts[,iband]
-			tsScratch[okts[,iband]] <- sma(data = myts[okts[,iband],iband],order=tsSmoothOrder)$fitted
-			if (iband == 1) {
-					bts <- tsScratch
-				} else {
-					bts  <- cbind(bts,tsScratch,deparse.level=0)
-				}
-		}
-	} else {
-		bts <- myts[,1:numBands] # not smoothed
-	}
-	
-	if(numBands > 1 ) {
-		colnames(bts) <- sapply(allBands$bandinQ,FUN=paste,"Mag",sep=" ")
-		plot.ts(bts,plot.type="multiple",xlim= myxlims,ylim = myYlims,main=tsMain,cex.axis=0.9,lwd=2)
-	} else {
-		plot_times <- time(bts) - tmin
-		my.xlab <- paste("Days since",tmin)
-		plot(as.vector(plot_times),as.vector(bts),ylim=myYlims,type="l",pch=20,main=tsMain,lwd=2,col=allBands$plotColor,
-					ylab=paste(allBands$bandinQ,"Mag"),xlab=my.xlab)
-		points(myts,col="grey",pch=20,cex=0.5)
-		##### draw vertical lines at various dates
-		if(drawDateLine) { verticalDateLines(jdLine, jdLineText, myYlims, jdLineColor)}
-
-	}
-	grid(col="black")
-}
-
 ################ plot the residuals if desired:
 if (plotMARS & plotResiduals & !splineRaw) {
 	quartz("Flux Relative to Fit")
