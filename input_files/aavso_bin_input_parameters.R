@@ -40,34 +40,36 @@ ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
 #ExclCodes <- c("LDJ","ASASSN")
 #ExclCodes <- c("LDJ","OAR")
 #ExclCodes <- c("LDJ","OAR","DUBF")
-#ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY") # good small V band ensemble
+#ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED") # good small V band ensemble
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","HJW") # new B ensemble under development
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","ASASSN","OAR","EEY","DUBF") # merged B and V
 #ExclCodes <- c("ASASSN")
-#ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA") # R ensemble
+#ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT") # R ensemble
 #ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","SGEA") # R ensemble without JM
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","JM","VMT","SDB","SGEA") # I ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","VMT","SDB","SGEA") # I ensemble without JM
-#ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","HBB","SGEA","SDB") # B ensemble
+#ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","HBB","SGEA","SDB","VMT") # B ensemble
 #ExclCodes <- c("JM")
 #ExclCodes <- c("DUBF")
 #ExclCodes <- "HBB"
 
 #ExclCodes <- "None"
 plotMee <- NA # do not highlight any particular observer code
-plotMee <- "LDJ"
+#plotMee <- "LDJ"
 #plotMee <- "JM"
 #plotMee <- "VMT"
 #plotMee <- "MMAO"
+#plotMee <- "DJED"
 meeColor <- "darkviolet"
 weightless <- NA
 #weightless <- c("MNIC","KHAB","MMAO","LPAC","VMT")
 #weightless <- "ASASSN"
-weightless <- "DUBF"
+#weightless <- "DUBF"
 #weightless <- c("LPAC") # observers to plot, but not use in fit.
 #weightless <- c("VMT")
 #weightless <- c("JM") # observers to plot, but not use in fit.
-#weightless <- c("HBB","OAR","EEY")
+#weightless <- c("DUBF","OAR","EEY")
+weightless <- c("DJED","VMT")
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet","red","green","blue","aquamarine2"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
@@ -83,7 +85,7 @@ allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors
 #allBands <- data.frame(bandinQ=c("R","V","B"),plotColor=c("red","green","blue"), stringsAsFactors=FALSE)
 
 ########################
-deltaJD <- 8.0 # bin width in days
+deltaJD <- 1.0 # bin width in days
 ########################
 plotExcluded <- FALSE # set to TRUE to plot the points in the lightcurve not used in the fit.
 plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit
