@@ -50,7 +50,7 @@ cat("\n\nTotal records read from file: ",totalRec,"\n\n")
 if (merge.asassn) {
 	cat("\nmerging in ASASSN Data\n")
 	asassn_data <- read.csv(asassn.csv.file,header=TRUE,stringsAsFactors=FALSE)
-	lightcurve <- asassn.merge(lightcurve,asassn_data,asassn.code) # function merges asassn data into lightcurve
+	lightcurve <- asassn.merge(lightcurve,asassn_data,asassn.code,g.to.V= convert.asassn,star.BminusV= our.BminusV,V.bias= converted.V.bias) # function merges asassn data into lightcurve
 }
 
 

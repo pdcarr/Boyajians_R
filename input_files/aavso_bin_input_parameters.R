@@ -4,11 +4,15 @@ llightcurve_name <- "data/aavso_latest_data.csv"
 # the name of the asassn file
 asassn.csv.file <- "data/ASASSN_latest.csv"
 merge.asassn <- TRUE # merge asasn data into V light curve
+################
+convert.asassn <- TRUE # TRUE if converting ASASSN g to V using Jordi, et. al. forumlas
+our.BminusV <- 0.52 # B-V for our star in question
+converted.V.bias <- 0.031 # additional bias to apply to subtract from converted V observations.
 asassn.code <- "ASASSN"
 ######### filters #########################
-maxairmass <- 2.2 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxairmass <- 2.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.2 # maximum AAVSO uncertainty estimate
-maxBinUncertainty <- 0.02 # worst standard deviation to accept for a binned set of observations
+maxBinUncertainty <- 0.04 # worst standard deviation to accept for a binned set of observations
 wildsd <- 100.0 # worst number of standard deviations from mean allowed
 ##########################################
 earliestJD = 2457290 # only data on or after this JD will be used
@@ -41,7 +45,7 @@ ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
 #ExclCodes <- c("LDJ","OAR")
 #ExclCodes <- c("LDJ","OAR","DUBF")
 #ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED") # good small V band ensemble
-#ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","HJW") # new B ensemble under development
+ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","HJW") # new B ensemble under development
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","ASASSN","OAR","EEY","DUBF") # merged B and V
 #ExclCodes <- c("ASASSN")
 #ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT") # R ensemble
@@ -73,8 +77,8 @@ weightless <- c("DJED","VMT")
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet","red","green","blue","aquamarine2"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
-#allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("green","blue"), stringsAsFactors=FALSE)
-#allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
+#allBands <- data.frame(bandinQ=c("V","B","SG"),plotColor=c("green","blue","aquamarine"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)

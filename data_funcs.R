@@ -665,16 +665,20 @@ trunc.pxct <- function(PXct.time) {
 }
 
 ########################################
-asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",asassn.band="V",asassn.cs=c("UNK","UNK")) {
+asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",g.to.V=FALSE,star.BminusV=0.52,V.bias=0.0,asassn.cs=c("UNK","UNK")) {
 # this function merges in the ASASSN data in both V and SG bands into the AAVSO lightcurve, appending it to the end.
 # lightcurve is the AAVSO lightcurve read in from their .csv file
 # asassn.data is the ASAS-SN data read in form the .csv file (https://asas-sn.osu.edu/)
 # asassn.code is the observer Code you want ASASSN to have
-# asassn.band is no longer used
+# g.to.V controls converting g band to V
+# star.BminusV is the B-V for the star in question
+# V.bias is an additional bias to be subtracted from converted V values
 # asassn.cs is the comp stars you want entered into the light curve.
 	n <- nrow(asassn.data)
 	m = ncol(lightcurve)
 	scratch <- lightcurve[1,]
+#	print(g.to.V)
+	
 	for (index in 1:n) {
 		scratch$JD <- asassn.data$HJD[index]
 		if(is.numeric(asassn.data$mag[index])) {
@@ -688,6 +692,12 @@ asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",asassn.band
 		# all ASASSN data should be either "V" or "g" (which we think is g' or SG)
 		if(asassn.data$Filter[index] == "g") {
 			scratch$Band <- "SG"
+			if(g.to.V & is.numeric(scratch$Magnitude)){
+				scratch$Band <- "V"
+				# see http://www.sdss3.org/dr8/algorithms/sdssUBVRITransform.php
+				scratch$Magnitude <- scratch$Magnitude - 0.63*star.BminusV +0.124 - V.bias # per Jordi, et. al, (2005)
+#				print(scratch$Magnitude)
+			}
 		} else if(asassn.data$Filter[index]=="V") {
 			scratch$Band <- "V" 
 		} else { 
