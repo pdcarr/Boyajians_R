@@ -677,7 +677,7 @@ asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",g.to.V=FALS
 	n <- nrow(asassn.data)
 	m = ncol(lightcurve)
 	scratch <- lightcurve[1,]
-	if(g.to.V) {	print("Converting any ASAS-SN g band magnitudes to V band per Jordi, et. al., (2005)")}
+	if(g.to.V) {	cat("\nConverting any ASAS-SN g band magnitudes to V band per Jordi, et. al., (2005)\n")}
 	for (index in 1:n) {
 		scratch$JD <- asassn.data$HJD[index]
 		if(is.numeric(asassn.data$mag[index])) {
