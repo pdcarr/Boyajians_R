@@ -677,8 +677,7 @@ asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",g.to.V=FALS
 	n <- nrow(asassn.data)
 	m = ncol(lightcurve)
 	scratch <- lightcurve[1,]
-#	print(g.to.V)
-	
+	if(g.to.V) {	print("Converting any ASAS-SN g band magnitudes to V band per Jordi, et. al., (2005)")}
 	for (index in 1:n) {
 		scratch$JD <- asassn.data$HJD[index]
 		if(is.numeric(asassn.data$mag[index])) {
@@ -695,7 +694,7 @@ asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",g.to.V=FALS
 			if(g.to.V & is.numeric(scratch$Magnitude)){
 				scratch$Band <- "V"
 				# see http://www.sdss3.org/dr8/algorithms/sdssUBVRITransform.php
-				scratch$Magnitude <- scratch$Magnitude - 0.63*star.BminusV +0.124 - V.bias # per Jordi, et. al, (2005)
+				scratch$Magnitude <- scratch$Magnitude - 0.63*star.BminusV +0.124 - V.bias # per Jordi, et. al., (2005)
 #				print(scratch$Magnitude)
 			}
 		} else if(asassn.data$Filter[index]=="V") {
