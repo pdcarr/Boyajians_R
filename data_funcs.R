@@ -467,9 +467,9 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 	weare = unique(lightcurve[allClean,"Observer_Code"]) # a list of all the observer codes
 	numBands = length(allBand$bandinQ) # the number of passbands
 	
-	#set up the data frames we'll be populating
-	allSuperObs <- data.frame(JD=numeric(),Band=character(),Magnitude=numeric(),Uncertainty=numeric(),Observer_Code=character(),stringsAsFactors=FALSE)
-	superObs <- data.frame(JD=numeric(),Band=character(),Magnitude=numeric(),Uncertainty=numeric(),Observer_Code=character(),stringsAsFactors=FALSE)
+	#set up the data frames we'll be populating - one scratch, and one is the output data frame
+	allSuperObs <- data.frame(JD=numeric(),Band=character(),Magnitude=numeric(),Uncertainty=numeric(),nobs=numeric(),Observer_Code=character(),stringsAsFactors=FALSE)
+	superObs <- data.frame(JD=numeric(),Band=character(),Magnitude=numeric(),Uncertainty=numeric(),nobs=numeric(),Observer_Code=character(),stringsAsFactors=FALSE)
 	
 	#loop over the times
 	
@@ -490,6 +490,7 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 					superObs[1,"Band"] <- allBand$bandinQ[bandIndex]
 					superObs[1,"Magnitude"] <- mean(lightcurve[allTests,"Magnitude"],na.rm=TRUE)
 					superObs[1,"Uncertainty"] <- mean(lightcurve[allTests,"Uncertainty"],na.rm=TRUE)/sqrt(n)
+					superObs[1,"nobs"] <- n
 					if(is.na(superObs[1,"Uncertainty"]) | is.nan(superObs[1,"Uncertainty"])) {
 						print("invalid uncertainty - not a number")
 						next
