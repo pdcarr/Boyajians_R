@@ -11,8 +11,8 @@ converted.V.bias <- 0.031 # additional bias to apply to subtract from converted 
 asassn.code <- "ASASSN"
 ######### filters #########################
 maxairmass <- 2.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
-maxuncertainty <- 0.2 # maximum AAVSO uncertainty estimate
-maxBinUncertainty <- 0.04 # worst standard deviation to accept for a binned set of observations
+maxuncertainty <- 0.1 # maximum AAVSO uncertainty estimate
+maxBinUncertainty <- 0.015 # worst standard deviation to accept for a binned set of observations
 wildsd <- 100.0 # worst number of standard deviations from mean allowed
 ##########################################
 earliestJD = 2457290 # only data on or after this JD will be used
@@ -27,8 +27,8 @@ startPlot <- earliestJD
 #startPlot <- 2458150
 #startPlot <- 2458000
 #startPlot <- 2457620
-startPlot <- 2458200
-#startPlot <- 2458400
+#startPlot <- 2458200
+#startPlot <- 2458500
 #stop.plot <- 2457680
 #stop.plot <- 2458000
 add.predict <- 0 # additional prediction days to add to plot
@@ -38,47 +38,57 @@ includeExclude <- TRUE # TRUE if your list of observer codes is to to be include
 ExclCodes <- "None"
 ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
 				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","GCJ","LBG","HJW","OAR","ASASSN","MMAO","HBB","EEY","MNIC","KHAB","MMAO") # V & B
+ExclCodes <- c("LDJ","ASASSN")
+#ExclCodes <- c("LDJ","DUBF","JM")
 #ExclCodes <- c("LDJ")
-#ExclCodes <- c("LDJ","DUBF")
-#ExclCodes <- c("HBB")
-#ExclCodes <- c("LDJ","ASASSN")
+#ExclCodes <- c("ASASSN")
 #ExclCodes <- c("LDJ","OAR")
-#ExclCodes <- c("LDJ","OAR","DUBF")
-#ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED") # good small V band ensemble
-ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","HJW") # new B ensemble under development
+#ExclCodes <- c("LDJ","OAR","DUBF","ASASSN")
+#ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB","JM") # good small V band ensemble
+#ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","HJW") # new B ensemble under development
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","ASASSN","OAR","EEY","DUBF") # merged B and V
 #ExclCodes <- c("ASASSN")
-#ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT") # R ensemble
+#ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT","SDB") # R ensemble
 #ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","SGEA") # R ensemble without JM
-#ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","JM","VMT","SDB","SGEA") # I ensemble
+#ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LBG","LPB","LDJ","CMP","JM","VMT","SDB","SGEA") # I ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","VMT","SDB","SGEA") # I ensemble without JM
 #ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","HBB","SGEA","SDB","VMT") # B ensemble
-#ExclCodes <- c("JM")
+#ExclCodes <- c("JM","LDJ","DUBF")
 #ExclCodes <- c("DUBF")
-#ExclCodes <- "HBB"
+#ExclCodes <- "JM"
 
 #ExclCodes <- "None"
 plotMee <- NA # do not highlight any particular observer code
-#plotMee <- "LDJ"
+#plotMee <- "DUBF"
 #plotMee <- "JM"
 #plotMee <- "VMT"
 #plotMee <- "MMAO"
-#plotMee <- "DJED"
+#plotMee <- "STFB"
 meeColor <- "darkviolet"
 weightless <- NA
 #weightless <- c("MNIC","KHAB","MMAO","LPAC","VMT")
+#weightless <- "JM"
 #weightless <- "ASASSN"
-#weightless <- "DUBF"
+#weightless <- c("DUBF","HJW")
 #weightless <- c("LPAC") # observers to plot, but not use in fit.
 #weightless <- c("VMT")
-#weightless <- c("JM") # observers to plot, but not use in fit.
+#weightless <- c("JM","LWHA") # observers to plot, but not use in fit.
 #weightless <- c("DUBF","OAR","EEY")
-weightless <- c("DJED","VMT")
+weightless <- c("DJED","STFB","JM")
+#weightless <- c("SDB")
+#weightless <- c("OJJ","GKA","MJB","SJAR","LBG","LPB","CMP","SDB","SGEA")
+#weightless <- c("LDJ","OAR","HBB","DUBF","EEY","DJED","VMT","STFB")
+#weightless <- c("OAR","HBB","DUBF","EEY","DJED","VMT","STFB")
+#weightless <- c("HBB","DUBF","EEY","DJED","VMT","STFB")
+#weightless <- c("DUBF","EEY","DJED","VMT","STFB")
+#weightless <- c("DJED","VMT","STFB","JM")
+#weightless <- c("GKA","BPAD","SJAR","LBG","LWHA","SGEA","VMT","SDB")
+
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet","red","green","blue","aquamarine2"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B","SG"),plotColor=c("green","blue","aquamarine"), stringsAsFactors=FALSE)
-allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
+#allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
@@ -89,7 +99,7 @@ allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALS
 #allBands <- data.frame(bandinQ=c("R","V","B"),plotColor=c("red","green","blue"), stringsAsFactors=FALSE)
 
 ########################
-deltaJD <- 1.0 # bin width in days
+deltaJD <- 16.0 # bin width in days
 ########################
 plotExcluded <- FALSE # set to TRUE to plot the points in the lightcurve not used in the fit.
 plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit
