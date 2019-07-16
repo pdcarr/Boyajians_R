@@ -16,13 +16,13 @@ w2.pch <- 1 # symbol for plotting W2
 w2.offset <- 0.1
 chi2.thresh <- 4 # only plot points with chi2 lower than this threshold
 pretty.mag <- 100
-y.marg <- 0.02
+y.marg <- 0.05
 worst.qual <- 10
 plot.start.mjd <- NA
 plot.stop.mjd <- NA
-#plot.start.mjd <- 57880
-#plot.stop.mjd <- 57900
-
+#plot.start.mjd <- 57884
+#plot.stop.mjd <- 57894
+plot.diff <- FALSE # TRUE if you want to plot W1 - W2
 source("input_files/VlineParams.R")
 ########################### Process
 #read the .csv file
@@ -40,8 +40,8 @@ if(!is.na(plot.stop.mjd)) {tmax <- min(tmax,plot.stop.mjd)}
 # bin the w1 and w2 data
 
 # create data frames
-allSuperObs <- data.frame(mjd=numeric(),w1=numeric(),w1.sigma=numeric(),w2=numeric(),w2.sigma=numeric(),stringsAsFactors=FALSE)
-superObs <- data.frame(mjd=numeric(),w1=numeric(),w1.sigma=numeric(),w2=numeric(),w2.sigma=numeric(),stringsAsFactors=FALSE)
+allSuperObs <- data.frame(mjd=numeric(),w1=numeric(),w1.sigma=numeric(),w2=numeric(),w2.sigma=numeric(),nobs.w1=numeric(),nobs.w2=numeric(),stringsAsFactors=FALSE)
+superObs <- data.frame(mjd=numeric(),w1=numeric(),w1.sigma=numeric(),w2=numeric(),w2.sigma=numeric(),nobs.w1=numeric(),nobs.w2=numeric(),stringsAsFactors=FALSE)
 
 # loop over all the times and average for each bin for W2
 good.chi2.2 <- neowise.data$w2rchi2 <= chi2.thresh # check the Chi^2 threhold for W2
@@ -55,16 +55,20 @@ for (t in seq(tmin,tmax,by=bin.width)) {
 		next # no good data points in this bin
 	}
 	if(sum(in.bin & good.chi2.1) > 0) {
+		superObs[1,"nobs.w1"] <- sum(in.bin & good.chi2.1)
 		superObs[1,"w1"] <- mean(neowise.data$w1mpro[in.bin & good.chi2.1],na.rm=TRUE)
 		superObs[1,"w1.sigma"] <- mean(neowise.data$w1sigmpro[in.bin & good.chi2.1],na.rm=TRUE)/sqrt(sum(in.bin & good.chi2.1))
 	} else {
+		superObs[1,"nobs.w1"] <- 0
 		superObs[1,"w1"] <- NaN
 		superObs[1,"w1.sigma"] <- NaN
 	}
 	if(sum(in.bin & good.chi2.2) > 0) {
+		superObs[1,"nobs.w2"] <- sum(in.bin & good.chi2.2)
 		superObs[1,"w2"] <- mean(neowise.data$w2mpro[in.bin & good.chi2.2],na.rm=TRUE) + w2.offset
 		superObs[1,"w2.sigma"] <- mean(neowise.data$w2sigmpro[in.bin & good.chi2.2],na.rm=TRUE)/sqrt(sum(in.bin & good.chi2.2))
 	} else {
+		superObs[1,"nobs.w2"] <- 0
 		superObs[1,"w2"] <- NaN
 		superObs[1,"w2.sigma"] <- NaN
 	}
@@ -136,14 +140,15 @@ grid(col="black")
 legend(x= t.limits[1], y = y.limits[2], legend=c("W1",w2.leg.string),col = c(w1.col,w2.col),
        border = "black", pch=c(w1.pch,w2.pch),cex = 1)
 
-
-quartz("W1 - W2")
-plot(x=allSuperObs$mjd,
-		y=allSuperObs$w1 - allSuperObs$w2, 
-		xlim=t.limits,
-		xlab= "MJD",ylab="magnitude difference",
-		main="W1 - W2",
-		col="darkred",pch=20)
-		
-
-grid(col="black")
+if(plot.diff) {
+	quartz("W1 - W2")
+	plot(x=allSuperObs$mjd,
+			y=allSuperObs$w1 - allSuperObs$w2, 
+			xlim=t.limits,
+			xlab= "MJD",ylab="magnitude difference",
+			main="W1 - W2",
+			col="darkred",pch=20)
+			
+	
+	grid(col="black")
+}
