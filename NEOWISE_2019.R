@@ -14,7 +14,7 @@ bar.col="lightgrey"
 w1.pch <- 0 #symbold for plotting W1
 w2.pch <- 1 # symbol for plotting W2
 w2.offset <- 0.1
-chi2.thresh <- 4 # only plot points with chi2 lower than this threshold
+chi2.thresh <- 2 # only plot points with chi^2 lower than this threshold
 pretty.mag <- 100
 y.marg <- 0.05
 worst.qual <- 10
