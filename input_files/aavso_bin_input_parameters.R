@@ -37,20 +37,21 @@ plotRelTimes <- TRUE
 includeExclude <- TRUE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
 ExclCodes <- "None"
 ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
-				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","GCJ","LBG","HJW","OAR","ASASSN","MMAO","HBB","EEY","MNIC","KHAB","MMAO") # V & B
-ExclCodes <- c("LDJ","ASASSN")
+				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","GCJ","LBG","HJW","OAR","ASASSN","MMAO","HBB","EEY","MNIC","KHAB",
+				"FRGA","BJFB","PTFA") # V & B
+#ExclCodes <- c("LDJ","ASASSN")
 #ExclCodes <- c("LDJ","DUBF","JM")
 #ExclCodes <- c("LDJ")
 #ExclCodes <- c("ASASSN")
 #ExclCodes <- c("LDJ","OAR")
 #ExclCodes <- c("LDJ","OAR","DUBF","ASASSN")
-#ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB","JM") # good small V band ensemble
+ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB") # good small V band ensemble
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","HJW") # new B ensemble under development
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","ASASSN","OAR","EEY","DUBF") # merged B and V
 #ExclCodes <- c("ASASSN")
-#ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT","SDB") # R ensemble
+#ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT","SDB","RNL") # R ensemble
 #ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","SGEA") # R ensemble without JM
-#ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LBG","LPB","LDJ","CMP","JM","VMT","SDB","SGEA") # I ensemble
+#ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LBG","LPB","LDJ","CMP","JM","VMT","SDB","SGEA","LPAC") # I ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","VMT","SDB","SGEA") # I ensemble without JM
 #ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","HBB","SGEA","SDB","VMT") # B ensemble
 #ExclCodes <- c("JM","LDJ","DUBF")
@@ -63,10 +64,9 @@ plotMee <- NA # do not highlight any particular observer code
 #plotMee <- "JM"
 #plotMee <- "VMT"
 #plotMee <- "MMAO"
-#plotMee <- "STFB"
+plotMee <- "RNL"
 meeColor <- "darkviolet"
 weightless <- NA
-#weightless <- c("MNIC","KHAB","MMAO","LPAC","VMT")
 #weightless <- "JM"
 #weightless <- "ASASSN"
 #weightless <- c("DUBF","HJW")
@@ -74,16 +74,9 @@ weightless <- NA
 #weightless <- c("VMT")
 #weightless <- c("JM","LWHA") # observers to plot, but not use in fit.
 #weightless <- c("DUBF","OAR","EEY")
-weightless <- c("DJED","STFB","JM")
+weightless <- c("DJED","STFB","JM","BJFB","FRGA","PTFA","KHAB")  # weightless for V band
 #weightless <- c("SDB")
-#weightless <- c("OJJ","GKA","MJB","SJAR","LBG","LPB","CMP","SDB","SGEA")
-#weightless <- c("LDJ","OAR","HBB","DUBF","EEY","DJED","VMT","STFB")
-#weightless <- c("OAR","HBB","DUBF","EEY","DJED","VMT","STFB")
-#weightless <- c("HBB","DUBF","EEY","DJED","VMT","STFB")
-#weightless <- c("DUBF","EEY","DJED","VMT","STFB")
-#weightless <- c("DJED","VMT","STFB","JM")
-#weightless <- c("GKA","BPAD","SJAR","LBG","LWHA","SGEA","VMT","SDB")
-
+#weightless <- "RNL" # weightless for R band
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet","red","green","blue","aquamarine2"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
