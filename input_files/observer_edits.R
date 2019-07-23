@@ -82,4 +82,5 @@ biasObserver <- rbind(biasObserver,
                             list("EEY","V",-0.013),
                             list("LPB","I",0.06),
                             list("PALE","V",-0.031),
-                            list("BJFB","V",-0.037))
+                            list("BJFB","V",-0.037),
+                            list("TRE","V",0.017))
