@@ -38,18 +38,18 @@ includeExclude <- TRUE # TRUE if your list of observer codes is to to be include
 ExclCodes <- "None"
 ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
 				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","GCJ","LBG","HJW","OAR","ASASSN","MMAO","HBB","EEY","MNIC","KHAB",
-				"FRGA","BJFB","PTFA") # V & B
+				"FRGA","BJFB","PTFA","TRE") # V & B
 #ExclCodes <- c("LDJ","ASASSN")
 #ExclCodes <- c("LDJ","DUBF","JM")
 #ExclCodes <- c("LDJ")
 #ExclCodes <- c("ASASSN")
 #ExclCodes <- c("LDJ","OAR")
 #ExclCodes <- c("LDJ","OAR","DUBF","ASASSN")
-#ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB") # good small V band ensemble
+ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB","TRE","BJFB","NOT") # good small V band ensemble
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","HJW") # new B ensemble under development
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","ASASSN","OAR","EEY","DUBF") # merged B and V
 #ExclCodes <- c("ASASSN")
-ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT","SDB","RNL","NOT") # R ensemble
+#ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT","SDB","RNL","NOT") # R ensemble
 #ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","SGEA") # R ensemble without JM
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LBG","LPB","LDJ","CMP","JM","VMT","SDB","SGEA","LPAC") # I ensemble
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","VMT","SDB","SGEA") # I ensemble without JM
@@ -74,15 +74,16 @@ weightless <- NA
 #weightless <- c("VMT")
 #weightless <- c("JM","LWHA") # observers to plot, but not use in fit.
 #weightless <- c("DUBF","OAR","EEY")
-#weightless <- c("DJED","STFB","JM","BJFB","FRGA","PTFA","KHAB","NOT")  # weightless for V band
+#weightless <- c("DJED","STFB","JM","BJFB","FRGA","PTFA","KHAB","NOT","TRE")  # weightless for V band
+weightless <- c("DJED","STFB","JM","FRGA","PTFA","KHAB")  # weightless for V band
 #weightless <- c("SDB")
-weightless <- c("RNL","NOT") # weightless for R band
+#weightless <- c("RNL","NOT") # weightless for R band
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet","red","green","blue","aquamarine2"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B","SG"),plotColor=c("green","blue","aquamarine"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
-allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
+#allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("SG"),plotColor=c("aquamarine2"),stringsAsFactors=FALSE)
