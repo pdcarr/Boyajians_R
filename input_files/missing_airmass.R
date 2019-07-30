@@ -12,6 +12,8 @@ Cotopaxi <- c(38.38,-105.69) # approximate location of HJW
 Minneapolis <- c(44.9778,-93.265)
 Auburn <- c(41.367,-85.06) # approximate location for SDB
 Sorrento <- c(40.63,14.38) # approximate location ofr RNL
+Budapest <- c(47.47,19.04) # approximate location for TIA
 tabbysLoc <- c("+44d 27m 24.61s","20h 06m 15.457s") # declination and right ascension of the star.
-missingAirmass <- c("JM","PXR","JSJA","MATA","WROC","FJQ","PALE","KTHC","PJVA","HJW","DRZ","SDB","RNL")	# observer code
-missingAMLocs = rbind(lasCruces,Leominster,Warrington,Erd,Haan,LosAngeles,Potomac,Coventry,Ponferrada,Cotopaxi,Minneapolis,Auburn,Sorrento)
+missingAirmass <- c("JM","PXR","JSJA","MATA","WROC","FJQ","PALE","KTHC","PJVA","HJW","DRZ","SDB","RNL","TIA")	# observer code
+missingAMLocs = rbind(lasCruces,Leominster,Warrington,Erd,Haan,LosAngeles,Potomac,
+						Coventry,Ponferrada,Cotopaxi,Minneapolis,Auburn,Sorrento,Budapest)
