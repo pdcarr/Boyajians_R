@@ -280,16 +280,16 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 #	print(unique(runningClean))
 		
 	
-	# calculate mean and sd over the cleaned set of magnitudes
-	Imean = mean(lightcurve[runningClean,"Magnitude"],na.rm=TRUE)
-#	print(Imean)
-	Istdev = sd(lightcurve[runningClean,"Magnitude"],na.rm=TRUE)
+	# # calculate mean and sd over the cleaned set of magnitudes
+	# Imean = mean(lightcurve[runningClean,"Magnitude"],na.rm=TRUE)
+# #	print(Imean)
+	# Istdev = sd(lightcurve[runningClean,"Magnitude"],na.rm=TRUE)
 
-	# Remove anything bigger than max sd from mean
-	# set maxsd very large if you don't want to do this
-	notwild  <- (abs(lightcurve$Magnitude - Imean) <= wildsigma*Istdev) 
-	runningClean <- runningClean & notwild
-#	print(unique(runningClean))
+	# # Remove anything bigger than max sd from mean
+	# # set maxsd very large if you don't want to do this
+	# notwild  <- (abs(lightcurve$Magnitude - Imean) <= wildsigma*Istdev) 
+	# runningClean <- runningClean & notwild
+# #	print(unique(runningClean))
 
 # which Julian dates are on or after them minimum date?
 	notEarly <- lightcurve$JD >= earliestJD
