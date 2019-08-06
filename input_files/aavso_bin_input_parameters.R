@@ -10,8 +10,8 @@ converted.V.bias <- 0.031 # additional bias to apply to subtract from converted 
 asassn.code <- "ASASSN"
 ######### filters #########################
 maxairmass <- 2.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
-maxuncertainty <- 0.1 # maximum AAVSO uncertainty estimate
-maxBinUncertainty <- 0.02 # worst standard deviation to accept for a binned set of observations
+maxuncertainty <- 0.05 # maximum AAVSO uncertainty estimate
+maxBinUncertainty <- 0.015 # worst standard deviation to accept for a binned set of observations
 wildsd <- 100.0 # worst number of standard deviations from mean allowed
 ##########################################
 earliestJD = 2457290 # only data on or after this JD will be used
@@ -26,7 +26,7 @@ startPlot <- earliestJD
 #startPlot <- 2458150
 #startPlot <- 2458000
 #startPlot <- 2457620
-startPlot <- 2458200
+#startPlot <- 2458200
 #startPlot <- 2458600
 #stop.plot <- 2457680
 #stop.plot <- 2458000
@@ -45,20 +45,20 @@ ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
 #ExclCodes <- c("VMT")
 #ExclCodes <- c("ASASSN")
 #ExclCodes <- c("LDJ","OAR")
-#ExclCodes <- c("LDJ","OAR","DUBF","ASASSN")
-#ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB","TRE","BJFB","NOT","ATE","DFS","TIA","FJAA","CIVA","FRGA") # good small V band ensemble
-weightless <- c("DJED","STFB","JM","FRGA","PTFA","KHAB","DFS","TIA","FJAA","DFS","CIVA")  # weightless for V band
+#ExclCodes <- c("LDJ","OAR","ASASSN")
+ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB","TRE","BJFB","NOT","ATE","DFS","TIA","FJAA","CIVA","FRGA","DJED","EEY") # good small V band ensemble
+weightless <- c("DJED","STFB","JM","FRGA","PTFA","KHAB","DFS","TIA","FJAA","DFS")  # weightless for V band
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","HJW","TIA","DFS","FJAA") # new B ensemble under development
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","ASASSN","OAR","EEY","DUBF") # merged B and V
 #ExclCodes <- c("ASASSN")
-#ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT","SDB","RNL","NOT","DFS","TIA","DJED","DFS","CIVA") # R ensemble
-#weightless <- c("RNL","DFS","TIA","DJED","DFS","CIVA") # weightless for R band
+#ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT","SDB","RNL","NOT","DFS","TIA","DJED","DFS","CIVA","DJED") # R ensemble
+#weightless <- c("RNL","DFS","TIA","DJED","DJED","LWHA") # weightless for R band
 #ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","SGEA") # R ensemble without JM
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LBG","LPB","LDJ","CMP","JM","VMT","SDB","SGEA","LPAC","TIA","TRE") # I ensemble
 #weightless <- c("TIA","TRE") # I band weightless
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","VMT","SDB","SGEA") # I ensemble without JM
-#ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","HBB","SGEA","SDB","NOT","DFS","BJFB") # B ensemble
-#weightless <- c("JM","DFS","TIA","FJAA") # B band weightless
+#ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","HBB","SGEA","SDB","NOT","DFS","BJFB","DJED") # B ensemble
+#weightless <- c("JM","DFS","TIA","FJAA","DJED") # B band weightless
 #ExclCodes <- c("JM","LDJ","DUBF")
 #ExclCodes <- c("DUBF","LDJ","SGEA")
 #ExclCodes <- "JM"
@@ -86,7 +86,7 @@ allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors
 #allBands <- data.frame(bandinQ=c("R","V","B"),plotColor=c("red","green","blue"), stringsAsFactors=FALSE)
 
 ########################
-deltaJD <- 2.0 # bin width in days
+deltaJD <- 32.0 # bin width in days
 ########################
 plotExcluded <- FALSE # set to TRUE to plot the points in the lightcurve not used in the fit.
 plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit
