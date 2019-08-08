@@ -40,6 +40,7 @@ R Console.txt
 # not ready for prime time #
 montet_comparison.R
 data/GaiaSource*.csv
+Zwicky_DR1.R
 
 .DS_Store
 data/aavsodata_5ac63b6f0b67f.txt
