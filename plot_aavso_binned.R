@@ -97,7 +97,10 @@ for (thisBand in allBands$bandinQ) {
 	
 	#bin the data for each Observer
 cat("binning the data\n")
-binCurve <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD)
+bin.list <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD)
+binCurve <- as.data.frame(bin.list[1])
+ensemble.curve <- as.data.frame(bin.list[2])
+#binCurve <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD)
 
 # test for less than max uncertainty
 uncertaintyTest <- binCurve$Uncertainty <= maxBinUncertainty & binCurve$Uncertainty > 0

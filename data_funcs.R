@@ -443,7 +443,7 @@ for (myrow in 1:length(weare)) {
 	return (obsAndCounts) # a a data frame with observer codes and counts
 }
 
-#######################################################
+####################################################### binAAVSO
 binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 # returns a dataframe with JD, Magnitude for each band, and observer code.
 # lightcurve is the unprocessed curve
@@ -470,13 +470,19 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 	#set up the data frames we'll be populating - one scratch, and one is the output data frame
 	allSuperObs <- data.frame(JD=numeric(),Band=character(),Magnitude=numeric(),Uncertainty=numeric(),nobs=numeric(),Observer_Code=character(),stringsAsFactors=FALSE)
 	superObs <- data.frame(JD=numeric(),Band=character(),Magnitude=numeric(),Uncertainty=numeric(),nobs=numeric(),Observer_Code=character(),stringsAsFactors=FALSE)
+	ensemble.means <- data.frame(JD = numeric(),Band=character(),Magnitude=numeric(),stringsAsFactors=FALSE)
+	ensemble.entry <- data.frame(JD = numeric(),Band=character(),Magnitude=numeric(),nobs=numeric(),stringsAsFactors=FALSE)
 	
-	#loop over the times
+	#loop over the bin times
 	
 	for (startNow in seq(startJD,stopJD,by=deltaJD)) {
-			stopNow <- startNow+deltaJD
+			stopNow <- startNow+deltaJD	# the end of the bin
+			mean.bin.time <- (stopNow + startNow)/2.0 # the center of the bin
+#			print(mean.bin.time)
 #			print(stopNow)
 	# loop over the Observer codes
+		ensemble.mean <- vector(length=numBands,mode="numeric") # the ensemble mean in each Band should initialize to zero
+		accumulated.nobs <- vector(length=numBands,mode="numeric")
 		for (thisObs in weare) {
 		#loop over the passbands to create the superobservation in the time frame for the Observer code
 			for (bandIndex in 1:numBands) {
@@ -506,11 +512,27 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 										
 #					append the superobservation to the main data frame using rbind
 					allSuperObs <- rbind(allSuperObs,superObs)
-				} 
-			}
-		}
-	}
-	return(allSuperObs)
+					ensemble.mean[bandIndex] <- ensemble.mean[bandIndex] + superObs$Magnitude*superObs$nobs
+					accumulated.nobs <- accumulated.nobs[bandIndex] +  n
+				} # if(n> 0) if statement
+			} # band
+		} #observer
+			for (i in numBands) {
+					if(accumulated.nobs[i] > 0) {
+						# print(ensemble.mean[i])
+						# print(accumulated.nobs[i])
+						ensemble.mean[i] <- ensemble.mean[i]/accumulated.nobs[i] # weighted average
+						# print(mean.bin.time)
+						# print(ensemble.mean[i])
+						ensemble.entry[1,"JD"] <- mean.bin.time
+						ensemble.entry[1,"Band"] <- allBand$bandinQ[i]
+						ensemble.entry[1,"Magnitude"] <- ensemble.mean[i]
+						ensemble.entry[1,"nobs"] <- accumulated.nobs[i]
+						ensemble.means <- rbind(ensemble.means,ensemble.entry)
+					}
+			} # ensemble loop
+	} #time bins
+	return(list(allSuperObs,ensemble.means))
 }
 
 #######################################################################
