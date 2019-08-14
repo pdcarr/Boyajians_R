@@ -447,7 +447,7 @@ for (myrow in 1:length(weare)) {
 binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 # returns a dataframe with JD, Magnitude for each band, and observer code.
 # lightcurve is the unprocessed curve
-# cleanObs is the matric of logical vectors of accepted observations for the passbands
+# cleanObs is the matrix of logical vectors of accepted observations for the passbands
 # allBands is the dataframe containing the AAVSO codes of the passbandsa, e.g. "B","V"
 # deltaJD is the time cluster size in days
 
@@ -476,21 +476,23 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 	#loop over the bin times
 	
 	for (startNow in seq(startJD,stopJD,by=deltaJD)) {
-			stopNow <- startNow+deltaJD	# the end of the bin
-			mean.bin.time <- (stopNow + startNow)/2.0 # the center of the bin
+		stopNow <- startNow+deltaJD	# the end of the bin
+		mean.bin.time <- (stopNow + startNow)/2.0 # the center of the bin
 #			print(mean.bin.time)
 #			print(stopNow)
+		# print(ensemble.mean)
+		# print(accumulated.sups)
+		
+		testTime <- (lightcurve$JD >= startNow) & (lightcurve$JD < stopNow) # test for observation in bin
 	# loop over the Observer codes
-		ensemble.mean <- vector(length=numBands,mode="numeric") # the ensemble mean in each Band should initialize to zero
-		accumulated.nobs <- vector(length=numBands,mode="numeric")
-		for (thisObs in weare) {
 		#loop over the passbands to create the superobservation in the time frame for the Observer code
-			for (bandIndex in 1:numBands) {
-				testTime <- (lightcurve$JD >= startNow) & (lightcurve$JD < stopNow) 
-				testObs <- lightcurve$Observer_Code == thisObs
-				allTests <- testTime & cleanObs[,bandIndex] & testObs
+		for (bandIndex in 1:numBands) {			
+			ensemble.test  <- testTime & cleanObs[,bandIndex]
+			for (thisObs in weare) {
+				testObs <- lightcurve$Observer_Code == thisObs # test for observer in question
+				allTests <- ensemble.test & testObs # all observations eligible for super observation
 				# compile the super observation
-				n <- length(lightcurve[allTests,"JD"])
+				n <- sum(allTests) # number of observations in the bin for this observer
 				if(n > 0) {
 					superObs[1,"JD"] <- mean(lightcurve[allTests,"JD"],na.rm=TRUE)
 					superObs[1,"Band"] <- allBand$bandinQ[bandIndex]
@@ -508,29 +510,22 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 						next
 					} #invalid uncertainty
 						
-					superObs[1,"Observer_Code"] <- thisObs
+					superObs[1,"Observer_Code"] <- thisObs # add the observer code to the superobservation
 										
-#					append the superobservation to the main data frame using rbind
+	#					append the superobservation to the main data frame using rbind
 					allSuperObs <- rbind(allSuperObs,superObs)
-					ensemble.mean[bandIndex] <- ensemble.mean[bandIndex] + superObs$Magnitude*superObs$nobs
-					accumulated.nobs <- accumulated.nobs[bandIndex] +  n
 				} # if(n> 0) if statement
-			} # band
-		} #observer
-			for (i in numBands) {
-					if(accumulated.nobs[i] > 0) {
-						# print(ensemble.mean[i])
-						# print(accumulated.nobs[i])
-						ensemble.mean[i] <- ensemble.mean[i]/accumulated.nobs[i] # weighted average
-						# print(mean.bin.time)
-						# print(ensemble.mean[i])
-						ensemble.entry[1,"JD"] <- mean.bin.time
-						ensemble.entry[1,"Band"] <- allBand$bandinQ[i]
-						ensemble.entry[1,"Magnitude"] <- ensemble.mean[i]
-						ensemble.entry[1,"nobs"] <- accumulated.nobs[i]
-						ensemble.means <- rbind(ensemble.means,ensemble.entry)
-					}
-			} # ensemble loop
+			} #observer loop end
+			if(sum(ensemble.test) >0) {
+					ensemble.mean <- mean(lightcurve$Magnitude[ensemble.test])  # unweighted average
+					mean.time <- mean(lightcurve$JD[ensemble.test])
+					ensemble.entry[1,"JD"] <- mean.time
+					ensemble.entry[1,"Band"] <- allBand$bandinQ[bandIndex]
+					ensemble.entry[1,"Magnitude"] <- ensemble.mean
+					ensemble.entry[1,"nobs"] <- sum(ensemble.test)
+					ensemble.means <- rbind(ensemble.means,ensemble.entry)
+			}
+		} # band loop end
 	} #time bins
 	return(list(allSuperObs,ensemble.means))
 }
@@ -761,4 +756,30 @@ mean.resid <- function(binCurve,these.resids,btest,Obs.code,dipless) {
 	my.obs <- (binCurve$Observer_Code[btest] == Obs.code) & dipless
 #	print()
 	return(mean(these.resids[btest][my.obs]))
+}
+
+################### lightcurve.biases #########################
+lightcurve.biases <- function(lightcurve,biasObserver) {
+# best to use the cleaned lightcurve for efficiency	
+	for(index in 1:nrow(lightcurve)) {
+		lightcurve[index,] <- entry.bias.apply(lightcurve[index,],biasObserver)
+		if(index %% 1000 == 0) {print(index)}
+	}
+	return(lightcurve)
+}
+
+entry.bias.apply <- function(lightcurve.row, biasObserver) {
+#lightcurve.row is a row from athe lightcurve data frame
+#bias observer is a data frame with the biases for a subset of observers in a subset of the bands
+	this.row = as.data.frame(lightcurve.row)
+	# print(class(this.row))
+	find.bias <- biasObserver$band == this.row $Band & biasObserver$obsCode == this.row $Observer_Code
+#	print(sum(find.bias)) # debug
+	if(sum(find.bias) > 0) {
+		this.bias <- as.numeric(biasObserver$bias[find.bias][1])
+		# print(this.bias)
+		this.row$Magnitude <- this.row$Magnitude - this.bias
+	}
+#	print(class(this.row))
+	return(this.row)
 }

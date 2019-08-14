@@ -85,23 +85,30 @@ if(exists("pretty.JD.interval")) {
 cat("editing specific observers\n")
 editCurve <- ObserverJDEdit(editUser,lightcurve)
 
-#clean and separate and the bands in question
+##################### clean and separate and the bands in question
 index = 1
 for (thisBand in allBands$bandinQ) {
 	cat("cleaning ",thisBand,"\n")
 	# clean the data for this passband
 	cleanBand[,index] <- cleanAAVSO3(lightcurve,thisBand,ExclCodes,includeExclude,maxairmass,maxuncertainty,wildsd,earliestJD,okComparison,bad.comp.star) &
 						 editCurve
+	##### NOTE: this is really slow, so only do it if it's important to get the ensemble means for each bin
+	if(plot.ensemble & use.static.biases) {
+		cat("\nApplying static biases. This could take some time..","\n")
+		lightcurve[cleanBand[,index],] <- lightcurve.biases(lightcurve[cleanBand[,index],],biasObserver)
+	}
 	index = index + 1
 }
 	
-	#bin the data for each Observer
+###################### bin the data for each Observer
 cat("binning the data\n")
 bin.list <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD)
 binCurve <- as.data.frame(bin.list[1])
 ensemble.curve <- as.data.frame(bin.list[2])
 #binCurve <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD)
 
+
+######### filter bins for excess uncertainty
 # test for less than max uncertainty
 uncertaintyTest <- binCurve$Uncertainty <= maxBinUncertainty & binCurve$Uncertainty > 0
 
@@ -129,7 +136,7 @@ for (thisBand in allBands$bandinQ) {
 		
 	# apply any defined observer biases to the binned magnitude(s) if(use.static.biases)
 	if (exists("biasObserver") & exists("use.static.biases")) {
-		if(use.static.biases) {
+		if(use.static.biases & !plot.ensemble) {
 			biasBand <- biasObserver$band == thisBand
 			# if there are observer biases for this band, then apply them
 			# loop over all the observers in the biases data frame
@@ -510,5 +517,31 @@ cat("   ",length(lightcurve$JD),"total observations loaded\n")
 #cat("    ",length(lightcurve[cleanI | cleanR | cleanV | cleanB,"JD"]),"raw observations after cleaning\n")
 cat("    ",length(binCurve$JD[uncertaintyTest]),"binned observations with",deltaJD,"day bins")
 
+########## plot ensemble averages
 
+if(plot.ensemble) {
+	ensemble.title = "Unweighted Ensemble averages"
+	plot.times <- ensemble.curve$JD - tmin # same time offset as the other plots
+	x.string <- paste("Julian Date - ",tmin) # plot x axis label
+	quartz("ensemble average bins")
+	i.band <- 1
+	for (thisBand in allBands$bandinQ) {
+		# first band in list
+		band.test <- ensemble.curve$Band == thisBand
+		if(i.band==1) {	
+			plot(x=plot.times[band.test],y=ensemble.curve$Magnitude[band.test],
+			xlim= myxlims,ylim = myYlims,
+			xlab=x.string,ylab="Magnitude",
+			col=allBands$plotColor[i.band],
+			pch=20,main=ensemble.title)
+		} else { 		# subsequent bands in the list, if any
+			points(x=plot.times[band.test],y=ensemble.curve$Magnitude[band.test],
+			col=allBands$plotColor[i.band],
+			pch=20)
+		}
+		i.band <- i.band + 1	# point to next band
+	}
+	grid(col="black")
+	if(drawDateLine) { verticalDateLines(jdLine, jdLineText, deriv.bounds, jdLineColor)}
+}
 
