@@ -539,6 +539,16 @@ if(plot.ensemble) {
 			col=allBands$plotColor[i.band],
 			pch=20)
 		}
+	
+		# plot a smooth.spline on the bins if called for
+		if(perform.smooth) {
+			smoove.fit <- all.smoove[[i.band]]
+			these.values <- predict(smoove.fit,plot.times)$y
+			bin.predict[btest] <- these.values
+	
+			lines(plot.times,these.values,col=allBands$plotColor[i.band],lwd=3) # plot as a line of specified color
+			
+		}
 		i.band <- i.band + 1	# point to next band
 	}
 	grid(col="black")
