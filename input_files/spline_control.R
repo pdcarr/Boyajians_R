@@ -16,7 +16,7 @@ mask.Dips <- TRUE
 perform.smooth <- TRUE # TRUE if you want to plot a smooth cubic spline
 smooth.deriv <- TRUE	 # TRUE if you want to plot the first derivative of the smooth spline as well.
 deriv.margin = 1.02
-smooth.n.knots <- 4 # number of knots, including the two endpoints
+smooth.n.knots <- 5 # number of knots, including the two endpoints
 df.penalty <- 1
 do.CV <- TRUE	# do cross validation
 smoove.color <- "slategrey" # color of the line drawn on the magnitude plot
