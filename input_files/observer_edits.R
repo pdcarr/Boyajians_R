@@ -23,7 +23,7 @@ editUser <- rbind(editUser,c("VMT",2458282.0,2458283.1,"I"),c("GKA",2458354.15,2
 editUser <- rbind(editUser,c("DUBF", 2457629.0, 2457630.0,"V"),c("TPV",2458684,2358686,"V"),c("VMT",2458688,2458689,"V"),
 						c("VMT",2458656,2458657,"V"),c("DFS",2458689.4,2458689.8,"B"),c("PXR",2458053.5,2458055.5,"V"),c("VMT",2458689.1, 2458690.1,"V"),
 						c("DUBF",2458655.9,2458657.0,"V"),c("JM",2458604.8,2458605.9,"B"),c("DFS",2458705.0, 2458706.5,"B"),c("DUBF", 2458656.0, 2458658.0,"B"),
-						c("BJFB",2457901,2457903,"V"))
+						c("BJFB",2457901,2457903,"V"),c("GKA",2458714,2458714.7,"V"))
 
 ############################################################
 use.static.biases <- TRUE
@@ -41,7 +41,7 @@ biasObserver <- rbind(biasObserver,
                             list("LDJ","V",-0.004),
                             list("GKA","R",0.015),
                             list("GKA","I",0.014),
-                            list("GKA","V",-0.007),
+                            list("GKA","V",0.002),
                             list("HDHA","V",0.01),
                             list("HDHA","I",-0.015),
                             list("SDB","V",-0.006),
@@ -85,7 +85,7 @@ biasObserver <- rbind(biasObserver,
                             list("VMT","B",0.11),
                             list("VMT","R",0.002),
                             list("SDB","I",0.0388),
-                            list("EEY","V",-0.013),
+                            list("EEY","V",-0.011),
                             list("LPB","I",0.06),
                             list("PALE","V",-0.031),
                             list("BJFB","V",-0.018),
