@@ -552,6 +552,6 @@ if(plot.ensemble) {
 		i.band <- i.band + 1	# point to next band
 	}
 	grid(col="black")
-	if(drawDateLine) { verticalDateLines(jdLine, jdLineText, fluxYLims, jdLineColor)}
+	if(drawDateLine) { verticalDateLines(jdLine, jdLineText, myYlims, jdLineColor)}
 }
 
