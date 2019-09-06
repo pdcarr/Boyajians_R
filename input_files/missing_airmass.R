@@ -14,8 +14,9 @@ Auburn <- c(41.367,-85.06) # approximate location for SDB
 Sorrento <- c(40.63,14.38) # approximate location ofr RNL
 Budapest <- c(47.47,19.04) # approximate location for TIA
 ValRacine <- c(45.48,-71.08) # approximate location of DJED
+France <- c(46.3,2.2)  # very rough location of SFLB
 tabbysLoc <- c("+44d 27m 24.61s","20h 06m 15.457s") # declination and right ascension of the star.
-missingAirmass <- c("JM","PXR","JSJA","MATA","WROC","FJQ","PALE","KTHC","PJVA","HJW","DRZ","SDB","RNL","TIA","DJED")	# observer code
+missingAirmass <- c("JM","PXR","JSJA","MATA","WROC","FJQ","PALE","KTHC","PJVA","HJW","DRZ","SDB","RNL","TIA","DJED","SFLB")	# observer code
 missingAMLocs = rbind(lasCruces,Leominster,Warrington,Erd,Haan,LosAngeles,Potomac,
 						Coventry,Ponferrada,Cotopaxi,Minneapolis,Auburn,Sorrento,Budapest,
-						ValRacine)
+						ValRacine,France)
