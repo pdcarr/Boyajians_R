@@ -102,10 +102,10 @@ for (thisBand in allBands$bandinQ) {
 	
 ###################### bin the data for each Observer
 cat("binning the data\n")
-bin.list <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD)
+bin.list <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD,weightless)
 binCurve <- as.data.frame(bin.list[1])
 ensemble.curve <- as.data.frame(bin.list[2])
-#binCurve <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD)
+#binCurve <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD) # old function call
 
 
 ######### filter bins for excess uncertainty
@@ -542,6 +542,7 @@ if(plot.ensemble) {
 	
 		# plot a smooth.spline on the bins if called for
 		if(perform.smooth) {
+#			cat("\nstarting plot of smooth fit\n")
 			smoove.fit <- all.smoove[[i.band]]
 			these.values <- predict(smoove.fit,plot.times)$y
 			bin.predict[btest] <- these.values
