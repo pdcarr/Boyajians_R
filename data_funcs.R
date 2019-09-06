@@ -444,7 +444,7 @@ for (myrow in 1:length(weare)) {
 }
 
 ####################################################### binAAVSO
-binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
+binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD,weightless=NA) {
 # returns a dataframe with JD, Magnitude for each band, and observer code.
 # lightcurve is the unprocessed curve
 # cleanObs is the matrix of logical vectors of accepted observations for the passbands
@@ -516,6 +516,9 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD) {
 					allSuperObs <- rbind(allSuperObs,superObs)
 				} # if(n> 0) if statement
 			} #observer loop end
+			
+			ensemble.test <- ensemble.test &  
+				!(lightcurve$Observer_Code %in% weightless) # remove weightless observers from ensemble
 			if(sum(ensemble.test) >0) {
 					ensemble.mean <- mean(lightcurve$Magnitude[ensemble.test])  # unweighted average
 					mean.time <- mean(lightcurve$JD[ensemble.test])
