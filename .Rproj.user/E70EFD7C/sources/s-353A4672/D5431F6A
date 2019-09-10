@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1568125080809.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3825686439",
+    "id" : "D5431F6A",
+    "lastKnownWriteTime" : 1568125106,
+    "last_content_update" : 1568125106056,
+    "path" : "~/dev/Boyajians_R/input_files/dip_mask.R",
+    "project_path" : "input_files/dip_mask.R",
+    "properties" : {
+        "cursorPosition" : "10,2",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
