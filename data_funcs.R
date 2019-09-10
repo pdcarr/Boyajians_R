@@ -742,6 +742,7 @@ asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",g.to.V=FALS
 #		print(scratch)
 #		print(ncol(scratch))
 #		print(ncol(lightcurve))
+		# browser()
 		lightcurve <- rbind(lightcurve,scratch)
 		
 	}
