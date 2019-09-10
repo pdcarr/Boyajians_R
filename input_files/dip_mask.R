@@ -8,4 +8,4 @@ dip.mask <- rbind(dip.mask,c("Celeste",2457915,2457927),
 #dip.mask <-rbind(dip.mask,c("FWAIN",2458051,2458057))
 
 # primarily observed by Bruce Gary, the "December Surprise"
-dip.mask <- rbind(dip.mask,c("December_Surprise",2458094,2458097))
+# dip.mask <- rbind(dip.mask,c("December_Surprise",2458094,2458097))
