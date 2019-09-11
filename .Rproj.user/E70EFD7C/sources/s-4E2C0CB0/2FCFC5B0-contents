@@ -58,7 +58,7 @@ ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
 # weightless <- c("RNL","TIA","DJED","LWHA","VMT","JM") # weightless for R band
 #ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","SGEA") # R ensemble without JM
 ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LBG","LPB","LDJ","CMP","JM","VMT","SDB","SGEA","LPAC","TIA","TRE","BSM","FJQ") # I ensemble
-weightless <- c("TIA","FJQ") # I band weightless
+weightless <- c("TIA","FJQ","JM") # I band weightless
 #ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LWHA","LBG","LPB","LDJ","CMP","VMT","SDB","SGEA") # I ensemble without JM
 # ExclCodes <- c("DUBF","MJB","LDJ","GKA","ELYA","HJW","JSJA","VBPA","DKS","OAR","HBB","SGEA","SDB","NOT","DFS","BJFB","DJED","GJP","SFLB") # B ensemble
 # weightless <- c("JM","DFS","TIA","FJAA","DJED","GJP","SFLB") # B band weightless
