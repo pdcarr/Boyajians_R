@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1568214366262.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1285772894",
+    "id" : "525337E1",
+    "lastKnownWriteTime" : 1568214385,
+    "last_content_update" : 1568214385898,
+    "path" : "~/dev/Boyajians_R/input_files/spline_control.R",
+    "project_path" : "input_files/spline_control.R",
+    "properties" : {
+        "cursorPosition" : "18,19",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
