@@ -319,7 +319,8 @@ for (thisBand in allBands$bandinQ) {
 		errbar(myTimes[btest],binCurve[btest,"Magnitude"],
 				yplus=my.y.plus,yminus=my.y.minus,
 				col=allBands$plotColor[icol],
-				xlab= myXLabel,ylab="Magnitude",xlim= myxlims,ylim = myYlims,main=myPlotTitle,pch=3,cex.main=0.7,
+				xlab= myXLabel,ylab="Magnitude",xlim= myxlims,ylim = myYlims,
+                main=myPlotTitle,pch=3,cex.main=0.7,
 				add=FALSE,errbar.col=ebar.color)
 		points(myTimes[btest],binCurve[btest,"Magnitude"],col=allBands$plotColor[icol],pch=3)
 		title(main=myPlotTitle)
@@ -521,6 +522,8 @@ cat("    ",length(binCurve$JD[uncertaintyTest]),"binned observations with",delta
 
 if(plot.ensemble) {
 	ensemble.title = "Unweighted Ensemble averages"
+    titleString <- c(paste(ensemble.title,"with",deltaJD,"Day Bins",sep=" "), paste(as.character(howManyObs),"Observers",sep=" "))
+    myPlotTitle <- paste(titleString,collapse="\n")
 	plot.times <- ensemble.curve$JD - tmin # same time offset as the other plots
 	x.string <- paste("Julian Date - ",tmin) # plot x axis label
 	quartz("ensemble average bins")
@@ -533,7 +536,7 @@ if(plot.ensemble) {
 			xlim= myxlims,ylim = myYlims,
 			xlab=x.string,ylab="Magnitude",
 			col=allBands$plotColor[i.band],
-			pch=20,main=ensemble.title)
+			pch=20,main=myPlotTitle)
 		} else { 		# subsequent bands in the list, if any
 			points(x=plot.times[band.test],y=ensemble.curve$Magnitude[band.test],
 			col=allBands$plotColor[i.band],
