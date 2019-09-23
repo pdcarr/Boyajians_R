@@ -101,10 +101,11 @@ biasObserver <- rbind(biasObserver,
                             list("MMAO","V",0.005),
                             list("CIVA","V",0.025),
                             list("CIVA","R",0.031),
-                            list("DFS","R",0.008),
+                            list("DFS","R",0.005),
                             list("DFS","V",-0.002),
                             list("BSM","V",0.007),
                             list("BSM","I",0.007),
                             list("DJED","V",0.002),
                             list("DJED","B",0.036),
-                            list("ODEA","V",0.015))
+                            list("ODEA","V",0.015),
+					                  list("PTFA","V",0.029))
