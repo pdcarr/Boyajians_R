@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "1704406121",
     "id" : "DD3A4B6",
-    "lastKnownWriteTime" : 1568215749,
-    "last_content_update" : 1568215749156,
+    "lastKnownWriteTime" : 1569256497,
+    "last_content_update" : 1569256497235,
     "path" : "~/dev/Boyajians_R/input_files/observer_edits.R",
     "project_path" : "input_files/observer_edits.R",
     "properties" : {
-        "cursorPosition" : "94,48",
-        "scrollLine" : "0"
+        "cursorPosition" : "82,53",
+        "scrollLine" : "62"
     },
     "read_only" : false,
     "read_only_alternatives" : [
