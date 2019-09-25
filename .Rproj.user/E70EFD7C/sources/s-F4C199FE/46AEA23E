@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1569351288754.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "46AEA23E",
+    "lastKnownWriteTime" : 1569359031,
+    "last_content_update" : 1569359508572,
+    "path" : "~/dev/Boyajians_R/LCO_plot.R",
+    "project_path" : "LCO_plot.R",
+    "properties" : {
+        "cursorPosition" : "54,1",
+        "scrollLine" : "32"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

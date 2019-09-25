@@ -1,0 +1,2 @@
+
+lco.data <- read.delim(file=lco.file,header=TRUE,stringsAsFactors=FALSE)

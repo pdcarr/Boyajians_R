@@ -1,6 +1,12 @@
 library("MASS") # for rlm() and lqs()
 library("Hmisc")
 rm("lco.data")
+########## setup paramters
+epsilon.t = 1/86400 # small time interval to start binning
+##########
+bin.width <- 1 # days
+t.margin <- 1 # days
+
 ########### set up the file(s)
 #LCO_file <- "data/Measurements_subset_I_TFN_KB25.csv"
 
@@ -8,9 +14,8 @@ LCO.bands <- c("I","B")
 data.directory <- "../LCO_GS/"
 LCO.suffix <-"txt$"
 LCO.prefix <- "^Measurements_subset_"
-# LCO.files <- data.frame(lco.file="data/Measurements_subset_I_TFN_KB25.csv",band="I",stringsAsFactors=FALSE)
-# LCO.files <- rbind(LCO.files, c("data/Measurements_subset_I_TFN_KB23.csv","I"),c("data/Measurements_subset_I_OGG_KB82.csv","I"))
-#LCO.files <- data.frame(lco.file=character(),band=character(),stringsAsFactors=FALSE) # set up empty data frame
+
+# figure out what files are available and load them in
 all.the.files <- dir(data.directory)
 these.files <- grepl(pattern=LCO.suffix,x=all.the.files,perl=TRUE)
 lco.data <- data.frame(Num = numeric(),label=character(),MJD=numeric(),rel_flux_T1_n=numeric(),band=character()) # create data fram for all the data
@@ -30,11 +35,8 @@ for (this.band in LCO.bands) {
 
 #LCO.files <- rbind(LCO.files,))
 
-##########
-bin.width <- 1 # days
-t.margin <- 1 # days
 #########
-plot.col = "darkviolet"
+plot.col = "darkviolet"t.min
 plot.sym = 20
 
 
@@ -51,4 +53,6 @@ for(myband in unique(lco.data$band)) {
 	grid(col="black")
 #	hold on
 }
-t.min <- min(lco.data$MJD,na.rm=TRUE)
+t.min <- min(lco.data$MJD,na.rm=TRUE) - t.epsilon
+t.max <- min(lco.data$MJD,na.rm=TRUE) + t.epsilon
+muh.bins <- seq(fromt.min,tp=t.max,by=bin.width)
