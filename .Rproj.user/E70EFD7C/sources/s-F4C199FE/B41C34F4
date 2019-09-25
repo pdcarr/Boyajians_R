@@ -1,19 +1,19 @@
 {
     "collab_server" : "",
     "contents" : "",
-    "created" : 1569351288754.000,
-    "dirty" : false,
+    "created" : 1569419359917.000,
+    "dirty" : true,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "0",
-    "id" : "46AEA23E",
-    "lastKnownWriteTime" : 1569419648,
-    "last_content_update" : 1569419648680,
-    "path" : "~/dev/Boyajians_R/LCO_plot.R",
-    "project_path" : "LCO_plot.R",
+    "id" : "B41C34F4",
+    "lastKnownWriteTime" : 1569421061,
+    "last_content_update" : 1569421097823,
+    "path" : "~/dev/Boyajians_R/data_funcs.R",
+    "project_path" : "data_funcs.R",
     "properties" : {
-        "cursorPosition" : "21,112",
-        "scrollLine" : "0"
+        "cursorPosition" : "798,101",
+        "scrollLine" : "780"
     },
     "read_only" : false,
     "read_only_alternatives" : [

@@ -795,6 +795,8 @@ exclude.LCO <- function(LCO.curve,exclude.these,exclude=TRUE) {
 # LCO Curve is data.frame(Num = numeric(),label=character(),MJD=numeric(),rel_flux_T1_n=numeric(),band=character())
 # exclude.these are Perl regula expressions to match
 # exclude is a logical. TRUE if you wnat to exclude labels matching the regular expression, FALSE if you want to only include them
+
+# return value is logical vector of itmes that can used to filter in/out whatever is in exclude.these
   ok.obs <- !is.na(LCO.curve$MJD) # creates a logical vector as long as the data frame.
   found <- ok.obs & FALSE # a vector of FALSE
   for (code in exclude.these) {
