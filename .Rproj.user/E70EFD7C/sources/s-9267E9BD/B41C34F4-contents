@@ -806,3 +806,89 @@ exclude.LCO <- function(LCO.curve,exclude.these,exclude=TRUE) {
 }
 
 ######################################################################
+
+kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta.mean,max.iterations) {
+## clusters a time series using a simple algorithm.
+  # times is a vector of real numbers. NA or NaNs are ok.
+  # initial.clusters is an integer number of clusters to start with
+  # min.population is the minimum number of elements in the cluster else the cluster is pruned. St ot zero to avoid pruning.
+  # delta.mean: the algorithm is doen when all the means change less than this number
+  # max.iterations is the maximum interger number before we are declaring victory.
+# returns a vector of bin centers, which may be smaller than initial.clusters
+# error checking  
+  if(length(times) <= 1 | 
+     as.integer(initial.clusters.num) < 1 | 
+     delta.mean <= 0 | 
+     as.integer(max.iterations) <= 0) { return(NA)}
+# set upthe initial centers
+  t.min <- min(times,na.rm=TRUE)
+  t.max <- max(times,na.rm=TRUE)
+  t.span <- t.max - t.min
+  t.bin <- t.span/initial.clusters.num
+  clusters <- seq(from=t.min + t.bin/2,to=t.max - t.bin/2,t.bin) # first guess at the clusters
+  N <- length(clusters)
+  old.cluster.mean <- rep(NA,time=N)
+  for(iter.num in 1:as.integer(max.iterations)) {
+    N <- length(clusters)
+    pruned <- is.na(clusters) # logical vector same size as clusters
+    cluster.sum = vector(mode="numeric",length=N)
+    cluster.mean = vector(mode="numeric",length=N)
+    cluster.diff = vector(mode="numeric",length=N)
+    situation <- t(sapply(times,k.min.distance,bins=clusters))
+    for (i.bin in 1:N) {
+      my.times <- situation[,1] == i.bin
+      cluster.sum[i.bin] <- sum(my.times)
+      if(cluster.sum[i.bin] >= min.population) {
+        pruned[i.bin] <- FALSE
+        cluster.mean[i.bin] <- mean(times[my.times])
+        clusters[i.bin] <- cluster.mean[i.bin]
+        if(!is.na(old.cluster.mean[i.bin])) {
+          cluster.diff[i.bin] <- abs(old.cluster.mean[i.bin] - cluster.mean[i.bin] )
+        } 
+      } else {
+        pruned[i.bin] <- TRUE
+        next()
+      }
+    } # bin loop
+    old.cluster.mean <- cluster.mean[!pruned]
+    clusters <- clusters[!pruned] # pruned clusters are gone and won't come back
+    if(sum(pruned) > 0) next()  # need another go-around to pick up the orphaned times
+#    if(iter.num == as.integer(max.iterations)) {print("exiting k means on max iterations")} # debug
+    if(max(cluster.diff[!pruned],na.rm=TRUE) <= delta.mean & iter.num > 1) {
+      print("breaking loop on convergence")
+      print(iter.num)
+      break
+      } # Converged!
+
+  } #iteration loop
+  situation <- t(sapply(times,k.min.distance,bins = clusters)) # bin membership mapping
+  return(list(bins=clusters,membership=situation[,1]))
+}
+
+#################
+k.min.distance <- function(time,bins) {
+# for a given time, calculate the min distance from the distances to all the bins.
+  
+L <- length(bins)
+distance <- vector(mode="numeric",length=L)
+# create a vector of distances
+distance <- abs(bins - time[1])
+
+# find the shortest distance
+min.dist <- max(distance,na.rm = TRUE)
+bin.number <- 0 # indicates an error if it stays 0
+for(i.dist in 1:L) {
+  if(is.na(distance[i.dist])) {break}
+  if (distance[i.dist] < min.dist) {
+    bin.number <- i.dist
+    min.dist <- distance[i.dist]
+  }
+}
+return(c(bin.number,min.dist))
+}
+
+bin.fluxes <- function(bin.number,situation,fluxes) {
+  membership.element <- situation == bin.number
+  bin.mean.flux <- mean(fluxes[membership.element],na.rm=TRUE)
+
+}

@@ -2,18 +2,18 @@
     "collab_server" : "",
     "contents" : "",
     "created" : 1569419359917.000,
-    "dirty" : true,
+    "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "0",
     "id" : "B41C34F4",
-    "lastKnownWriteTime" : 1569421061,
-    "last_content_update" : 1569421097823,
+    "lastKnownWriteTime" : 1569439760,
+    "last_content_update" : 1569439760153,
     "path" : "~/dev/Boyajians_R/data_funcs.R",
     "project_path" : "data_funcs.R",
     "properties" : {
-        "cursorPosition" : "798,101",
-        "scrollLine" : "780"
+        "cursorPosition" : "809,37",
+        "scrollLine" : "0"
     },
     "read_only" : false,
     "read_only_alternatives" : [

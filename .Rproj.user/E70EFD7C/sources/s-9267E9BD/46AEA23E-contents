@@ -1,13 +1,14 @@
 library("MASS") # for rlm() and lqs()
 library("Hmisc")
+source("data_funcs.R")
 rm("lco.data")
 ########## setup paramters
 epsilon.t = 1/86400 # small time interval to start binning
 ##########
-bin.width <- 1 # days
-t.margin <- 1 # days
+trial.bins <- 200 # of bins to try in kmeans
+#t.margin <- 1 # days
 ############## exclude any observatories or cameras (case sensitive)?
-exclude.codes - c("TFN")
+exclude.codes <- c("TFN")
 ########### set up the file(s)
 #LCO_file <- "data/Measurements_subset_I_TFN_KB25.csv"
 
@@ -37,7 +38,7 @@ for (this.band in LCO.bands) {
 #LCO.files <- rbind(LCO.files,))
 
 #########
-plot.col = "darkviolet"t.min
+plot.col = "darkviolet"
 plot.sym = 20
 
 
@@ -52,8 +53,21 @@ for(myband in unique(lco.data$band)) {
 		  xlab="JD - 2400000",ylab="normalized flux",
 		  main=my.title)
 	grid(col="black")
+# pick bins using K Means (dirt simple algortithm)
+	bin.data <- kmeans.time.series(times=lco.data$MJD[these.obs],initial.clusters.num=trial.bins,min.population=2,delta.mean=0.01,max.iterations=12)
+	# our.bins <- bin.data[1]
+	# mem <- bin.data[2]
+	bin.numbers <- seq(1,length(bin.data$bins),1)
+	bin.flux.means <- sapply(bin.numbers,bin.fluxes,bin.data$membership,lco.data$rel_flux_T1_n[these.obs])
+	quartz("binned plot of LCO data")
+	plot(x=lco.data$MJD[these.obs],
+	     y=lco.data$rel_flux_T1_n[these.obs],
+	     type="p",
+	     col=plot.col,pch=plot.sym,
+	     xlab="JD - 2400000",ylab="normalized flux",
+	     main=my.title)
+	grid(col="black")
+	
+	
 #	hold on
 }
-t.min <- min(lco.data$MJD,na.rm=TRUE) - t.epsilon
-t.max <- min(lco.data$MJD,na.rm=TRUE) + t.epsilon
-muh.bins <- seq(fromt.min,tp=t.max,by=bin.width)
