@@ -807,7 +807,7 @@ exclude.LCO <- function(LCO.curve,exclude.these,exclude=TRUE) {
 
 ######################################################################
 
-kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta.mean,max.iterations) {
+kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta.mean=0.04,max.iterations=10) {
 ## clusters a time series using a simple algorithm.
   # times is a vector of real numbers. NA or NaNs are ok.
   # initial.clusters is an integer number of clusters to start with
@@ -855,8 +855,8 @@ kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta
     if(sum(pruned) > 0) next()  # need another go-around to pick up the orphaned times
 #    if(iter.num == as.integer(max.iterations)) {print("exiting k means on max iterations")} # debug
     if(max(cluster.diff[!pruned],na.rm=TRUE) <= delta.mean & iter.num > 1) {
-      print("breaking loop on convergence")
-      print(iter.num)
+      # print("breaking loop on convergence")
+      # print(iter.num)
       break
       } # Converged!
 
