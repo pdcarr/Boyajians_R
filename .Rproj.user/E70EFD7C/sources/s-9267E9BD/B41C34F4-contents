@@ -444,12 +444,15 @@ for (myrow in 1:length(weare)) {
 }
 
 ####################################################### binAAVSO
-binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD,weightless=NA) {
+binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.bins=100,minimum.membership=1) {
 # returns a dataframe with JD, Magnitude for each band, and observer code.
-# lightcurve is the unprocessed curve
+# lightcurve is the unprocessed curve from AAVSO
 # cleanObs is the matrix of logical vectors of accepted observations for the passbands
 # allBands is the dataframe containing the AAVSO codes of the passbandsa, e.g. "B","V"
 # deltaJD is the time cluster size in days
+# weightless is the list of observer codes who are given zero weight in the fit or ensemble
+# triel.bins is an interger number of bins to go for initially. This may be reduced, but won't be increased.
+
 
 	allClean <- cleanObs[,1]
 	if (ncol(cleanObs) > 1) {
@@ -458,46 +461,49 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD,weightless=NA) {
 
 	#calculate the start and stop times from the light curve Julian Dates 
 	
-	startJD = floor(min(lightcurve[allClean,"JD"],na.rm=TRUE))
-	stopJD = ceiling(max(lightcurve[allClean,"JD"],na.rm=TRUE))
+#	startJD = floor(min(lightcurve[allClean,"JD"],na.rm=TRUE))
+#	stopJD = ceiling(max(lightcurve[allClean,"JD"],na.rm=TRUE))
 #	print(length(lightcurve[allClean,"JD"]))
 #	print(startJD)
 #	print(stopJD)
 #	print(deltaJD)
 	weare = unique(lightcurve[allClean,"Observer_Code"]) # a list of all the observer codes
 	numBands = length(allBand$bandinQ) # the number of passbands
-	
+#	right.colors <- lightcurve$Band[allClean] %in% allBand$bandinQ # logical vector every observation that has the right band(s)
 	#set up the data frames we'll be populating - one scratch, and one is the output data frame
 	allSuperObs <- data.frame(JD=numeric(),Band=character(),Magnitude=numeric(),Uncertainty=numeric(),nobs=numeric(),Observer_Code=character(),stringsAsFactors=FALSE)
 	superObs <- data.frame(JD=numeric(),Band=character(),Magnitude=numeric(),Uncertainty=numeric(),nobs=numeric(),Observer_Code=character(),stringsAsFactors=FALSE)
 	ensemble.means <- data.frame(JD = numeric(),Band=character(),Magnitude=numeric(),stringsAsFactors=FALSE)
 	ensemble.entry <- data.frame(JD = numeric(),Band=character(),Magnitude=numeric(),nobs=numeric(),stringsAsFactors=FALSE)
 	
-	#loop over the bin times
-	
-	for (startNow in seq(startJD,stopJD,by=deltaJD)) {
-		stopNow <- startNow+deltaJD	# the end of the bin
-		mean.bin.time <- (stopNow + startNow)/2.0 # the center of the bin
+# determine bin times and membership for the allowed observations (cleaned lightcurve with the required colors)
+	bin.defs <- kmeans.time.series(lightcurve$JD[allClean],trial.bins,min.population=minimum.membership,delta.mean=0.04,max.iterations=10) 
+		#loop over the bin times
+	nbins <- length(bin.defs$bins)
+#	koope over the bins we just defines
+	for(this.bin in 1:nbins) {
 #			print(mean.bin.time)
 #			print(stopNow)
 		# print(ensemble.mean)
 		# print(accumulated.sups)
 		
-		testTime <- (lightcurve$JD >= startNow) & (lightcurve$JD < stopNow) # test for observation in bin
-	# loop over the Observer codes
 		#loop over the passbands to create the superobservation in the time frame for the Observer code
 		for (bandIndex in 1:numBands) {			
-			ensemble.test  <- testTime & cleanObs[,bandIndex]
+#			ensemble.test  <- testTime & cleanObs[,bandIndex]
+		  # to get in the ensemble for a bin, the observation has to be in the right band and in the bin.
+		  ensemble.test <- bin.defs$membership == this.bin & (lightcurve$Band[allClean] == allBand$bandinQ[bandIndex])
+			# loop over observers
 			for (thisObs in weare) {
-				testObs <- lightcurve$Observer_Code == thisObs # test for observer in question
+				testObs <- lightcurve$Observer_Code[allClean] == thisObs # test for observer in question
 				allTests <- ensemble.test & testObs # all observations eligible for super observation
+				sublight <- lightcurve[allClean,]
 				# compile the super observation
 				n <- sum(allTests) # number of observations in the bin for this observer
 				if(n > 0) {
-					superObs[1,"JD"] <- mean(lightcurve[allTests,"JD"],na.rm=TRUE)
+					superObs[1,"JD"] <- mean(sublight$JD[allTests],na.rm=TRUE)
 					superObs[1,"Band"] <- allBand$bandinQ[bandIndex]
-					superObs[1,"Magnitude"] <- mean(lightcurve[allTests,"Magnitude"],na.rm=TRUE)
-					superObs[1,"Uncertainty"] <- mean(lightcurve[allTests,"Uncertainty"],na.rm=TRUE)/sqrt(n)
+					superObs[1,"Magnitude"] <- mean(sublight$Magnitude[allTests],na.rm=TRUE)
+					superObs[1,"Uncertainty"] <- mean(sublight$Uncertainty[allTests],na.rm=TRUE)/sqrt(n)
 					superObs[1,"nobs"] <- n
 					if(is.na(superObs[1,"Uncertainty"]) | is.nan(superObs[1,"Uncertainty"])) {
 						print("invalid uncertainty - not a number")
@@ -518,10 +524,10 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD,weightless=NA) {
 			} #observer loop end
 			
 			ensemble.test <- ensemble.test &  
-				!(lightcurve$Observer_Code %in% weightless) # remove weightless observers from ensemble
+			              	!(sublight$Observer_Code %in% weightless) # remove weightless observers from ensemble
 			if(sum(ensemble.test) >0) {
-					ensemble.mean <- mean(lightcurve$Magnitude[ensemble.test])  # unweighted average
-					mean.time <- mean(lightcurve$JD[ensemble.test])
+					ensemble.mean <- mean(sublight$Magnitude[ensemble.test])  # unweighted average
+					mean.time <- mean(sublight$JD[ensemble.test],na.rm=TRUE)
 					ensemble.entry[1,"JD"] <- mean.time
 					ensemble.entry[1,"Band"] <- allBand$bandinQ[bandIndex]
 					ensemble.entry[1,"Magnitude"] <- ensemble.mean
@@ -807,7 +813,7 @@ exclude.LCO <- function(LCO.curve,exclude.these,exclude=TRUE) {
 
 ######################################################################
 
-kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta.mean,max.iterations) {
+kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta.mean=0.04,max.iterations=10) {
 ## clusters a time series using a simple algorithm.
   # times is a vector of real numbers. NA or NaNs are ok.
   # initial.clusters is an integer number of clusters to start with
@@ -855,8 +861,8 @@ kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta
     if(sum(pruned) > 0) next()  # need another go-around to pick up the orphaned times
 #    if(iter.num == as.integer(max.iterations)) {print("exiting k means on max iterations")} # debug
     if(max(cluster.diff[!pruned],na.rm=TRUE) <= delta.mean & iter.num > 1) {
-      print("breaking loop on convergence")
-      print(iter.num)
+      # print("breaking loop on convergence")
+      # print(iter.num)
       break
       } # Converged!
 

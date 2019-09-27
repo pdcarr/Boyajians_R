@@ -102,7 +102,7 @@ for (thisBand in allBands$bandinQ) {
 	
 ###################### bin the data for each Observer
 cat("binning the data\n")
-bin.list <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD,weightless)
+bin.list <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD,weightless,trial.bins,min.population)
 binCurve <- as.data.frame(bin.list[1])
 ensemble.curve <- as.data.frame(bin.list[2])
 #binCurve <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD) # old function call
@@ -281,7 +281,7 @@ howManyObs = length(unique(binCurve$Observer_Code[uncertaintyTest]))
 #if (length(ExclCodes) > 3){ocodesInTitle <- c(ocodesInTitle,paste("and",howManyObs - 3,"more observer code(s)",sep=" "))}
 
 myBands = paste(allBands$bandinQ,collapse=" ")
-titleString <- c(paste("AAVSO",myBands,"Data with",deltaJD,"Day Bins",sep=" "), paste(as.character(howManyObs),"Observers",sep=" "))
+titleString <- c(paste("AAVSO",myBands,"Data with",length(desmat),"bins",sep=" "), paste(as.character(howManyObs),"Observers",sep=" "))
 myPlotTitle <- paste(titleString,collapse="\n")
 
 # initialize some data structures

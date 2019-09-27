@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "4118098926",
     "id" : "61CF7100",
-    "lastKnownWriteTime" : 1569338683,
-    "last_content_update" : 1569338683886,
+    "lastKnownWriteTime" : 1569604536,
+    "last_content_update" : 1569604536471,
     "path" : "~/dev/Boyajians_R/input_files/aavso_bin_input_parameters.R",
     "project_path" : "input_files/aavso_bin_input_parameters.R",
     "properties" : {
-        "cursorPosition" : "28,4",
-        "scrollLine" : "0"
+        "cursorPosition" : "28,3",
+        "scrollLine" : "22"
     },
     "read_only" : false,
     "read_only_alternatives" : [
