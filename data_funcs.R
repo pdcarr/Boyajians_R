@@ -451,7 +451,7 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.
 # allBands is the dataframe containing the AAVSO codes of the passbandsa, e.g. "B","V"
 # deltaJD is the time cluster size in days
 # weightless is the list of observer codes who are given zero weight in the fit or ensemble
-# triel.bins is an interger number of bins to go for initially. This may be reduced, but won't be increased.
+# trial.bins is an interger number of bins to go for initially. This may be reduced, but won't be increased.
 
 
 	allClean <- cleanObs[,1]
@@ -480,6 +480,7 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.
 	bin.defs <- kmeans.time.series(lightcurve$JD[allClean],trial.bins,min.population=minimum.membership,delta.mean=0.04,max.iterations=10) 
 		#loop over the bin times
 	nbins <- length(bin.defs$bins)
+	print(paste("kmeans found",nbins,"bins")) #debug
 #	koope over the bins we just defines
 	for(this.bin in 1:nbins) {
 #			print(mean.bin.time)
@@ -841,6 +842,7 @@ kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta
     cluster.mean = vector(mode="numeric",length=N)
     cluster.diff = vector(mode="numeric",length=N)
     situation <- t(sapply(times,k.min.distance,bins=clusters))
+    # browser()
     for (i.bin in 1:N) {
       my.times <- situation[,1] == i.bin
       cluster.sum[i.bin] <- sum(my.times)

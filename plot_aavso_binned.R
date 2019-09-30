@@ -102,7 +102,7 @@ for (thisBand in allBands$bandinQ) {
 	
 ###################### bin the data for each Observer
 cat("binning the data\n")
-bin.list <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD,weightless,trial.bins,min.population)
+bin.list <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD,weightless,trial.bin,min.population)
 binCurve <- as.data.frame(bin.list[1])
 ensemble.curve <- as.data.frame(bin.list[2])
 #binCurve <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD) # old function call
@@ -522,7 +522,7 @@ cat("    ",length(binCurve$JD[uncertaintyTest]),"binned observations with",delta
 
 if(plot.ensemble) {
 	ensemble.title = "Unweighted Ensemble averages"
-    titleString <- c(paste(ensemble.title,"with",deltaJD,"Day Bins",sep=" "), paste(as.character(howManyObs),"Observers",sep=" "))
+    titleString <- c(ensemble.title, paste(as.character(howManyObs),"Observers",sep=" "))
     myPlotTitle <- paste(titleString,collapse="\n")
 	plot.times <- ensemble.curve$JD - tmin # same time offset as the other plots
 	x.string <- paste("Julian Date - ",tmin) # plot x axis label
