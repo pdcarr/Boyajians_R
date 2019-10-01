@@ -52,3 +52,6 @@ data/ASASSN_latest_g_only.csv
 data/Gsacco_files/*.txt
 
 .Rproj.user/
+.Rproj.user/E70EFD7C/pcs/
+.Rproj.user/E70EFD7C/sources/prop/
+
