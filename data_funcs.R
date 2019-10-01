@@ -477,7 +477,7 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.
 	ensemble.entry <- data.frame(JD = numeric(),Band=character(),Magnitude=numeric(),nobs=numeric(),stringsAsFactors=FALSE)
 	
 # determine bin times and membership for the allowed observations (cleaned lightcurve with the required colors)
-	bin.defs <- kmeans.time.series(lightcurve$JD[allClean],trial.bins,min.population=minimum.membership,delta.mean=0.04,max.iterations=10) 
+	bin.defs <- kmeans.time.series(lightcurve$JD[allClean],trial.bins,min.population=minimum.membership,delta.mean=0.04,max.iterations=12) 
 		#loop over the bin times
 	nbins <- length(bin.defs$bins)
 	print(paste("kmeans found",nbins,"bins")) #debug
@@ -814,7 +814,7 @@ exclude.LCO <- function(LCO.curve,exclude.these,exclude=TRUE) {
 
 ######################################################################
 
-kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta.mean=0.04,max.iterations=10) {
+kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta.mean=0.04,max.iterations=12) {
 ## clusters a time series using a simple algorithm.
   # times is a vector of real numbers. NA or NaNs are ok.
   # initial.clusters is an integer number of clusters to start with
@@ -834,7 +834,7 @@ kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta
   t.bin <- t.span/initial.clusters.num
   clusters <- seq(from=t.min + t.bin/2,to=t.max - t.bin/2,t.bin) # first guess at the clusters
   N <- length(clusters)
-  old.cluster.mean <- rep(NA,time=N)
+  old.cluster.mean <- rep(NA,times=N)
   for(iter.num in 1:as.integer(max.iterations)) {
     N <- length(clusters)
     pruned <- is.na(clusters) # logical vector same size as clusters
@@ -854,13 +854,14 @@ kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta
           cluster.diff[i.bin] <- abs(old.cluster.mean[i.bin] - cluster.mean[i.bin] )
         } 
       } else {
-        pruned[i.bin] <- TRUE
-        next()
+#        browser()
+       next()
       }
     } # bin loop
     old.cluster.mean <- cluster.mean[!pruned]
     clusters <- clusters[!pruned] # pruned clusters are gone and won't come back
-    if(sum(pruned) > 0) next()  # need another go-around to pick up the orphaned times
+    if(sum(pruned) > 0) {next()}  # need another go-around to pick up the orphaned times
+
 #    if(iter.num == as.integer(max.iterations)) {print("exiting k means on max iterations")} # debug
     if(max(cluster.diff[!pruned],na.rm=TRUE) <= delta.mean & iter.num > 1) {
       # print("breaking loop on convergence")
@@ -868,7 +869,7 @@ kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta
       break
       } # Converged!
 
-  } #iteration loop
+  } # maximum iteration loop
   situation <- t(sapply(times,k.min.distance,bins = clusters)) # bin membership mapping
   return(list(bins=clusters,membership=situation[,1]))
 }
@@ -877,22 +878,16 @@ kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta
 k.min.distance <- function(time,bins) {
 # for a given time, calculate the min distance from the distances to all the bins.
   
-L <- length(bins)
-distance <- vector(mode="numeric",length=L)
-# create a vector of distances
-distance <- abs(bins - time[1])
-
-# find the shortest distance
-min.dist <- max(distance,na.rm = TRUE)
-bin.number <- 0 # indicates an error if it stays 0
-for(i.dist in 1:L) {
-  if(is.na(distance[i.dist])) {break}
-  if (distance[i.dist] < min.dist) {
-    bin.number <- i.dist
-    min.dist <- distance[i.dist]
-  }
-}
-return(c(bin.number,min.dist))
+  L <- length(bins)
+  distance <- vector(mode="numeric",length=L)
+  # create a vector of distances
+  distance <- abs(bins - time[1])
+  
+  # find the shortest distance
+  bin.number <- 0 # indicates an error if it stays 0
+  min.dist <- min(distance,na.rm=TRUE)
+  bin.number <- which.min(distance)
+  return(c(bin.number,min.dist))
 }
 
 bin.fluxes <- function(bin.number,situation,fluxes) {
