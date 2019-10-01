@@ -900,3 +900,14 @@ bin.fluxes <- function(bin.number,situation,fluxes) {
   bin.mean.flux <- mean(fluxes[membership.element],na.rm=TRUE)
 
 }
+
+#########################
+# function to calcuate the standard error of the slope of a linear regression. You need at last three data points.
+slope.SE <- function(x,residuals){
+# x is the independent variable for the regression
+# residuals are the residuals vs. the line
+  nx <- sum(!is.na(x))
+  n.resid <- sum(!is.na(residuals))
+  if(n.resid <=2) {return(NA)} # makes sure we have enogh data points
+  return(sqrt(var(residuals,na.rm=TRUE)*(n.resid-1)/(n.resid-2))/sqrt(var(x,na.rm=TRUE)*(nx -1)))
+}

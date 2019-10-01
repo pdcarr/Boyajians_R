@@ -89,7 +89,7 @@ for(myband in unique(lco.data$band)) {
 	desmat <- bin.data$bins - tmin  # subtract off the earliest time to make the coeeficients easier to interpret
 	# use resistant linera regression 
 #	resistFit <- lqs(formula = bin.flux.means ~ desmat)
-	quartz("binned plot of LCO data")
+	# quartz("binned plot of LCO data")
 	bin.title <- paste(c(paste("binned measurements",myband,"Band"),paste("regression=",regression.methods[method.2.use])),collapse="\n")
 	plot(x=bin.data$bins,
 	     y=bin.flux.means,
@@ -121,6 +121,8 @@ for(myband in unique(lco.data$band)) {
 	    cat("color: ",myband,"\ncoefficients: \n");
 	    print(coefficients(robustFit));
 	    cat("\n") 
+	    SE.slope <- slope.SE(robustFit$model$desmat,robustFit$residuals)
+	    print(paste("Slope standard error: ",SE.slope))
 	    
 	}else {
     cat("\n no regression method specified\n")
