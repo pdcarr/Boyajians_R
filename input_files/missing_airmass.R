@@ -20,3 +20,4 @@ missingAirmass <- c("JM","PXR","JSJA","MATA","WROC","FJQ","PALE","KTHC","PJVA","
 missingAMLocs = rbind(lasCruces,Leominster,Warrington,Erd,Haan,LosAngeles,Potomac,
 						Coventry,Ponferrada,Cotopaxi,Minneapolis,Auburn,Sorrento,Budapest,
 						ValRacine,France)
+missingAM.data <- data.frame(lax.observers = missingAirmass,missing.lats = missingAMLocs[,1],missing.lons=missingAMLocs[,2],stringsAsFactors = FALSE)
