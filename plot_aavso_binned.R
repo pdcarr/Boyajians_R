@@ -47,10 +47,12 @@ lightcurve <- read.csv(file=llightcurve_name,header=TRUE,check.names=TRUE,na.str
 totalRec = length(lightcurve$JD)
 cat("\n\nTotal records read from file: ",totalRec,"\n\n")
 
-if (merge.asassn) {
+if ((merge.asassn) & (sum(allBands$bandinQ %in% asassn.bands) > 0)){
 	cat("\nmerging in ASASSN Data\n")
 	asassn_data <- read.csv(asassn.csv.file,header=TRUE,stringsAsFactors=FALSE)
 	lightcurve <- asassn.merge(lightcurve,asassn_data,asassn.code,g.to.V= convert.asassn,star.BminusV= our.BminusV,V.bias= converted.V.bias) # function merges asassn data into lightcurve
+} else {
+  cat("\nNot merging ASAS-SN data - no relevant bands\n")
 }
 
 
@@ -60,9 +62,15 @@ goodMags <- !is.na(lightcurve$Magnitude)
 
 # replace missing airmass for observer codes in missing Airmass
 cat("replacing missing airmass...\n")
-for (index in 1:length(missingAirmass)){
-        jmtest = lightcurve$Observer_Code == missingAirmass[index] & is.na(lightcurve$Airmass)
-        lightcurve$Airmass[jmtest] <- AirMass(lightcurve$JD[jmtest],missingAMLocs[index,], tabbysLoc)
+for (whos.missing in missingAirmass){
+        in.codes <- whos.missing %in% ExclCodes
+        jmtest <- lightcurve$Observer_Code == whos.missing & is.na(lightcurve$Airmass) & 
+          ((includeExclude & in.codes) | (!includeExclude & !in.codes))
+        if(sum(jmtest) > 0) {
+          which.loc <- match(whos.missing,missingAM.data$lax.observers)
+          this.loc <- c(missingAM.data$missing.lats[which.loc],missingAM.data$missing.lons[which.loc])
+          lightcurve$Airmass[jmtest] <- AirMass(lightcurve$JD[jmtest],this.loc,tabbysLoc)
+        }
 }
 
 # loop over the desired bands
