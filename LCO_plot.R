@@ -26,8 +26,8 @@ LCO.bands <- data.frame(band.codes=c("I","B"),band.colors=c("darkviolet","blue")
 ########### set up the search for file(s)
 
 data.directory <- "../LCO_GS/"
-LCO.suffix <-"txt$"
-LCO.prefix <- "^Measurements_subset_"
+LCO.suffix <- "(\\h(TFN|ELP|OGG)\\h|_).*txt$"
+LCO.prefix <- "(^Measurements_subset_|^)"
 
 
 # figure out what files are available and load them in
@@ -35,9 +35,9 @@ all.the.files <- dir(data.directory)
 these.files <- grepl(pattern=LCO.suffix,x=all.the.files,perl=TRUE)
 lco.data <- data.frame(Num = numeric(),label=character(),MJD=numeric(),rel_flux_T1_n=numeric(),band=character()) # create data fram for all the data
 file.data <- data.frame(Num = numeric(),label=character(),MJD=numeric(),rel_flux_T1_n=numeric()) # create scratch data fram for the data read in
-
+# loop over the files
 for (this.band in LCO.bands$band.codes) {
-  band.pattern <- paste(LCO.prefix,this.band,".*",LCO.suffix,sep = "")
+  band.pattern <- paste(LCO.prefix,this.band,LCO.suffix,sep = "") # put the search pattern together for the band
   band.files <- grepl(pattern=band.pattern,x=all.the.files[these.files],perl=TRUE)
   for (this.file in all.the.files[these.files][band.files]) {
     this.file <- paste(data.directory,this.file,sep="")
