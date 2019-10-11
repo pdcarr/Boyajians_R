@@ -855,6 +855,7 @@ kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta
         } 
       } else {
 #        browser()
+       pruned[i.bin] <-  TRUE # probably not necessary, but makes sure.
        next()
       }
     } # bin loop
@@ -887,6 +888,7 @@ k.min.distance <- function(time,bins) {
   bin.number <- 0 # indicates an error if it stays 0
   min.dist <- min(distance,na.rm=TRUE)
   bin.number <- which.min(distance)
+  # browser()
   return(c(bin.number,min.dist))
 }
 
