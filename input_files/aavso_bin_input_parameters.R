@@ -28,7 +28,7 @@ startPlot <- earliestJD
 #startPlot <- 2458000
 #startPlot <- 2457620
 startPlot <- 2458200
-#startPlot <- 2458400
+startPlot <- 2458400
 #stop.plot <- 2457680
 #stop.plot <- 2458000
 add.predict <- 0 # additional prediction days to add to plot (experimental feature)
@@ -47,16 +47,16 @@ ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
 #ExclCodes <- c("VMT")
 #ExclCodes <- c("ASASSN")
 #ExclCodes <- c("LDJ","OAR")
-#ExclCodes <- c("LDJ","OAR","ASASSN")
-# ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB",
-# 				"TRE","BJFB","NOT","ATE","DFS","TIA","FJAA","CIVA","FRGA",
-# 				"DJED","EEY","BSM","GKA","ODEA","LPAC","DKS","SFLB","RZD","PTFA") # good small V band ensemble
-# weightless <- c("STFB","JM","FRGA","KHAB","TIA","FJAA","DKS","SFLB","RZD")  # weightless for V band
+ExclCodes <- c("LDJ","OAR","ASASSN")
+ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB",
+				"TRE","BJFB","NOT","ATE","DFS","TIA","FJAA","CIVA","FRGA",
+				"DJED","EEY","BSM","GKA","ODEA","LPAC","DKS","SFLB","RZD","PTFA") # good small V band ensemble
+weightless <- c("STFB","JM","FRGA","KHAB","TIA","FJAA","DKS","SFLB","RZD")  # weightless for V band
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","HJW","TIA","DFS","FJAA") # new B ensemble under development
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","ASASSN","OAR","EEY","DUBF") # merged B and V
 #ExclCodes <- c("ASASSN")
-ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT","SDB","RNL","NOT","DFS","TIA","DJED","DFS","CIVA","DJED") # R ensemble
-weightless <- c("RNL","TIA","DJED","LWHA","VMT","JM","CIVA") # weightless for R band
+# ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT","SDB","RNL","NOT","DFS","TIA","DJED","DFS","CIVA","DJED") # R ensemble
+# weightless <- c("RNL","TIA","DJED","LWHA","VMT","JM","CIVA") # weightless for R band
 #ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA") # R ensemble without JM
 # ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LBG","LPB","LDJ","CMP","JM","VMT","SDB","SGEA","LPAC","TIA","TRE","BSM","FJQ") # I ensemble
 # weightless <- c("TIA","FJQ") # I band weightless
@@ -81,7 +81,7 @@ allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet",
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B","SG"),plotColor=c("green","blue","aquamarine"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
-allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
+# allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("SG"),plotColor=c("aquamarine2"),stringsAsFactors=FALSE)
@@ -92,8 +92,8 @@ allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE
 
 ########################
 #deltaJD <- 2.0 # bin width in days
-trial.bin <- 500 # trial number of bins. The acutal number will be less than this.
-min.population <- 4 # smallest population allowed for 1 bin.
+trial.bin <- 850 # trial number of bins. The acutal number will be less than this.
+min.population <- 8 # smallest population allowed for 1 bin.
 ########################
 plotExcluded <- FALSE # set to TRUE to plot the points in the lightcurve not used in the fit.
 plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit
