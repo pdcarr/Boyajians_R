@@ -78,6 +78,7 @@ for(myband in unique(lco.data$band)) {
   }
 ########## bin and plot binned data for the color in question (myband)  
 # pick bins using K Means (dirt simple algorithm)
+  # browser()
 	bin.data <- kmeans.time.series(times=lco.data$MJD[these.obs],initial.clusters.num=trial.bins,min.population=2,delta.mean=0.01,max.iterations=12)
 	# our.bins <- bin.data[1]
 	# mem <- bin.data[2]

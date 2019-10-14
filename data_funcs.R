@@ -814,7 +814,7 @@ exclude.LCO <- function(LCO.curve,exclude.these,exclude=TRUE) {
 
 ######################################################################
 
-kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta.mean=0.04,max.iterations=12) {
+kmeans.time.series <- function(times,initial.clusters.num=16,min.population=1,delta.mean=0.04,max.iterations=12) {
 ## clusters a time series using a simple algorithm.
   # times is a vector of real numbers. NA or NaNs are ok.
   # initial.clusters is an integer number of clusters to start with
@@ -823,11 +823,12 @@ kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta
   # max.iterations is the maximum interger number before we are declaring victory.
 # returns a vector of bin centers, which may be smaller than initial.clusters
 # error checking  
+  # browser()
   if(length(times) <= 1 | 
      as.integer(initial.clusters.num) < 1 | 
      delta.mean <= 0 | 
      as.integer(max.iterations) <= 0) { return(NA)}
-# set upthe initial centers
+# set up the initial centers
   t.min <- min(times,na.rm=TRUE)
   t.max <- max(times,na.rm=TRUE)
   t.span <- t.max - t.min
@@ -841,14 +842,16 @@ kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta
     cluster.sum = vector(mode="numeric",length=N)
     cluster.mean = vector(mode="numeric",length=N)
     cluster.diff = vector(mode="numeric",length=N)
-    situation <- t(sapply(times,k.min.distance,bins=clusters))
     # browser()
+    situation <- t(sapply(times,k.min.distance,bins=clusters))
+    
     for (i.bin in 1:N) {
-      my.times <- situation[,1] == i.bin
-      cluster.sum[i.bin] <- sum(my.times)
+      my.times <- !is.na(situation[,1]) & situation[,1] == i.bin
+      # browser()
+      cluster.sum[i.bin] <- sum(my.times,na.rm=TRUE)
       if(cluster.sum[i.bin] >= min.population) {
         pruned[i.bin] <- FALSE
-        cluster.mean[i.bin] <- mean(times[my.times])
+        cluster.mean[i.bin] <- mean(times[my.times],na.rm=TRUE)
         clusters[i.bin] <- cluster.mean[i.bin]
         if(!is.na(old.cluster.mean[i.bin])) {
           cluster.diff[i.bin] <- abs(old.cluster.mean[i.bin] - cluster.mean[i.bin] )
@@ -878,7 +881,7 @@ kmeans.time.series <- function(times,initial.clusters.num,min.population=1,delta
 #################
 k.min.distance <- function(time,bins) {
 # for a given time, calculate the min distance from the distances to all the bins.
-  
+  if(is.na(time)) {return(c(NA,0))}
   L <- length(bins)
   distance <- vector(mode="numeric",length=L)
   # create a vector of distances
