@@ -22,7 +22,7 @@ exclude.codes <- c("TFN") # not yet implemented
 ############## filter band and plot setup
 plot.raw <- TRUE # TRUE if you want to plot data for each band right frm the files with no binning
 # use this data frame to set up colors and symbols for all the band you expect to be in the files.
-LCO.bands <- data.frame(band.codes=c("I","B"),band.colors=c("darkviolet","blue"),band.symbol=c(20,20),stringsAsFactors=FALSE)
+LCO.bands <- data.frame(band.codes=c("I","B","R"),band.colors=c("darkviolet","blue","red"),band.symbol=c(20,20,20),stringsAsFactors=FALSE)
 ########### set up the search for file(s)
 
 data.directory <- "../LCO_GS/"
@@ -55,9 +55,10 @@ t.min.LCO <- min(lco.data$MJD,na.rm=TRUE)
 
 for(myband in unique(lco.data$band)) {
   band.index <- match(myband,LCO.bands$band.codes)
-  if(!is.na(band.index)) {
+# browser()
+    if(!is.na(band.index)) {
     plot.col <- LCO.bands$band.colors[band.index]
-    plot.sym <- LCO.bands$band.symbol
+    plot.sym <- LCO.bands$band.symbol[band.index]
   } else {
     print(paste("Band symbol",myband,"not recognized"))
     next()
@@ -67,7 +68,7 @@ for(myband in unique(lco.data$band)) {
     quartz("LCO data")
   	these.obs <- lco.data$band == myband
   	my.title <- paste("LCO ",myband,"Data - ",sum(these.obs),"Measurements")
-  
+ # browser() 
   	plot(x=lco.data$MJD[these.obs],
   	     y=lco.data$rel_flux_T1_n[these.obs],
   	     type="p",
@@ -90,7 +91,7 @@ for(myband in unique(lco.data$band)) {
 	desmat <- bin.data$bins - tmin  # subtract off the earliest time to make the coeeficients easier to interpret
 	# use resistant linera regression 
 #	resistFit <- lqs(formula = bin.flux.means ~ desmat)
-	# quartz("binned plot of LCO data")
+	quartz("binned plot of LCO data")
 	bin.title <- paste(c(paste("binned measurements",myband,"Band"),paste("regression=",regression.methods[method.2.use])),collapse="\n")
 	plot(x=bin.data$bins,
 	     y=bin.flux.means,
