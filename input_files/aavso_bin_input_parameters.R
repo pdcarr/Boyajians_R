@@ -27,8 +27,8 @@ startPlot <- earliestJD
 #startPlot <- 2458150
 #startPlot <- 2458000
 #startPlot <- 2457620
-startPlot <- 2458200
-startPlot <- 2458400
+# startPlot <- 2458200
+startPlot <- 2458750
 #stop.plot <- 2457680
 #stop.plot <- 2458000
 add.predict <- 0 # additional prediction days to add to plot (experimental feature)
@@ -47,7 +47,7 @@ ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
 #ExclCodes <- c("VMT")
 #ExclCodes <- c("ASASSN")
 #ExclCodes <- c("LDJ","OAR")
-ExclCodes <- c("LDJ","OAR","ASASSN")
+# ExclCodes <- c("LDJ","OAR","ASASSN")
 ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB",
 				"TRE","BJFB","NOT","ATE","DFS","TIA","FJAA","CIVA","FRGA",
 				"DJED","EEY","BSM","GKA","ODEA","LPAC","DKS","SFLB","RZD","PTFA") # good small V band ensemble
@@ -92,8 +92,8 @@ allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors
 
 ########################
 #deltaJD <- 2.0 # bin width in days
-trial.bin <- 850 # trial number of bins. The acutal number will be less than this.
-min.population <- 8 # smallest population allowed for 1 bin.
+trial.bin <- 1850 # trial number of bins. The acutal number will be less than this.
+min.population <- 1 # smallest population allowed for 1 bin.
 ########################
 plotExcluded <- FALSE # set to TRUE to plot the points in the lightcurve not used in the fit.
 plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit
