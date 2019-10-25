@@ -23,6 +23,8 @@ exclude.codes <- c("TFN") # not yet implemented
 plot.raw <- TRUE # TRUE if you want to plot data for each band right frm the files with no binning
 # use this data frame to set up colors and symbols for all the band you expect to be in the files.
 LCO.bands <- data.frame(band.codes=c("I","B","R"),band.colors=c("darkviolet","blue","red"),band.symbol=c(20,20,20),stringsAsFactors=FALSE)
+# LCO.bands <- data.frame(band.codes=c("I"),band.colors=c("darkviolet"),band.symbol=c(20),stringsAsFactors=FALSE) # I band only
+
 ########### set up the search for file(s)
 
 data.directory <- "../LCO_GS/"
