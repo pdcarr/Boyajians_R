@@ -20,9 +20,9 @@ trial.bins <- 200 # of bins to try in kmeans
 exclude.codes <- c("TFN") # not yet implemented
 
 ############## filter band and plot setup
-plot.raw <- TRUE # TRUE if you want to plot data for each band right frm the files with no binning
+plot.raw <- FALSE # TRUE if you want to plot data for each band right frm the files with no binning
 # use this data frame to set up colors and symbols for all the band you expect to be in the files.
-LCO.bands <- data.frame(band.codes=c("I","B","R"),band.colors=c("darkviolet","blue","red"),band.symbol=c(20,20,20),stringsAsFactors=FALSE)
+LCO.bands <- data.frame(band.codes=c("R","B","I"),band.colors=c("red","blue","darkviolet"),band.symbol=c(20,20,20),stringsAsFactors=FALSE)
 # LCO.bands <- data.frame(band.codes=c("I"),band.colors=c("darkviolet"),band.symbol=c(20),stringsAsFactors=FALSE) # I band only
 
 ########### set up the search for file(s)
@@ -66,9 +66,9 @@ for(myband in unique(lco.data$band)) {
     next()
   }
 
+  these.obs <- lco.data$band == myband
   if(plot.raw) {
     quartz("LCO data")
-  	these.obs <- lco.data$band == myband
   	my.title <- paste("LCO ",myband,"Data - ",sum(these.obs),"Measurements")
  # browser() 
   	plot(x=lco.data$MJD[these.obs],
