@@ -16,6 +16,10 @@ method.2.use <- 3
 ##########
 trial.bins <- 200 # of bins to try in kmeans
 #t.margin <- 1 # days
+############### set up plot time bounds
+earliest_MJD <- NA
+earliest_MJD <- 58770
+pretty.days <- 5
 ############## exclude any observatories or cameras (case sensitive)?
 exclude.codes <- c("TFN") # not yet implemented
 
@@ -70,11 +74,20 @@ for(myband in unique(lco.data$band)) {
   if(plot.raw) {
     quartz("LCO data")
   	my.title <- paste("LCO ",myband,"Data - ",sum(these.obs),"Measurements")
- # browser() 
+# x axis time limits
+  	latest.MJD <- pretty.days*ceil(max(lco.data$MJD[these.obs])/pretty.days)
+  	if(is.na(earliest_MJD)){
+  	 plot.start.MJD <- pretty.days*(floor(min(lco.data$rel_flux_T1_n[these.obs])/pretty.days))
+  	} else {
+  	  plot.start.MJD <- earliest_MJD
+  	}
+  	plot.x.lims <- c(plot.start.MJD,latest.MJD)
+# browser() 
   	plot(x=lco.data$MJD[these.obs],
   	     y=lco.data$rel_flux_T1_n[these.obs],
   	     type="p",
   	    col=plot.col,pch=plot.sym,
+  	    xlim=plot.x.lims,
   		  xlab="JD - 2400000",ylab="normalized flux",
   		  main=my.title)
   	grid(col="black")
@@ -95,10 +108,20 @@ for(myband in unique(lco.data$band)) {
 #	resistFit <- lqs(formula = bin.flux.means ~ desmat)
 	quartz("binned plot of LCO data")
 	bin.title <- paste(c(paste("binned measurements",myband,"Band"),paste("regression=",regression.methods[method.2.use])),collapse="\n")
+# set X axis time limits
+	latest.MJD <- pretty.days*ceil(max(bin.data$bins)/pretty.days)
+	if(is.na(earliest_MJD)){
+	  plot.start.MJD <- pretty.days*(floor(min(bin.data$bins)/pretty.days))
+	} else {
+	  plot.start.MJD <- earliest_MJD
+	}
+	plot.x.lims <- c(plot.start.MJD,latest.MJD)
+# plot!	
 	plot(x=bin.data$bins,
 	     y=bin.flux.means,
 	     type="p",
 	     col=plot.col,pch=plot.sym,
+	     xlim=plot.x.lims,
 	     xlab="Bin center MJD",ylab="mean normalized flux",
 	     main=bin.title)
 	grid(col="black")
