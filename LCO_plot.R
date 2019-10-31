@@ -16,10 +16,6 @@ method.2.use <- 3
 ##########
 trial.bins <- 200 # of bins to try in kmeans
 #t.margin <- 1 # days
-############### set up plot time bounds
-earliest_MJD <- NA
-earliest_MJD <- 58770
-pretty.days <- 5
 ############## exclude any observatories or cameras (case sensitive)?
 exclude.codes <- c("TFN") # not yet implemented
 
@@ -28,6 +24,11 @@ plot.raw <- FALSE # TRUE if you want to plot data for each band right frm the fi
 # use this data frame to set up colors and symbols for all the band you expect to be in the files.
 LCO.bands <- data.frame(band.codes=c("R","B","I"),band.colors=c("red","blue","darkviolet"),band.symbol=c(20,20,20),stringsAsFactors=FALSE)
 # LCO.bands <- data.frame(band.codes=c("I"),band.colors=c("darkviolet"),band.symbol=c(20),stringsAsFactors=FALSE) # I band only
+# LCO.bands <- data.frame(band.codes=c("B"),band.colors=c("blue"),band.symbol=c(20),stringsAsFactors=FALSE) # B band only
+############### set up plot time bounds
+earliest_MJD <- NA
+# earliest_MJD <- 58770
+pretty.days <- 5
 
 ########### set up the search for file(s)
 
