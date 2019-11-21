@@ -6,7 +6,7 @@ asassn.csv.file <- "data/ASASSN_latest.csv"
 asassn.cameras <- c("bd","bt","bD")
 # asassn.cameras <- c("bt")
 merge.asassn <- TRUE # merge asasn data into V light curve
-convert.asassn <- TRUE # TRUE if converting ASASSN g to V using Jordi, et. al. forumlas
+convert.asassn <- FALSE # TRUE if converting ASASSN g to V using Jordi, et. al. forumlas
 asassn.bands <- c("g","SG","V")
 our.BminusV <- 0.52 # B-V for our star in question
 converted.V.bias <- 0.031 # additional bias to apply to subtract from converted V observations.
@@ -14,7 +14,7 @@ asassn.code <- "ASASSN"
 ######### filters #########################
 maxairmass <- 2.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.1 # maximum AAVSO uncertainty estimate
-maxBinUncertainty <- 0.02 # worst standard deviation to accept for a binned set of observations
+maxBinUncertainty <- 0.025 # worst standard deviation to accept for a binned set of observations
 wildsd <- 100.0 # worst number of standard deviations from mean allowed
 ##########################################
 earliestJD = 2457290 # only data on or after this JD will be used
@@ -29,7 +29,7 @@ startPlot <- earliestJD
 #startPlot <- 2458150
 #startPlot <- 2458000
 #startPlot <- 2457620
-# startPlot <- 2458200
+startPlot <- 2458200
 # startPlot <- 2458700
 #stop.plot <- 2457680
 #stop.plot <- 2458000
@@ -39,26 +39,26 @@ plotRelTimes <- TRUE
 includeExclude <- TRUE # TRUE if your list of observer codes is to to be included, FALSE if excluded or not used
 ExclCodes <- "None"
 weightless <- NA
-ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
-				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","GCJ","LBG","HJW","OAR","ASASSN","MMAO","HBB","EEY","MNIC","KHAB",
-				"FRGA","BJFB","PTFA","TRE","ATE","DFS","FJAA","CIVA") # V & B
-ExclCodes <- c("LDJ","ASASSN")
+# ExclCodes <- c("LDJ","DUBF","PXR","DKS","OJJ","SDB","VBPA","OAS","MJB","MATA",
+# 				"WROC","MAND","VBPA","NOT","PALE","GKA","AMID","SGEA","GCJ","LBG","HJW","OAR","ASASSN","MMAO","HBB","EEY","MNIC","KHAB",
+# 				"FRGA","BJFB","PTFA","TRE","ATE","DFS","FJAA","CIVA") # V & B
+# ExclCodes <- c("LDJ","ASASSN")
 # ExclCodes <- c("LDJ","DUBF","ASASSN","OAR")
-# ExclCodes <- c("DUBF","LDJ")
+# ExclCodes <- c("DUBF","LDJ","GKA","CIVA","NOT")
 #ExclCodes <- c("LDJ")
 #ExclCodes <- c("VMT")
 # ExclCodes <- c("ASASSN")
 #ExclCodes <- c("LDJ","OAR")
 # ExclCodes <- c("LDJ","OAR","ASASSN")
-ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB",
-				"TRE","BJFB","NOT","ATE","DFS","TIA","FJAA","CIVA","FRGA",
-				"DJED","EEY","BSM","GKA","ODEA","LPAC","DKS","SFLB","RZD","PTFA") # good small V band ensemble
-weightless <- c("STFB","JM","FRGA","KHAB","TIA","FJAA","DKS","SFLB","RZD")  # weightless for V band
+# ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB",
+# 				"TRE","BJFB","NOT","ATE","DFS","TIA","FJAA","CIVA","FRGA",
+# 				"DJED","EEY","BSM","GKA","ODEA","LPAC","DKS","SFLB","RZD","PTFA") # good small V band ensemble
+# weightless <- c("STFB","JM","FRGA","KHAB","TIA","FJAA","DKS","SFLB","RZD","LPAC")  # weightless for V band
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","HJW","TIA","DFS","FJAA") # new B ensemble under development
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","ASASSN","OAR","EEY","DUBF") # merged B and V
 #ExclCodes <- c("ASASSN")
-# ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","JM","SGEA","VMT","SDB","RNL","NOT","DFS","TIA","DJED","DFS","CIVA","DJED") # R ensemble
-# weightless <- c("RNL","TIA","DJED","LWHA","VMT","JM") # weightless for R band
+ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","SGEA","SDB","RNL","NOT","DFS","TIA","DFS","CIVA","DJED") # R ensemble
+weightless <- c("RNL","TIA","DJED","LWHA","VMT","JM","NOT","DFS") # weightless for R band
 #ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA") # R ensemble without JM
 # ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LBG","LPB","LDJ","CMP","JM","VMT","SDB","SGEA","LPAC","TIA","TRE","BSM","FJQ") # I ensemble
 # weightless <- c("TIA","FJQ") # I band weightless
@@ -83,7 +83,7 @@ allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet",
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B","SG"),plotColor=c("green","blue","aquamarine"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
-# allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("SG"),plotColor=c("aquamarine2"),stringsAsFactors=FALSE)
@@ -94,8 +94,8 @@ allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors
 
 ########################
 #deltaJD <- 2.0 # bin width in days
-trial.bin <- 1500 # trial number of bins. The acutal number will be less than this.
-min.population <- 4 # smallest population allowed for 1 bin.
+trial.bin <- 1200 # trial number of bins. The acutal number will be less than this.
+min.population <- 2 # smallest population allowed for 1 bin.
 ########################
 plotExcluded <- FALSE # set to TRUE to plot the points in the lightcurve not used in the fit.
 plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit
