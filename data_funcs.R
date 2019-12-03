@@ -842,7 +842,9 @@ kmeans.time.series <- function(times,initial.clusters.num=16,min.population=1,de
   old.cluster.mean <- rep(NA,times=N)
   for(iter.num in 1:as.integer(max.iterations)) {
     N <- length(clusters)
+    # browser()
     pruned <- is.na(clusters) # logical vector same size as clusters
+    # browser()
     cluster.sum = vector(mode="numeric",length=N)
     cluster.mean = vector(mode="numeric",length=N)
     cluster.diff = vector(mode="numeric",length=N)
