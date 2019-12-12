@@ -39,36 +39,36 @@ LCO.prefix <- "(^Measurements_subset_|^)"
 
 # figure out what files are available and load them in
 all.the.files <- dir(data.directory)
-these.files <- grepl(pattern=LCO.suffix,x=all.the.files,perl=TRUE)
+these.files <- grepl(pattern=LCO.suffix,x=all.the.files,perl=TRUE) # logical vector of matching data files
 lco.data <- data.frame(Num = numeric(),label=character(),MJD=numeric(),rel_flux_T1_n=numeric(),band=character()) # create data fram for all the data
-file.data <- data.frame(Num = numeric(),label=character(),MJD=numeric(),rel_flux_T1_n=numeric()) # create scratch data fram for the data read in
-# loop over the files
+file.data <- data.frame(Num = numeric(),label=character(),MJD=numeric(),rel_flux_T1_n=numeric()) # create scratch data frame for the data read in
+# loop over bands, then the files matching each band
 for (this.band in LCO.bands$band.codes) {
   band.pattern <- paste(LCO.prefix,this.band,LCO.suffix,sep = "") # put the search pattern together for the band
-  band.files <- grepl(pattern=band.pattern,x=all.the.files[these.files],perl=TRUE)
+  band.files <- grepl(pattern=band.pattern,x=all.the.files[these.files],perl=TRUE) # all the matching files for the band in question
   for (this.file in all.the.files[these.files][band.files]) {
     this.file <- paste(data.directory,this.file,sep="")
     file.data <- read.delim(file=this.file,header=TRUE,col.names=names(file.data),stringsAsFactors=FALSE)
-    nrec = length(file.data[,1])
-    band.column <- data.frame(band=rep(this.band,nrec))
-    lco.data <- rbind(lco.data,cbind(file.data,band.column))
+    nrec = length(file.data[,1]) # number of records in the file
+    band.column <- data.frame(band=rep(this.band,nrec)) # construct a column to be bound to the data for that band
+    lco.data <- rbind(lco.data,cbind(file.data,band.column)) # glue the band column unto the data from the file.
   }
 }
 
-t.min.LCO <- min(lco.data$MJD,na.rm=TRUE)
+t.min.LCO <- min(lco.data$MJD,na.rm=TRUE) # the earliest time in the data frame
 
 #########
 
-
+# loop over the bands
 for(myband in unique(lco.data$band)) {
   band.index <- match(myband,LCO.bands$band.codes)
 # browser()
     if(!is.na(band.index)) {
-    plot.col <- LCO.bands$band.colors[band.index]
-    plot.sym <- LCO.bands$band.symbol[band.index]
+      plot.col <- LCO.bands$band.colors[band.index] # the plot color for this band
+      plot.sym <- LCO.bands$band.symbol[band.index] # the plot symbol for this band
   } else {
-    print(paste("Band symbol",myband,"not recognized"))
-    next()
+      print(paste("Band symbol",myband,"not recognized"))
+      next()
   }
 
   these.obs <- lco.data$band == myband
@@ -94,12 +94,12 @@ for(myband in unique(lco.data$band)) {
   	grid(col="black")
   }
 ########## bin and plot binned data for the color in question (myband)  
-# pick bins using K Means (dirt simple algorithm)
+# pick bins using K Means with pruning (dirt simple algorithm)
   # browser()
 	bin.data <- kmeans.time.series(times=lco.data$MJD[these.obs],initial.clusters.num=trial.bins,min.population=2,delta.mean=0.01,max.iterations=12)
 	# our.bins <- bin.data[1]
 	# mem <- bin.data[2]
-	bin.numbers <- seq(1,length(bin.data$bins),1)
+	bin.numbers <- seq(1,length(bin.data$bins),1) # a sequence from 1 to the number of bins
 	bin.flux.means <- sapply(bin.numbers,bin.fluxes,bin.data$membership,lco.data$rel_flux_T1_n[these.obs]) # mean flux for each bin
 	tmin <- min(bin.data$bins,na.rm=TRUE) # earliest bin time
 	

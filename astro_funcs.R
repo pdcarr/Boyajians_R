@@ -1,4 +1,4 @@
-###########################################################
+#### Airmass() ####################################################### 
 AirMass <- function(JD,locObs,starLoc) {
 # JD is the vector of Julian dates
 # locObs is the decimal location = c(lat,long) of the observatory
@@ -27,13 +27,13 @@ AirMass <- function(JD,locObs,starLoc) {
 	return(1/abs(sin(myEls*pi/180)))
 }
 
-########################################################
+#### ReverseMagnitude() ####################################################
 ReverseMagnitude <- function(relMag) {
 	# relMag is a difference in astronomical magnitudes
 	return(10^(-relMag/2.5))
 }
 
-##########################################################
+#### HillRadius() ######################################################
 # returns approximate Hill radius in units consistent with a for mass of secondary (m) and Primary (M)
 HillRadius <- function(m=1,M=1000,a,e=0) {
 	return(a*(1-e)*(m/(3*M))^(1/3))
