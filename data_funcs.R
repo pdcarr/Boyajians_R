@@ -665,14 +665,14 @@ aavsoJDbounds <- function(lightcurve,jdbias=0) {
 	return(c(jdEnd,jdNew))
 }
 
-#######################################################################
+#### goldenSectionTest() 
 goldenSectionTest <-  function(low,high) {
 	# for this to work right, high > low
 	phi = (1+sqrt(5))/2 # golden ratio
 	return(c(high - (high-low)/phi,low + (high-low)/phi))
 }
 
-###########################################################
+#### filter.dips.JD() 
 filter.dips.JD <- function(lightcurve.JDs,dip.mask) {
 	# lightcurve.times are the Julian dates for lightcurve observations
 	# dip.mask is a data frame containing the dip names and start and stop times
@@ -686,7 +686,7 @@ filter.dips.JD <- function(lightcurve.JDs,dip.mask) {
 	return(good.times)
 }
 
-##############################################
+#### trunc.pxct() ##########################################
 # truncates a POSIX time to the day
 trunc.pxct <- function(PXct.time) {
 	scratch <- as.POSIXlt(PXct.time)
@@ -696,7 +696,7 @@ trunc.pxct <- function(PXct.time) {
 	return(as.POSIXct(scratch))
 }
 
-########################################
+#### asassn.merge() 
 asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",g.to.V=FALSE,star.BminusV=0.52,V.bias=0.0,asassn.cs=c("UNK","UNK")) {
 # this function merges in the ASASSN data in both V and SG bands into the AAVSO lightcurve, appending it to the end.
 # lightcurve is the AAVSO lightcurve read in from their .csv file
@@ -760,7 +760,71 @@ asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",g.to.V=FALS
 	return(lightcurve)	
 }
 
-####################### mean.resid ##########################
+#### LCO.merge() 
+LCO.merge <- function(lightcurve,LCO.data,LCO.code="LCOGS",LCO.cs=c("UNK","UNK")) {
+  # this function merges in the LCO data in all bands into the AAVSO lightcurve, appending it to the end.
+  # lightcurve is the AAVSO lightcurve read in from their .csv file
+  # LCO.data is the LCO data read in from the .csv file
+  # LCO.code is the observer Code you want LCO to have
+  # asassn.cs is the comp stars you want entered into the light curve.
+  n <- nrow(asassn.data)
+  m = ncol(lightcurve)
+  scratch <- lightcurve[1,]
+  if(g.to.V) {	cat("\nConverting any ASAS-SN g band magnitudes to V band per Jordi, et. al., (2005)\n")}
+  for (index in 1:n) {
+    scratch$JD <- asassn.data$HJD[index]
+    if(is.numeric(asassn.data$mag[index])) {
+      scratch$Magnitude <- asassn.data$mag[index]
+    } else {
+      scratch$Magnitude <- NaN
+    }
+    scratch$Observer_Code <- asassn.code
+    scratch$Uncertainty <- asassn.data$mag_err[index]
+    
+    # all ASASSN data should be either "V" or "g" (which we think is g' or SG)
+    if(asassn.data$Filter[index] == "g") {
+      scratch$Band <- "SG"
+      if(g.to.V & is.numeric(scratch$Magnitude)){
+        scratch$Band <- "V"
+        # see http://www.sdss3.org/dr8/algorithms/sdssUBVRITransform.php
+        scratch$Magnitude <- scratch$Magnitude - 0.63*star.BminusV +0.124 - V.bias # per Jordi, et. al., (2005)
+        #				print(scratch$Magnitude)
+      }
+    } else if(asassn.data$Filter[index]=="V") {
+      scratch$Band <- "V" 
+    } else { 
+      print(asassn.data$Filter) # debug
+      next 
+    }
+    
+    scratch$Comp_Star_1 <- asassn.cs[1]
+    scratch$Comp_Star_2 <- asassn.cs[2]
+    scratch$Comments <- "Merged ASASSN Data"
+    scratch$Credit <- "Ohio State"
+    scratch$Observer.Affiliation <- "Ohio State"
+    scratch$Airmass <- 1.0
+    
+    scratch$HQuncertainty <- NA
+    scratch$Charts <- NA
+    scratch$Transfomed <- NA
+    scratch$Validation.Flag <- NA
+    scratch$Cmag <- NA
+    scratch$Kmag <- NA
+    scratch$Measurement.Method <- NA
+    #		print(scratch)
+    #		print(ncol(scratch))
+    #		print(ncol(lightcurve))
+    # browser()
+    lightcurve <- rbind(lightcurve,scratch)
+    
+  }
+  return(lightcurve)	
+}
+
+
+
+
+#### mean.resid() ################### mean.resid ##########################
 mean.resid <- function(binCurve,these.resids,btest,Obs.code,dipless) {
 # calculates the mean residual for an observer code when not in a dip. Are the arguments are computed as a matter of course.
 # binCurve is the binned lightcurve	
