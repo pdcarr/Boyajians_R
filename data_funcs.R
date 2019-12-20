@@ -504,7 +504,7 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.
 					superObs[1,"JD"] <- mean(sublight$JD[allTests],na.rm=TRUE)
 					superObs[1,"Band"] <- allBand$bandinQ[bandIndex]
 					superObs[1,"Magnitude"] <- mean(sublight$Magnitude[allTests],na.rm=TRUE)
-					if(n > 1) {
+					if(n > 2) {
 					  superObs[1,"Uncertainty"] <- sd(sublight$Magnitude[allTests],na.rm=TRUE)/sqrt(n) # the actual standard deviation of the observations
 					} else {
 					  superObs[1,"Uncertainty"] <- mean(sublight$Uncertainty[allTests],na.rm=TRUE)/sqrt(n)
