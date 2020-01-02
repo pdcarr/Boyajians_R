@@ -477,6 +477,7 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.
 	ensemble.entry <- data.frame(JD = numeric(),Band=character(),Magnitude=numeric(),nobs=numeric(),stringsAsFactors=FALSE)
 	
 # determine bin times and membership for the allowed observations (cleaned lightcurve with the required colors)
+	# browser()
 	bin.defs <- kmeans.time.series(lightcurve$JD[allClean],trial.bins,min.population=minimum.membership,delta.mean=0.04,max.iterations=12) 
 		#loop over the bin times
 	nbins <- length(bin.defs$bins)
@@ -852,9 +853,9 @@ entry.bias.apply <- function(lightcurve.row, biasObserver) {
 #bias observer is a data frame with the biases for a subset of observers in a subset of the bands
 	this.row = as.data.frame(lightcurve.row)
 	# print(class(this.row))
-	find.bias <- biasObserver$band == this.row $Band & biasObserver$obsCode == this.row $Observer_Code
+	find.bias <- biasObserver$band == this.row$Band & (biasObserver$obsCode == this.row$Observer_Code)
 #	print(sum(find.bias)) # debug
-	if(sum(find.bias) > 0) {
+	if(sum(find.bias,na.rm=TRUE) > 0) {
 		this.bias <- as.numeric(biasObserver$bias[find.bias][1])
 		# print(this.bias)
 		this.row$Magnitude <- this.row$Magnitude - this.bias
