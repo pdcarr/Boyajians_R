@@ -27,8 +27,7 @@ editUser <- rbind(editUser,c("DUBF", 2457629.0, 2457630.0,"V"),c("TPV",2458684,2
 						c("DJED",2458011.0,2458013.0,"V"),c("DFS",2458717.0, 2458718.0,"B"),c("LPAC",245877.5,245877.9,"B"),c("LPAC",245877.5,245877.9,"V"),
 						c("LPAC",245877.5,245877.9,"R"),c("LPAC",2458776.0,2458777.8,"V"),c("LPAC",2458786.1,2458787.3,"V"),c("ASASSN",2458791,2458792,"V"),c("LPAC",2458796.1,2458797.3,"V"))
 
-############################################################
-use.static.biases <- TRUE
+########################################
 biasObserver <- data.frame(obsCode=character(),band=character(),bias=numeric(),stringsAsFactors=FALSE)
 # list each observer for each band only once
 biasObserver <- rbind(biasObserver, 

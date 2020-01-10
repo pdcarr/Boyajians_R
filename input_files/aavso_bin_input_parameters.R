@@ -12,7 +12,7 @@ our.BminusV <- 0.52 # B-V for our star in question
 converted.V.bias <- 0.031 # additional bias to apply to subtract from converted V observations.
 asassn.code <- "ASASSN"
 ######### filters #########################
-maxairmass <- 2.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxairmass <- 2.5 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.1 # maximum AAVSO uncertainty estimate
 maxBinUncertainty <- 0.025 # worst standard deviation to accept for a binned set of observations
 wildsd <- 100.0 # worst number of standard deviations from mean allowed
@@ -26,10 +26,10 @@ startPlot <- earliestJD
 #startPlot <- 2457880
 #startPlot <- 2457580
 #startPlot <- 2457990
-#startPlot <- 2458150
+startPlot <- 2458150
 #startPlot <- 2458000
 #startPlot <- 2457620
-startPlot <- 2458200
+# startPlot <- 2458200
 # startPlot <- 2458700
 #stop.plot <- 2457680
 #stop.plot <- 2458000
@@ -94,8 +94,8 @@ allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors
 
 ########################
 #deltaJD <- 2.0 # bin width in days
-trial.bin <- 800 # trial number of bins. The acutal number will be less than this.
-min.population <- 2 # smallest population allowed for 1 bin.
+trial.bin <- 900 # trial number of bins. The acutal number will be less than this.
+min.population <- 1 # smallest population allowed for 1 bin.
 ########################
 plotExcluded <- FALSE # set to TRUE to plot the points in the lightcurve not used in the fit.
 plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit
@@ -123,3 +123,12 @@ pretty.JD.interval <- 100
 
 ############## ensemble average plots?
 plot.ensemble = TRUE
+
+########## option to draw a vertical date line
+drawDateLine <-  TRUE
+
+###################### set to FALSE to turn off relative static biases
+use.static.biases <- TRUE
+
+######################### data from defined dips in dip_mask.R is weightless if this is TRUE
+mask.Dips <- TRUE
