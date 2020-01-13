@@ -235,6 +235,7 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 #	print(sum(mnic & runningClean)) #debug print
 	# include exclude the observers in question
 	firstCode <- TRUE
+	# browser()
 	for (ocode in ExclCodes) {
 		if (inclexcl == FALSE) {
 			# exclude the listed observers
@@ -453,13 +454,17 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.
 # weightless is the list of observer codes who are given zero weight in the fit or ensemble
 # trial.bins is an interger number of bins to go for initially. This may be reduced, but won't be increased.
 
-
 	allClean <- cleanObs[,1]
 	if (ncol(cleanObs) > 1) {
 		for (n in 2:ncol(cleanObs)) {allClean <- allClean | cleanObs[,n]}
+	} 
+	
+	if(sum(allClean) < 2) {
+	  stop("not enough data to work with in binAAVSO")
 	}
 
 	#calculate the start and stop times from the light curve Julian Dates 
+	# browser()
 	
 #	startJD = floor(min(lightcurve[allClean,"JD"],na.rm=TRUE))
 #	stopJD = ceiling(max(lightcurve[allClean,"JD"],na.rm=TRUE))
@@ -482,7 +487,7 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.
 		#loop over the bin times
 	nbins <- length(bin.defs$bins)
 	print(paste("kmeans found",nbins,"bins")) #debug
-#	koope over the bins we just defines
+#	loop over the bins we just defined
 	for(this.bin in 1:nbins) {
 #			print(mean.bin.time)
 #			print(stopNow)

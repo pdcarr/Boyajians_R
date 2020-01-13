@@ -29,6 +29,7 @@ allFits <- list()
 
 # all the inputs are in the sourced file
 source("input_files/aavso_bin_input_parameters.R")
+# source("input_files/Betelgeuse_bin_input_parameters.R")
 source("input_files/observer_edits.R")
 source("input_files/missing_airmass.R")
 source("input_files/VlineParams.R")
@@ -291,7 +292,7 @@ howManyObs = length(unique(binCurve$Observer_Code[uncertaintyTest]))
 #if (length(ExclCodes) > 3){ocodesInTitle <- c(ocodesInTitle,paste("and",howManyObs - 3,"more observer code(s)",sep=" "))}
 
 myBands = paste(allBands$bandinQ,collapse=" ")
-titleString <- c(paste("AAVSO",myBands,"Data with",length(desmat),"bins",sep=" "), paste(as.character(howManyObs),"Observers",sep=" "))
+titleString <- c(paste(myBands,"Data with",length(desmat),"bins",sep=" "), paste(as.character(howManyObs),"Observers",sep=" "))
 myPlotTitle <- paste(titleString,collapse="\n")
 
 # initialize some data structures
