@@ -12,10 +12,11 @@ our.BminusV <- 0.52 # B-V for our star in question
 converted.V.bias <- 0.031 # additional bias to apply to subtract from converted V observations.
 asassn.code <- "ASASSN"
 ######### filters #########################
-maxairmass <- 2.0 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxairmass <- 100 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.4 # maximum AAVSO uncertainty estimate
 maxBinUncertainty <- 0.2 # worst standard deviation to accept for a binned set of observations
 wildsd <- 100.0 # worst number of standard deviations from mean allowed
+use.na.uncertainty <- FALSE
 ##########################################
 earliestJD = 2458000.53264 # only data on or after this JD will be used
 #earliestJD = 2458000 # only data on or after this JD will be used
@@ -52,7 +53,7 @@ meeColor <- "darkviolet"
 ########
 allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet","red","green","blue","aquamarine2"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
-allBands <- data.frame(bandinQ=c("V","SG"),plotColor=c("darkgreen","aquamarine2"), stringsAsFactors=FALSE)
+# allBands <- data.frame(bandinQ=c("V","SG"),plotColor=c("darkgreen","aquamarine2"), stringsAsFactors=FALSE)
 allBands <- data.frame(bandinQ=c("V","SG","B"),plotColor=c("darkgreen","aquamarine2","blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B","SG"),plotColor=c("green","blue","aquamarine"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
@@ -60,7 +61,7 @@ allBands <- data.frame(bandinQ=c("V","SG","B"),plotColor=c("darkgreen","aquamari
 # allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("SG"),plotColor=c("aquamarine2"),stringsAsFactors=FALSE)
-# allBands <- data.frame(bandinQ=c("Vis"),plotColor=c("green"),stringsAsFactors=FALSE)
+# allBands <- data.frame(bandinQ=c("Vis."),plotColor=c("black"),stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","SG"),plotColor=c("darkgreen","aquamarine2"),stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R","B"),plotColor=c("darkviolet","red","blue"), stringsAsFactors=FALSE)

@@ -8,6 +8,7 @@ source("plot_funcs.R")
 # remove old garbage if it's there
 rm(allFits)
 rm(cleanBand)
+rm(allClean)
 rm(binCurve)
 rm(deriv.mat)
 rm(resid.mat)
@@ -101,8 +102,18 @@ index = 1
 for (thisBand in allBands$bandinQ) {
 	cat("cleaning ",thisBand,"\n")
 	# clean the data for this passband
-	cleanBand[,index] <- cleanAAVSO3(lightcurve,thisBand,ExclCodes,includeExclude,maxairmass,maxuncertainty,wildsd,earliestJD,okComparison,bad.comp.star) &
-						 editCurve
+	cleanBand[,index] <- cleanAAVSO3(lightcurve,
+	                                 thisBand,
+	                                 ExclCodes,
+	                                 includeExclude,
+	                                 maxairmass,
+	                                 maxuncertainty,
+	                                 wildsd,
+	                                 earliestJD,
+	                                 okComparison,
+	                                 bad.comp.star,
+	                                 allow.na.err=use.na.uncertainty) &
+						          editCurve
 	##### NOTE: this is really slow, so only do it if it's important to get the ensemble means for each bin
 	if(plot.ensemble & use.static.biases) {
 		cat("\nApplying static biases. This could take some time..","\n")
@@ -113,7 +124,10 @@ for (thisBand in allBands$bandinQ) {
 	
 ###################### bin the data for each Observer
 cat("binning the data\n")
-bin.list <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD,weightless,trial.bin,min.population)
+bin.list <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD,weightless,
+                     trial.bins=trial.bin,
+                     minimum.membership=min.population,
+                     na.uncertain.ok=use.na.uncertainty)
 binCurve <- as.data.frame(bin.list[1])
 ensemble.curve <- as.data.frame(bin.list[2])
 #binCurve <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD) # old function call
@@ -121,7 +135,7 @@ ensemble.curve <- as.data.frame(bin.list[2])
 
 ######### filter bins for excess uncertainty
 # test for less than max uncertainty
-uncertaintyTest <- binCurve$Uncertainty <= maxBinUncertainty & binCurve$Uncertainty > 0
+uncertaintyTest <- binCurve$Uncertainty <= maxBinUncertainty & binCurve$Uncertainty >= 0
 
 index = 1
 used.in.fit <- matrix(nrow=length(binCurve$JD),ncol=length(allBands$bandinQ))
@@ -172,7 +186,7 @@ for (thisBand in allBands$bandinQ) {
 		# use robust algorithm
 		thisFit <- rlm(binCurve$Magnitude[btest] ~ desmat,na.action="na.omit",psi=psi.bisquare)
 	} else {
-		if (weightedBins) {
+		if (weightedBins & !use.na.uncertainty) {
 			de.weight <- dipless
 			if(exists("weightless") & !is.na(weightless)) {
 			    for (thisObs in weightless) {
