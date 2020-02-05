@@ -208,7 +208,17 @@ cleanAAVSO2 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 
 ###########################################################################################
 
-cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty,wildsigma,earliestJD,okCompStars,bad.stars=NA) {
+cleanAAVSO3 <- function(lightcurve,
+                        band,
+                        ExclCodes,
+                        inclexcl,
+                        maxair,
+                        maxuncertainty,
+                        wildsigma,
+                        earliestJD,
+                        okCompStars,
+                        bad.stars=NA,
+                        allow.na.err=FALSE) {
 	# this is an improved version of cleanAAVSO that allows the calling script to determin whether or include or exclude observers.
 	# this function returns a binary vector specfiying which records (rows) in a lightcurve fram to use. 
 	# lightcurve is the AAVSO data frame 
@@ -221,6 +231,7 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 	# earliestJD is the earliest Julian date to allow
 	# okCompstars is a regular expression that should match any valid comparison star
 	# bad.stars is a regular expression that should match bad comparison stars
+  # allow.na.err is a logical. If TRUE then do not remove points with Uncertainty NA
 # debug stuff
 #	mnic <- lightcurve$Observer_Code == "MNIC"
 #	print(sum(mnic))
@@ -234,6 +245,7 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 #	print(unique(runningClean))
 #	print(sum(mnic & runningClean)) #debug print
 	# include exclude the observers in question
+	# browser()
 	firstCode <- TRUE
 	# browser()
 	for (ocode in ExclCodes) {
@@ -270,10 +282,11 @@ cleanAAVSO3 <- function(lightcurve,band,ExclCodes,inclexcl,maxair,maxuncertainty
 		runningClean <- runningClean & okair
 	}
 #	print(unique(runningClean))
-	
+	# browser()
 	# which observations have uncertainty data and acceptable uncertainty?
-	okuncertainty <- !is.na(lightcurve$Uncertainty) & (lightcurve$Uncertainty > 0)
-	if (maxuncertainty < 10) {
+	okuncertainty <- (!is.na(lightcurve$Uncertainty) | allow.na.err)
+	if(!allow.na.err) { okuncertainty <- okuncertainty & (lightcurve$Uncertainty > 0)}
+	if (maxuncertainty < 10 & !allow.na.err) {
 		okuncertainty <- okuncertainty  & lightcurve$Uncertainty <= maxuncertainty
 		
 	} 
@@ -445,7 +458,9 @@ for (myrow in 1:length(weare)) {
 }
 
 ####################################################### binAAVSO
-binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.bins=100,minimum.membership=1) {
+binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.bins=100,
+                      minimum.membership=1,
+                      na.uncertain.ok=FALSE) {
 # returns a dataframe with JD, Magnitude for each band, and observer code.
 # lightcurve is the unprocessed curve from AAVSO
 # cleanObs is the matrix of logical vectors of accepted observations for the passbands
@@ -506,14 +521,17 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.
 				sublight <- lightcurve[allClean,]
 				# compile the super observation
 				n <- sum(allTests) # number of observations in the bin for this observer
+				# browser()
 				if(n > 0) {
 					superObs[1,"JD"] <- mean(sublight$JD[allTests],na.rm=TRUE)
 					superObs[1,"Band"] <- allBand$bandinQ[bandIndex]
 					superObs[1,"Magnitude"] <- mean(sublight$Magnitude[allTests],na.rm=TRUE)
 					if(n > 2) {
 					  superObs[1,"Uncertainty"] <- sd(sublight$Magnitude[allTests],na.rm=TRUE)/sqrt(n) # the actual standard deviation of the observations
-					} else {
+					} else if(sum(is.na(sublight$Uncertainty[allTests])) <= 0) {
 					  superObs[1,"Uncertainty"] <- mean(sublight$Uncertainty[allTests],na.rm=TRUE)/sqrt(n)
+					} else {
+					  if(na.uncertain.ok) {superObs[1,"Uncertainty"] <- 0.0}
 					}
 					superObs[1,"nobs"] <- n
 					if(is.na(superObs[1,"Uncertainty"]) | is.nan(superObs[1,"Uncertainty"])) {
