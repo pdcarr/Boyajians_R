@@ -154,6 +154,8 @@ for (thisBand in allBands$bandinQ) {
     dipless <- dipless | !mask.Dips #option to turn off the dip masking
     
 	desmat <- binCurve$JD[btest] - tmin # subtract off the earliest time to avoid numerical problems
+	t.order <- order(desmat,decreasing=FALSE) # get correct time order to keep plots from getting messy
+	desmat <- desmat[t.order]
 	if(length(desmat) < 2) {
 			cat("\n\nWarning: fewer than 2 points in the band:",thisBand,"\n")
 			next
@@ -226,7 +228,7 @@ for (thisBand in allBands$bandinQ) {
 							thresh = mars.thresh,
 							minspan = mars.minspan)
 		} else {
-			thisFit <- earth(x=desmat,y=binCurve$Magnitude[btest],
+			thisFit <- earth(x=desmat,y=binCurve$Magnitude[btest][t.order],
 								nk= marsOrder,
 								pmethod= marsPMethod,
 								penalty = marsPenalty,
@@ -240,7 +242,7 @@ for (thisBand in allBands$bandinQ) {
 	
 	# do a smooth.spline on the bins if called for
 	if(perform.smooth) {
-		smoove.fit <- smooth.spline(desmat,binCurve$Magnitude[btest],
+		smoove.fit <- smooth.spline(desmat,binCurve$Magnitude[btest][t.order],
 									w=binWeights,
 									all.knots=FALSE,nknots= smooth.n.knots,
 									keep.data=TRUE,cv=FALSE,penalty= df.penalty)
@@ -253,7 +255,7 @@ for (thisBand in allBands$bandinQ) {
 	
 	# try resistant regression if selected
 	if (tryLQS) {
-		resistFit <- lqs(formula = binCurve$Magnitude[btest] ~ desmat)
+		resistFit <- lqs(formula = binCurve$Magnitude[btest][t.order] ~ desmat)
 		cat("\n\n Band",thisBand," resistant fit coefficients")
 		cat(resistFit$coefficients,"\n")
 		#build up the matrix of resistant fits
@@ -318,6 +320,7 @@ deriv.mat = matrix(ncol=length(binCurve$JD))
 # plot the cleaned and binned data, the fit lines and the excluded points
 icol=1
 if(plotRelTimes) {
+  t.order <- order(binCurve$JD)
 	myTimes <- binCurve$JD - tmin
 	jdLine <- jdLine - tmin
 	if(add.predict > 0) {myxlims[2] <- myxlims[2] + add.predict}
@@ -353,6 +356,7 @@ for (thisBand in allBands$bandinQ) {
 		errbar(myTimes[btest],binCurve$Magnitude[btest],yplus=my.y.plus,yminus=my.y.minus,
 				col=allBands$plotColor[icol],errbar.col=allBands$plotColor[icol],pch=3,add=TRUE)
 	}
+	btest.t.order <- order(myTimes[btest],decreasing=FALSE) # time order for what we are plotting
 	
 	# plot line fit
 	 if(!plotMARS & userlm) {
@@ -368,7 +372,7 @@ for (thisBand in allBands$bandinQ) {
 		if (splineRaw) {
 			lines(x=lcTimes[cleanBand[,icol]],y=mars$fitted.values,col= "black",lwd=2)
 		} else {
-			lines(x=myTimes[btest],y=mars$fitted.values,col= "black",lwd=2)
+			lines(x=myTimes[btest][btest.t.order],y=mars$fitted.values,col = "black",lwd=2)
 		}
 	}
 	
@@ -376,13 +380,13 @@ for (thisBand in allBands$bandinQ) {
 	# plot a smooth.spline on the bins if called for
 	if(perform.smooth) {
 		smoove.fit <- all.smoove[[icol]]
-		these.values <- predict(smoove.fit,myTimes[btest])$y
-		bin.predict[btest] <- these.values
+		these.values <- predict(smoove.fit,myTimes[btest][btest.t.order])$y
+		bin.predict[btest][btest.t.order] <- these.values
 
-		lines(myTimes[btest],these.values,col=smoove.color,lwd=3) # plot as a line of specified color
+		lines(myTimes[btest][btest.t.order],these.values,col=smoove.color,lwd=3) # plot as a line of specified color
 		##### add prediction if add.predict > 0
 		if(add.predict > 0) {
-			predict.days <- seq(from=tail(myTimes[btest],n=1),to=tail(myTimes[btest],n=1)+add.predict,by=1)
+			predict.days <- seq(from=tail(myTimes[btest][btest.t.order],n=1),to=tail(myTimes[btest][btest.t.order],n=1)+add.predict,by=1)
 			add.prediction <- predict(smoove.fit,predict.days,deriv=0)
 			lines(predict.days,add.prediction$y,lty="dashed",lwd=3,col=smoove.color)
 		}
