@@ -464,7 +464,7 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.
 # returns a dataframe with JD, Magnitude for each band, and observer code.
 # lightcurve is the unprocessed curve from AAVSO
 # cleanObs is the matrix of logical vectors of accepted observations for the passbands
-# allBands is the dataframe containing the AAVSO codes of the passbandsa, e.g. "B","V"
+# allBand is the dataframe containing the AAVSO codes of the passbandsa, e.g. "B","V"
 # deltaJD is the time cluster size in days
 # weightless is the list of observer codes who are given zero weight in the fit or ensemble
 # trial.bins is an interger number of bins to go for initially. This may be reduced, but won't be increased.
@@ -923,11 +923,12 @@ kmeans.time.series <- function(times,initial.clusters.num=16,min.population=1,de
 # set up the initial centers
   t.min <- min(times,na.rm=TRUE)
   t.max <- max(times,na.rm=TRUE)
-  t.span <- t.max - t.min
+  t.span <- t.max - t.min # time span of all the cluster centers
   t.bin <- t.span/initial.clusters.num
   clusters <- seq(from=t.min + t.bin/2,to=t.max - t.bin/2,t.bin) # first guess at the clusters
-  N <- length(clusters)
+  N <- length(clusters) # the number of clusters when starting out (some will be pruned)
   old.cluster.mean <- rep(NA,times=N)
+  # main kmeans iteration loop
   for(iter.num in 1:as.integer(max.iterations)) {
     N <- length(clusters)
     # browser()
@@ -936,9 +937,9 @@ kmeans.time.series <- function(times,initial.clusters.num=16,min.population=1,de
     cluster.sum = vector(mode="numeric",length=N)
     cluster.mean = vector(mode="numeric",length=N)
     cluster.diff = vector(mode="numeric",length=N)
-    # browser()
+    browser()
     situation <- t(sapply(times,k.min.distance,bins=clusters))
-    
+    # go over each bin and determin the mean or prune it.
     for (i.bin in 1:N) {
       my.times <- !is.na(situation[,1]) & situation[,1] == i.bin
       # browser()
@@ -956,6 +957,7 @@ kmeans.time.series <- function(times,initial.clusters.num=16,min.population=1,de
        next()
       }
     } # bin loop
+    # browser()
     old.cluster.mean <- cluster.mean[!pruned]
     clusters <- clusters[!pruned] # pruned clusters are gone and won't come back
     if(sum(pruned) > 0) {next()}  # need another go-around to pick up the orphaned times
