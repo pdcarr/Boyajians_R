@@ -496,11 +496,14 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.
 	ensemble.means <- data.frame(JD = numeric(),Band=character(),Magnitude=numeric(),stringsAsFactors=FALSE)
 	ensemble.entry <- data.frame(JD = numeric(),Band=character(),Magnitude=numeric(),nobs=numeric(),stringsAsFactors=FALSE)
 	
-# determine bin times and membership for the allowed observations (cleaned lightcurve with the required colors)
+for (bandIndex in 1:numBands) {			
+	  # determine bin times and membership for the allowed observations (cleaned lightcurve with the required colors)
 	# browser()
-	bin.defs <- kmeans.time.series(lightcurve$JD[allClean],trial.bins,min.population=minimum.membership,delta.mean=0.04,max.iterations=12) 
+  band.filter <- lightcurve$Band == allBand$bandinQ[bandIndex]
+	bin.defs <- kmeans.time.series(lightcurve$JD[allClean & band.filter],trial.bins,min.population=minimum.membership,delta.mean=0.04,max.iterations=12) 
 		#loop over the bin times
 	nbins <- length(bin.defs$bins)
+	# browser()
 	print(paste("kmeans found",nbins,"bins")) #debug
 #	loop over the bins we just defined
 	for(this.bin in 1:nbins) {
@@ -510,15 +513,14 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.
 		# print(accumulated.sups)
 		
 		#loop over the passbands to create the superobservation in the time frame for the Observer code
-		for (bandIndex in 1:numBands) {			
 #			ensemble.test  <- testTime & cleanObs[,bandIndex]
 		  # to get in the ensemble for a bin, the observation has to be in the right band and in the bin.
-		  ensemble.test <- bin.defs$membership == this.bin & (lightcurve$Band[allClean] == allBand$bandinQ[bandIndex])
+		  ensemble.test <- bin.defs$membership == this.bin
 			# loop over observers
 			for (thisObs in weare) {
-				testObs <- lightcurve$Observer_Code[allClean] == thisObs # test for observer in question
+				testObs <- lightcurve$Observer_Code[allClean & band.filter] == thisObs # test for observer in question
 				allTests <- ensemble.test & testObs # all observations eligible for super observation
-				sublight <- lightcurve[allClean,]
+				sublight <- lightcurve[allClean & band.filter,]
 				# compile the super observation
 				n <- sum(allTests) # number of observations in the bin for this observer
 				# browser()
@@ -551,7 +553,7 @@ binAAVSO <-  function(lightcurve,cleanObs,allBand,deltaJD=1,weightless=NA,trial.
 					allSuperObs <- rbind(allSuperObs,superObs)
 				} # if(n> 0) if statement
 			} #observer loop end
-			
+			# browser()
 			ensemble.test <- ensemble.test &  
 			              	!(sublight$Observer_Code %in% weightless) # remove weightless observers from ensemble
 			if(sum(ensemble.test) >0) {
@@ -937,7 +939,7 @@ kmeans.time.series <- function(times,initial.clusters.num=16,min.population=1,de
     cluster.sum = vector(mode="numeric",length=N)
     cluster.mean = vector(mode="numeric",length=N)
     cluster.diff = vector(mode="numeric",length=N)
-    browser()
+    # browser()
     situation <- t(sapply(times,k.min.distance,bins=clusters))
     # go over each bin and determin the mean or prune it.
     for (i.bin in 1:N) {

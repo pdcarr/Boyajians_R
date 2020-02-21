@@ -129,6 +129,7 @@ bin.list <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD,weightless,
                      minimum.membership=min.population,
                      na.uncertain.ok=use.na.uncertainty)
 binCurve <- as.data.frame(bin.list[1])
+# browser()
 ensemble.curve <- as.data.frame(bin.list[2])
 #binCurve <- binAAVSO(lightcurve,cleanBand,allBands,deltaJD) # old function call
 
@@ -379,17 +380,18 @@ for (thisBand in allBands$bandinQ) {
 
 	# plot a smooth.spline on the bins if called for
 	if(perform.smooth) {
+	  # browser()
 		smoove.fit <- all.smoove[[icol]]
 		these.values <- predict(smoove.fit,myTimes[btest][btest.t.order])$y
 		bin.predict[btest][btest.t.order] <- these.values
 
-		lines(myTimes[btest][btest.t.order],these.values,col=smoove.color,lwd=3) # plot as a line of specified color
+		lines(myTimes[btest][btest.t.order],bin.predict[btest][btest.t.order],col=smoove.color,lwd=3) # plot as a line of specified color
 		##### add prediction if add.predict > 0
-		if(add.predict > 0) {
-			predict.days <- seq(from=tail(myTimes[btest][btest.t.order],n=1),to=tail(myTimes[btest][btest.t.order],n=1)+add.predict,by=1)
-			add.prediction <- predict(smoove.fit,predict.days,deriv=0)
-			lines(predict.days,add.prediction$y,lty="dashed",lwd=3,col=smoove.color)
-		}
+		# if(add.predict > 0) {
+		# 	predict.days <- seq(from=tail(myTimes[btest][btest.t.order],n=1),to=tail(myTimes[btest][btest.t.order],n=1)+add.predict,by=1)
+		# 	add.prediction <- predict(smoove.fit,predict.days,deriv=0)
+		# 	lines(predict.days,add.prediction$y,lty="dashed",lwd=3,col=smoove.color)
+		# }
 		
 		these.resids[btest] <- binCurve$Magnitude[btest] - these.values # store residuals
 		if(icol==1) {
@@ -498,23 +500,29 @@ if(perform.smooth & smooth.deriv) {
 			
 			irow <- 1
 			for (thisBand in allBands$bandinQ) {
-				btest <- (binCurve$Band == thisBand) & uncertaintyTest	# the subset of the bins to use
+				btest <- (binCurve$Band == thisBand) & uncertaintyTest # the subset of the bins to use
+				btest.t.order <- order(binCurve$JD[btest],decreasing=FALSE)
 				myXlabel <- "time"
 				myYlabel <- "1st Derivative of Magnitude wrt Time"
 				if(irow == 1) {
-					plot(myTimes[btest],deriv.mat[irow,btest],col= allBands$plotColor[irow],
-						xlab=myXLabel,ylab=myYlabel,
-						main="Derivative of Smooth Spline",
-						cex.main=1.0,type= "l",lwd=2,
-						xlim= myxlims,ylim=deriv.margin*deriv.bounds)
+					plot(x=myTimes[btest][btest.t.order],
+					     y= deriv.mat[irow,btest][btest.t.order],
+					     col= allBands$plotColor[irow],
+						   xlab=myXLabel,ylab=myYlabel,
+						   main="Derivative of Smooth Spline",
+						   cex.main=1.0,type= "l",lwd=2,
+					    xlim= myxlims,ylim=deriv.margin*deriv.bounds)
 				} else {
-					lines(myTimes[btest],deriv.mat[irow,btest],col= allBands$plotColor[irow],lwd=2)
+					lines(myTimes[btest][btest.t.order],
+					      deriv.mat[irow,btest][btest.t.order],
+					      col= allBands$plotColor[irow],
+					      lwd=2)
 				}
-				if(add.predict > 0) {
-					add.times <- seq(from=tail(myTimes[btest],n=1),to=tail(myTimes[btest],n=1) + add.predict,by=1)
-					add.derivs <-predict(all.smoove[[irow]],add.times,deriv=1)
-					lines(add.times,add.derivs$y,col=allBands$plotColor[irow],lty="dashed",lwd=2)
-				}
+				# if(add.predict > 0) {
+				# 	add.times <- seq(from=tail(myTimes[btest],n=1),to=tail(myTimes[btest],n=1) + add.predict,by=1)
+				# 	add.derivs <-predict(all.smoove[[irow]],add.times,deriv=1)
+				# 	lines(add.times,add.derivs$y,col=allBands$plotColor[irow],lty="dashed",lwd=2)
+				# }
 				irow <- irow + 1
 			}
 			grid(col="black")
@@ -554,6 +562,7 @@ if(plot.ensemble) {
     titleString <- c(ensemble.title, paste(as.character(howManyObs),"Observers",sep=" "))
     myPlotTitle <- paste(titleString,collapse="\n")
 	plot.times <- ensemble.curve$JD - tmin # same time offset as the other plots
+	t.order <- order(plot.times)
 	x.string <- paste("Julian Date - ",tmin) # plot x axis label
 	quartz("ensemble average bins")
 	i.band <- 1
@@ -576,10 +585,13 @@ if(plot.ensemble) {
 		if(perform.smooth) {
 #			cat("\nstarting plot of smooth fit\n")
 			smoove.fit <- all.smoove[[i.band]]
-			these.values <- predict(smoove.fit,plot.times)$y
-			bin.predict[btest] <- these.values
+			these.values <- predict(smoove.fit,plot.times[band.test])$y
+			bin.predict[band.test] <- these.values
 	
-			lines(plot.times,these.values,col=allBands$plotColor[i.band],lwd=3) # plot as a line of specified color
+			lines(x=plot.times[band.test][t.order],
+			      y= these.values[t.order],
+			      col=allBands$plotColor[i.band],
+			      lwd=3) # plot as a line of specified color
 			
 		}
 		i.band <- i.band + 1	# point to next band
