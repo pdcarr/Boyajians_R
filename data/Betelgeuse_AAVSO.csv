@@ -2440,3 +2440,6 @@ JD,Magnitude,Uncertainty,HQuncertainty,Band,Observer_Code,Comment Code(s),Comp_S
 2458903.54167,1.55,,,Vis.,CDMB,,Bellatrix,Alhena,SkySafari,"""clear sky, no Moon, urban light pollution""",,,Z,,,,ALF ORI,RASC,STD,,,,
 2458903.56833,1.40,,,Vis.,SRGA,BU,1.1,16W,10 Star 2020,,,,Z,,,,ALF ORI,AAVSO,STD,,,,
 2458903.57292,1.7,,,Vis.,CBRB,BK,1.6,2.0,SkySafari,,,,Z,,,,ALF ORI,AAVSO,STD,,,,
+2458903.59028,1.50,,,Vis.,ASA,,160,120,X25059AKB,,,,Z,,,,BETELGEUSE,AAVSO,STD,,,,
+2458903.6374,1.512,0.024,,V,PTOB,,000-BBH-168,40 Ori,X25095YP,"""Average of 18 observations. 12.5-inch stopped down to 2 inches, and defocused.""",0,1.112,Z,-4.813,-1.598,,BETELGEUSE,AAVSO,STD,,,,
+2458903.66319,2.0,,,Vis.,KCY,,kap ori,delta ori,sky atlas plus wikip,,,,Z,,,,ALF ORI,AAVSO,STD,,,,
