@@ -12,7 +12,7 @@ our.BminusV <- 0.52 # B-V for our star in question
 converted.V.bias <- 0.031 # additional bias to apply to subtract from converted V observations.
 asassn.code <- "ASASSN"
 ######### filters #########################
-maxairmass <- 2.5 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
+maxairmass <- 2.2 # air mass values above this will be filtered out, as well as missing air masses. Set >= 100 to turn this off
 maxuncertainty <- 0.1 # maximum AAVSO uncertainty estimate
 maxBinUncertainty <- 0.025 # worst standard deviation to accept for a binned set of observations
 wildsd <- 100.0 # worst number of standard deviations from mean allowed
@@ -58,7 +58,7 @@ weightless <- c("STFB","JM","FRGA","KHAB","TIA","FJAA","DKS","SFLB","RZD","LPAC"
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","ASASSN","OAR","EEY","DUBF") # merged B and V
 #ExclCodes <- c("ASASSN")
 # ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA","SGEA","SDB","RNL","NOT","DFS","TIA","DFS","CIVA","DJED") # R ensemble
-# weightless <- c("RNL","TIA","DJED","LWHA","VMT","JM","NOT","DFS") # weightless for R band
+# weightless <- c("RNL","TIA","DJED","LWHA","VMT","JM","DFS") # weightless for R band
 #ExclCodes <- c("DUBF","GKA","BPAD","SJAR","LBG","LDJ","LWHA") # R ensemble without JM
 # ExclCodes <- c("OAR","OJJ","GKA","MJB","SJAR","LBG","LPB","LDJ","CMP","JM","VMT","SDB","SGEA","LPAC","TIA","TRE","BSM","FJQ") # I ensemble
 # weightless <- c("TIA","FJQ") # I band weightless
@@ -72,7 +72,7 @@ weightless <- c("STFB","JM","FRGA","KHAB","TIA","FJAA","DKS","SFLB","RZD","LPAC"
 
 #ExclCodes <- "None"
 plotMee <- NA # do not highlight any particular observer code
-# plotMee <- "CIVA"
+# plotMee <- "NOT"
 #plotMee <- "JM"
 #plotMee <- "VMT"
 #plotMee <- "MMAO"
@@ -95,7 +95,7 @@ allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors
 ########################
 #deltaJD <- 2.0 # bin width in days
 trial.bin <- 900 # trial number of bins. The acutal number will be less than this.
-min.population <- 1 # smallest population allowed for 1 bin.
+min.population <- 2 # smallest population allowed for 1 bin.
 ########################
 plotExcluded <- FALSE # set to TRUE to plot the points in the lightcurve not used in the fit.
 plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit

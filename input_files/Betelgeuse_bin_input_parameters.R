@@ -16,7 +16,7 @@ maxairmass <- 100 # air mass values above this will be filtered out, as well as 
 maxuncertainty <- 0.4 # maximum AAVSO uncertainty estimate
 maxBinUncertainty <- 0.2 # worst standard deviation to accept for a binned set of observations
 wildsd <- 100.0 # worst number of standard deviations from mean allowed
-use.na.uncertainty <- FALSE
+use.na.uncertainty <- TRUE
 ##########################################
 earliestJD = 2458000.53264 # only data on or after this JD will be used
 #earliestJD = 2458000 # only data on or after this JD will be used
@@ -55,14 +55,14 @@ allBands <- data.frame(bandinQ=c("I","R","V","B","SG"),plotColor=c("darkviolet",
 allBands <- data.frame(bandinQ=c("V"),plotColor=c("darkgreen"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("V","SG"),plotColor=c("darkgreen","aquamarine2"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("V","SG","B"),plotColor=c("darkgreen","aquamarine2","blue"), stringsAsFactors=FALSE)
-allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("darkgreen","blue"), stringsAsFactors=FALSE)
+# allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("darkgreen","blue"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","B","SG"),plotColor=c("green","blue","aquamarine"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("B"),plotColor=c("blue"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("I"),plotColor=c("darkviolet"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("R"),plotColor=c("red"), stringsAsFactors=FALSE)
 # allBands <- data.frame(bandinQ=c("SG"),plotColor=c("aquamarine2"),stringsAsFactors=FALSE)
-# allBands <- data.frame(bandinQ=c("Vis."),plotColor=c("black"),stringsAsFactors=FALSE)
+allBands <- data.frame(bandinQ=c("Vis."),plotColor=c("black"),stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("V","SG"),plotColor=c("darkgreen","aquamarine2"),stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R"),plotColor=c("darkviolet","red"), stringsAsFactors=FALSE)
 #allBands <- data.frame(bandinQ=c("I","R","B"),plotColor=c("darkviolet","red","blue"), stringsAsFactors=FALSE)
@@ -71,7 +71,7 @@ allBands <- data.frame(bandinQ=c("V","B"),plotColor=c("darkgreen","blue"), strin
 ########################
 #deltaJD <- 2.0 # bin width in days
 trial.bin <- 200 # trial number of bins. The acutal number will be less than this.
-min.population <- 2 # smallest population allowed for 1 bin.
+min.population <- 8 # smallest population allowed for 1 bin.
 ########################
 plotExcluded <- FALSE # set to TRUE to plot the points in the lightcurve not used in the fit.
 plotQuadratic <- FALSE # set to TRUE to plot a quadratic fit
