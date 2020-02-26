@@ -363,7 +363,7 @@ for (thisBand in allBands$bandinQ) {
 	if(perform.smooth) {
 		smoove.fit <- all.smoove[[icol]]
 		these.values <- predict(smoove.fit,myTimes[btest])$y
-		bin.predict[btest] <- these.values
+		# bin.predict[btest] <- these.values
 
 		lines(myTimes[btest],these.values,col=smoove.color,lwd=3) # plot as a line of specified color
 		##### add prediction if add.predict > 0
