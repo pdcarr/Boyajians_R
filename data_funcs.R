@@ -750,6 +750,7 @@ asassn.merge <- function(lightcurve,asassn.data,asassn.code="ASASSN",g.to.V=FALS
 		if(asassn.data$Filter[index] == "g") {
 			scratch$Band <- "SG"
 			if(g.to.V & is.numeric(scratch$Magnitude)){
+			  # browser()
 				scratch$Band <- "V"
 				# see http://www.sdss3.org/dr8/algorithms/sdssUBVRITransform.php
 				scratch$Magnitude <- scratch$Magnitude - 0.63*star.BminusV +0.124 - V.bias # per Jordi, et. al., (2005)
