@@ -52,8 +52,8 @@ weightless <- NA
 # ExclCodes <- c("LDJ","OAR","ASASSN")
 ExclCodes <- c("LDJ","ASASSN","OAR","HBB","DUBF","EEY","DJED","VMT","STFB",
 				"TRE","BJFB","NOT","ATE","DFS","TIA","FJAA","CIVA","FRGA",
-				"DJED","EEY","BSM","GKA","ODEA","LPAC","DKS","SFLB","RZD","PTFA","SGEA") # good small V band ensemble
-weightless <- c("STFB","JM","FRGA","KHAB","TIA","FJAA","DKS","SFLB","RZD","LPAC","SGEA")  # weightless for V band
+				"DJED","EEY","BSM","GKA","ODEA","LPAC","DKS","SFLB","RZD","PTFA","SGEA","HJW") # good small V band ensemble
+weightless <- c("STFB","JM","FRGA","KHAB","TIA","FJAA","DKS","SFLB","RZD","LPAC","SGEA","HJW")  # weightless for V band
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","HJW","TIA","DFS","FJAA") # new B ensemble under development
 #ExclCodes <- c("LDJ","OAR","DKS","HBB","SGEA","ASASSN","OAR","EEY","DUBF") # merged B and V
 #ExclCodes <- c("ASASSN")
