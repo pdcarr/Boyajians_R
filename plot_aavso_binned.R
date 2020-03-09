@@ -48,10 +48,18 @@ lightcurve <- read.csv(file=llightcurve_name,header=TRUE,check.names=TRUE,na.str
 totalRec = length(lightcurve$JD)
 cat("\n\nTotal records read from file: ",totalRec,"\n\n")
 
-if ((merge.asassn) & (sum(allBands$bandinQ %in% asassn.bands) > 0) & sum(asassn.cameras %in% asassn_data$Camera) > 0){
+if ((merge.asassn) & (sum(allBands$bandinQ %in% asassn.bands) > 0)){
 	cat("\nmerging in ASASSN Data\n")
   cat("\nASAS-SN cameras",asassn.cameras,"\n")
 	asassn_data <- read.csv(asassn.csv.file,header=TRUE,stringsAsFactors=FALSE)
+	if(!exists("asassn_data")) {
+	  cat("\nfailed to open ASASSN_FILE\n")
+	  merge.asassn <- FALSE
+	}
+	if(sum(asassn.cameras %in% asassn_data$Camera) == 0)
+	{
+	  cat("\nNone of the required ASAS-SN cameras in file\n")
+	}
 	ok.camera <- !is.na(match(asassn_data$Camera,asassn.cameras))
 	lightcurve <- asassn.merge(lightcurve,asassn_data[ok.camera,],asassn.code,g.to.V= convert.asassn,star.BminusV= our.BminusV,V.bias= converted.V.bias) # function merges asassn data into lightcurve
 } else {
