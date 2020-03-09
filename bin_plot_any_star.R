@@ -562,13 +562,13 @@ if(plot.ensemble) {
     titleString <- c(ensemble.title, paste(as.character(howManyObs),"Observers",sep=" "))
     myPlotTitle <- paste(titleString,collapse="\n")
 	plot.times <- ensemble.curve$JD - tmin # same time offset as the other plots
-	t.order <- order(plot.times)
 	x.string <- paste("Julian Date - ",tmin) # plot x axis label
 	quartz("ensemble average bins")
 	i.band <- 1
 	for (thisBand in allBands$bandinQ) {
-		# first band in list
+	  # first band in list
 		band.test <- ensemble.curve$Band == thisBand
+		t.order <- order(plot.times[band.test])
 		if(i.band==1) {	
 			plot(x=plot.times[band.test],y=ensemble.curve$Magnitude[band.test],
 			xlim= myxlims,ylim = myYlims,
