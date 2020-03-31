@@ -535,7 +535,11 @@ print(binda)
 cat("\n\n    Observer Code: ", ExclCodes," observations",inclWord,"\n")
 cat("   ",length(lightcurve$JD),"total observations loaded\n")
 #cat("    ",length(lightcurve[cleanI | cleanR | cleanV | cleanB,"JD"]),"raw observations after cleaning\n")
-cat("    ",length(binCurve$JD[uncertaintyTest]),"binned observations with",deltaJD,"day bins")
+if(exists("deltaJD")) {
+  cat("    ",length(binCurve$JD[uncertaintyTest]),"binned observations with",deltaJD,"day bins")
+} else {
+  cat("    ",length(binCurve$JD[uncertaintyTest]),"binned observations\n")
+}
 
 ########## plot ensemble averages
 
